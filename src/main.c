@@ -1,13 +1,8 @@
-#include <date.h>
-#include <stdio.h>
-#include "interface.h"
+#include "parser.h"
 
-int main(){
+int main(int argc,char** argv){
 
-  Date d = createDate(1,2,2017);
-  printf("Dia: %i\n", get_day(d));
-
-  init();
+  streamFile(argv[1]); 
 
   return 0;
 } 

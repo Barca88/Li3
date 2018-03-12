@@ -1,3 +1,6 @@
+#ifndef __INTERFACE_H__
+#define __INTERFACE_H__
+
 #include "date.h"
 #include "pair.h"
 #include "list.h"
@@ -44,3 +47,4 @@ LONG_list better_answer(TAD_community com, int id);
 LONG_list most_used_best_rep(TAD_community com, int N, Date begin, Date end);
 
 TAD_community clean(TAD_community com);
+#endif
