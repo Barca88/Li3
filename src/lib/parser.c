@@ -1,5 +1,5 @@
-#include "usr/include/libxml2/libxml/xmlreader.h"
-#include "parser.h"
+#include "/usr/include/libxml2/libxml/xmlreader.h"
+#include "../../include/parser.h"
 
 static void processNode(xmlTextReaderPtr node) {
     xmlChar *name, *value;
