@@ -1,7 +1,11 @@
 #include "interface.h"
+#include <stdlib.h>
 
-
-TAD_community init();
+TAD_community init()
+{
+    TAD_community n = malloc(sizeof(TAD_community));
+    return n;
+}
 
 // query 0
 TAD_community load(TAD_community com, char* dump_path);  //diretoria onde estarão os ficheiros do dump

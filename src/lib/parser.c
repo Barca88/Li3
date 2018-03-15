@@ -18,7 +18,7 @@ static void processNode(xmlTextReaderPtr node) {
      }
 }
 
-int streamFile(char *filename) {
+void streamFile(char *filename) {
     xmlTextReaderPtr stream;
     int nodeReader;
     
@@ -34,9 +34,8 @@ int streamFile(char *filename) {
         if (nodeReader != 0) {
             printf("%s : failed to parse\n", filename);
         }
-    } else {
+    } else 
         printf("Unable to open %s\n", filename);
-    }
 }
 
     
