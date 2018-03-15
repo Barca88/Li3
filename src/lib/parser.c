@@ -2,7 +2,7 @@
 #include "../../include/parser.h"
 
 static void processNode(xmlTextReaderPtr node) {
-    xmlChar *name, *value;
+    xmlChar *name;
 
     name = xmlTextReaderName(node);
     if (name == NULL)
