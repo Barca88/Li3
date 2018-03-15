@@ -1,7 +1,8 @@
-#include "parser.h"
+#include "interface.h"
 
 int main(int argc,char** argv){
 
-    streamFile(argv[1]); 
+    TAD_community new = init();
+    new = load(new,argv[1]);
     return 0;
 } 

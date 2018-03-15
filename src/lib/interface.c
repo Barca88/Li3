@@ -1,14 +1,22 @@
 #include "interface.h"
+#include "parser.h"
 #include <stdlib.h>
+
+typedef struct root{
+    
+} TCD_community;
 
 TAD_community init()
 {
-    TAD_community n = malloc(sizeof(TAD_community));
+    TAD_community n = malloc(sizeof(TCD_community));
     return n;
 }
 
 // query 0
-TAD_community load(TAD_community com, char* dump_path);  //diretoria onde estarão os ficheiros do dump
+TAD_community load(TAD_community com, char* dump_path){
+    streamFile(dump_path);
+    return com;
+}  
 
 // query 1
 STR_pair info_from_post(TAD_community com, int id);  
