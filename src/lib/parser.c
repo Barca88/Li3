@@ -1,13 +1,9 @@
-#include "xmlreader.h"
+#include <string.h>
+#include <xmlreader.h>
 #include "parser.h"
 
-static int user_Id;
-static char* user_DisplayName;
-static char* user_AboutMe;
-static int user_Reputation;
 
-
-
+//Processar informacao dos users. 
 static void processNode(xmlTextReaderPtr node) {
     xmlChar *name;
 
@@ -25,24 +21,29 @@ static void processNode(xmlTextReaderPtr node) {
      }
 }
 
-void streamFile(char *filename) {
+//Montar estrutura em memoria e avancar linha a linha.
+void streamFile(char *path) {
+    char* aux = strcpy(aux,path);
     xmlTextReaderPtr stream;
     int nodeReader;
+    char* dumps[3] = {"Users.xml","Posts.xml","Votes.xml"};
     
-
-    stream = xmlNewTextReaderFilename(filename);
-    if (stream != NULL) {
-        nodeReader = xmlTextReaderRead(stream);
-        while (nodeReader == 1) {
-            processNode(stream);
-            nodeReader = xmlTextReaderRead(stream);
-        }
-        xmlFreeTextReader(stream);
-        if (nodeReader != 0) {
-            printf("%s : failed to parse\n", filename);
-        }
-    } else 
-        printf("Unable to open %s\n", filename);
+    for(int l = 0;l<3;l++){
+         aux = strcpy(aux,path);
+         stream = xmlNewTextReaderFilename(strcat(aux,dumps[l]));
+         for(int i=10;i!=0;i--)printf("%dº-------%s--------\n",i,path);
+         if (stream != NULL) {
+             nodeReader = xmlTextReaderRead(stream);
+             while (nodeReader == 1) {
+                 processNode(stream);
+                 nodeReader = xmlTextReaderRead(stream);
+             }
+             xmlFreeTextReader(stream);
+             if (nodeReader != 0) {
+                 printf("%s : failed to parse\n", strcat(aux,dumps[l]));
+             }
+         } else 
+            printf("Unable to open %s\n", strcat(aux,dumps[l]));
+    }
 }
 
-    
