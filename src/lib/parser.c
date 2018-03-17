@@ -5,7 +5,9 @@
 
 //Processar informacao dos users. 
 static void processUser(xmlTextReaderPtr node) {
+
     xmlChar *name;
+    char *attributename;
 
     name = xmlTextReaderName(node);
     if (name == NULL)
@@ -14,10 +16,26 @@ static void processUser(xmlTextReaderPtr node) {
 
     if (xmlTextReaderHasAttributes(node)){
         printf("------------------------------------------------------------------\n");
-         while(xmlTextReaderMoveToNextAttribute(node))
-                 printf("- %s: %s\n",
-                         xmlTextReaderName(node),
-                         xmlTextReaderValue(node));
+         while(xmlTextReaderMoveToNextAttribute(node)){
+             attributename = (char*)xmlTextReaderName(node); 
+             if(strcmp(attributename,"Id") == 0)
+                        printf("- %s: %s\n",
+                                 xmlTextReaderName(node),
+                                 xmlTextReaderValue(node));
+             else if(strcmp(attributename,"DisplayName") == 0)
+                        printf("- %s: %s\n",
+                                 xmlTextReaderName(node),
+                                 xmlTextReaderValue(node));
+             else if (strcmp(attributename,"AboutMe") == 0)
+                        printf("- %s: %s\n",
+                                 xmlTextReaderName(node),
+                                 xmlTextReaderValue(node));
+             else if (strcmp(attributename,"Reputation") ==  0)
+                        printf("- %s: %s\n",
+                                 xmlTextReaderName(node),
+                                 xmlTextReaderValue(node));
+             else printf("Needless attribute-->%s\n",xmlTextReaderName(node));
+         }
      }
 }
 
