@@ -25,25 +25,7 @@ static void processUser(xmlTextReaderPtr node) {
 //Processar informacao dos posts. 
 static void processPost(xmlTextReaderPtr node) {
     xmlChar *name;
-
-    name = xmlTextReaderName(node);
-    if (name == NULL)
-        name = xmlStrdup(BAD_CAST "--");
-
-
-    if (xmlTextReaderHasAttributes(node)){
-        printf("------------------------------------------------------------------\n");
-         while(xmlTextReaderMoveToNextAttribute(node))
-                 printf("- %s: %s\n",
-                         xmlTextReaderName(node),
-                         xmlTextReaderValue(node));
-     }
-}
-
-//Processar informacao dos votes. 
-static void processVote(xmlTextReaderPtr node) {
-    xmlChar *name;
-    char *atributename;
+    char *attributename;
 
     name = xmlTextReaderName(node);
     if (name == NULL)
@@ -53,21 +35,67 @@ static void processVote(xmlTextReaderPtr node) {
     if (xmlTextReaderHasAttributes(node)){
         printf("------------------------------------------------------------------\n");
          while(xmlTextReaderMoveToNextAttribute(node)){
-             atributename = (char*)xmlTextReaderName(node); 
-             if(strcmp(atributename,"Id") == 0)
+             attributename = (char*)xmlTextReaderName(node); 
+             if(strcmp(attributename,"Id") == 0)
                         printf("- %s: %s\n",
                                  xmlTextReaderName(node),
                                  xmlTextReaderValue(node));
-             else if(strcmp(atributename,"PostId") == 0)
+             else if(strcmp(attributename,"PostTypeId") == 0)
                         printf("- %s: %s\n",
                                  xmlTextReaderName(node),
                                  xmlTextReaderValue(node));
+             else if (strcmp(attributename,"OwnerUserId") == 0)
+                        printf("- %s: %s\n",
+                                 xmlTextReaderName(node),
+                                 xmlTextReaderValue(node));
+             else if (strcmp(attributename,"Title") == 0)
+                        printf("- %s: %s\n",
+                                 xmlTextReaderName(node),
+                                 xmlTextReaderValue(node));
+             else if (strcmp(attributename,"CreationDate") == 0)
+                        printf("- %s: %s\n",
+                                 xmlTextReaderName(node),
+                                 xmlTextReaderValue(node));
+             else if (strcmp(attributename,"Tags") == 0)
+                        printf("- %s: %s\n",
+                                 xmlTextReaderName(node),
+                                 xmlTextReaderValue(node));
+             else if (strcmp(attributename,"ParentId") == 0)
+                        printf("- %s: %s\n",
+                                 xmlTextReaderName(node),
+                                 xmlTextReaderValue(node));
+             else printf("Needless attribute-->%s\n",xmlTextReaderName(node));
+         }
+    }
+}
 
-             else if (strcmp(atributename,"VoteTypeId") == 0)
+//Processar informacao dos votes. 
+static void processVote(xmlTextReaderPtr node) {
+    xmlChar *name;
+    char *attributename;
+
+    name = xmlTextReaderName(node);
+    if (name == NULL)
+        name = xmlStrdup(BAD_CAST "--");
+
+
+    if (xmlTextReaderHasAttributes(node)){
+        printf("------------------------------------------------------------------\n");
+         while(xmlTextReaderMoveToNextAttribute(node)){
+             attributename = (char*)xmlTextReaderName(node); 
+             if(strcmp(attributename,"Id") == 0)
                         printf("- %s: %s\n",
                                  xmlTextReaderName(node),
                                  xmlTextReaderValue(node));
-             else printf("Atribute needless-->%s\n",xmlTextReaderName(node));
+             else if(strcmp(attributename,"PostId") == 0)
+                        printf("- %s: %s\n",
+                                 xmlTextReaderName(node),
+                                 xmlTextReaderValue(node));
+             else if (strcmp(attributename,"VoteTypeId") == 0)
+                        printf("- %s: %s\n",
+                                 xmlTextReaderName(node),
+                                 xmlTextReaderValue(node));
+             else printf("Needless attribute-->%s\n",xmlTextReaderName(node));
          }
      }
 }
