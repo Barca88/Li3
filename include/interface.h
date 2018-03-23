@@ -5,8 +5,10 @@
 #include "pair.h"
 #include "list.h"
 #include "user.h"
+#include <glib.h>
 
-typedef struct TCD_community * TAD_community;
+typedef struct root* TAD_community;
+typedef GHashTable* s_ptr_users;
 
 TAD_community init();
 

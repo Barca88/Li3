@@ -1,25 +1,32 @@
 #include "interface.h"
 #include "parser.h"
+#include "nodeUser.h"
 #include <stdlib.h>
-
+#include <stdio.h>
 typedef struct root{
-    
+    s_ptr_users hashUsers;
 } TCD_community;
 
 TAD_community init()
 {
     TAD_community n = malloc(sizeof(TCD_community));
+    n->hashUsers  = g_hash_table_new(g_int64_hash, g_int64_equal);
     return n;
 }
 
 // query 0
 TAD_community load(TAD_community com, char* dump_path){
-    streamFile(dump_path);
+    streamUsers(com->hashUsers,dump_path);
+
     return com;
 }  
 
 // query 1
-STR_pair info_from_post(TAD_community com, int id);  
+STR_pair info_from_post(TAD_community com, int id){
+        ptr_user a = g_hash_table_lookup(com->hashUsers,&id);
+        //printf("\n\n\n\n\n-----%ld",get_reputation_user(,&id));
+        return NULL;
+}
 
 // query 2
 LONG_list top_most_active(TAD_community com, int N);

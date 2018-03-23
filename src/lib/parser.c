@@ -1,14 +1,18 @@
 #include <string.h>
+#include <stdlib.h>
 #include <xmlreader.h>
+#include "interface.h"
 #include "parser.h"
-
+#include "nodeUser.h"
 
 //Processar informacao dos users. 
-static void processUser(xmlTextReaderPtr node) {
+static void processUser(s_ptr_users hu ,xmlTextReaderPtr node) {
 
     xmlChar *name;
     char *attributename;
-
+    long* key;
+    long auxid = -2;
+    key = &auxid;
     name = xmlTextReaderName(node);
     if (name == NULL)
         name = xmlStrdup(BAD_CAST "--");
@@ -16,26 +20,25 @@ static void processUser(xmlTextReaderPtr node) {
 
     if (xmlTextReaderHasAttributes(node)){
         printf("------------------------------------------------------------------\n");
+         ptr_user newUser = init_user();
          while(xmlTextReaderMoveToNextAttribute(node)){
              attributename = (char*)xmlTextReaderName(node); 
-             if(strcmp(attributename,"Id") == 0)
-                        printf("- %s: %s\n",
-                                 xmlTextReaderName(node),
-                                 xmlTextReaderValue(node));
-             else if(strcmp(attributename,"DisplayName") == 0)
-                        printf("- %s: %s\n",
-                                 xmlTextReaderName(node),
-                                 xmlTextReaderValue(node));
+             if(strcmp(attributename,"Id") == 0){
+                        set_id_user(newUser,atol((char*)xmlTextReaderValue(node)));
+                        auxid = get_id_user(newUser); 
+             }else if(strcmp(attributename,"DisplayName") == 0)
+                        set_displayname_user(newUser,(char*)xmlTextReaderValue(node));
              else if (strcmp(attributename,"AboutMe") == 0)
-                        printf("- %s: %s\n",
-                                 xmlTextReaderName(node),
-                                 xmlTextReaderValue(node));
+                        set_aboutme_user(newUser,(char*)xmlTextReaderValue(node));
              else if (strcmp(attributename,"Reputation") ==  0)
-                        printf("- %s: %s\n",
-                                 xmlTextReaderName(node),
-                                 xmlTextReaderValue(node));
+                        set_reputation_user(newUser,atol((char*)xmlTextReaderValue(node)));
              else printf("Needless attribute-->%s\n",xmlTextReaderName(node));
          }
+        g_hash_table_insert(hu,(void*)key,newUser);
+        printf("\n\n%ld\n",get_id_user(newUser));
+        printf("%s\n",get_displayname_user(newUser));
+        printf("%s\n",get_aboutme_user(newUser));
+        printf("%ld\n\n",get_reputation_user(newUser));
      }
 }
 
@@ -119,39 +122,25 @@ static void processVote(xmlTextReaderPtr node) {
 }
 
 //Montar estrutura em memoria e avancar linha a linha.
-void streamFile(char *path) {
-    char* aux;
+void streamUsers(s_ptr_users hu ,char *path) {
+    char aux[128];
+    strcpy(aux,path);
     xmlTextReaderPtr stream;
     int nodeReader;
-    char* dumps[3] = {"Users.xml","Posts.xml","Votes.xml"};
-    
-    for(int l = 0;l<3;l++){
-         aux = strcpy(aux,path);
-         stream = xmlNewTextReaderFilename(strcat(aux,dumps[l]));
+         stream = xmlNewTextReaderFilename(strcat(aux,"Users.xml"));
          
          if (stream != NULL) {
              nodeReader = xmlTextReaderRead(stream);
-             while (nodeReader == 1) {
-                 switch(l){
-                     case 0 :    
-                         processUser(stream);
-                         break;
-                     case 1 :
-                         processPost(stream);
-                         break;
-                     case 2 :
-                         processVote(stream);
-                         break;
-                     default : printf("File unable. \n");
-                 }
+             while (nodeReader == 1){
+                 processUser(hu,stream);
                  nodeReader = xmlTextReaderRead(stream);
              }
              xmlFreeTextReader(stream);
              if (nodeReader != 0) {
-                 printf("%s : failed to parse\n", strcat(aux,dumps[l]));
+                 printf("%s : failed to parse\n", "Users.xml");
              }
          } else 
-            printf("Unable to open %s\n", strcat(aux,dumps[l]));
-    }
+          printf("Unable to open %s\n", "Users.xml");
 }
+
 
