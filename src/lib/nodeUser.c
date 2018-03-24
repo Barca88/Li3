@@ -1,4 +1,5 @@
 #include <nodeUser.h>
+#include <stdio.h>
 #include <stdlib.h>
 
 typedef struct node{
@@ -41,4 +42,8 @@ char* get_aboutme_user(ptr_user user){
 }
 long get_reputation_user(ptr_user user){
     return user->Reputation;
+}
+
+void print_user(ptr_user user){
+   printf("user:\n\nId: %ld\nName:  %s\nAbouteMe: %s\nReputation: %ld\n",user->Id,user->DisplayName,user->AboutMe,user->Reputation); 
 }

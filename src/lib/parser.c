@@ -7,7 +7,7 @@
 
 //Processar informacao dos users. 
 static void processUser(s_ptr_users hu ,xmlTextReaderPtr node) {
-
+    ptr_user a;
     xmlChar *name;
     char *attributename;
     long* key;
@@ -35,11 +35,12 @@ static void processUser(s_ptr_users hu ,xmlTextReaderPtr node) {
              else printf("Needless attribute-->%s\n",xmlTextReaderName(node));
          }
         g_hash_table_insert(hu,(void*)key,newUser);
-        printf("\n\n%ld\n",get_id_user(newUser));
-        printf("%s\n",get_displayname_user(newUser));
-        printf("%s\n",get_aboutme_user(newUser));
-        printf("%ld\n\n",get_reputation_user(newUser));
+        a = (ptr_user)g_hash_table_lookup(hu,(void*)key);
+        print_user(a);
      }
+
+        printf("%p\n",a);
+        printf("There are %d keys in the hash\n", g_hash_table_size(hu));
 }
 
 
