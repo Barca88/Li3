@@ -29,3 +29,4 @@ int get_CommentCount(Post p);
 int get_FavoriteCount(Post p);
 //Clear
 void free_Post(Post p);
+#endif

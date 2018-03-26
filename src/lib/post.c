@@ -1,6 +1,7 @@
 #include "date.h"
 #include "post.h"
-#include <stdio.h>
+#include "common.h"
+#include <stdlib.h>
 
 // Post definitions
 struct post {
@@ -18,11 +19,11 @@ struct post {
 };
 //Metodo de Criação
 Post creat_post_id(long id){
-    Post p = malloc(sizeof(struc post));
+    Post p = malloc(sizeof(struct post));
     p->id = id;
     p->parentID = 0;
     p-> title = mystrdup("\0");
-    p-> tags = mystrdup("\0";
+    p-> tags = mystrdup("\0");
     return p;
 }
 //Setters   
