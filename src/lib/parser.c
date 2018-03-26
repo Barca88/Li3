@@ -4,6 +4,7 @@
 #include "interface.h"
 #include "parser.h"
 #include "nodeUser.h"
+#include "post.h"
 
 //Processar informacao dos users. 
 static void processUser(s_ptr_users hu ,xmlTextReaderPtr node) {
@@ -66,6 +67,18 @@ static void processPost(xmlTextReaderPtr node) {
                         printf("- %s: %s\n",
                                  xmlTextReaderName(node),
                                  xmlTextReaderValue(node));
+             else if (strcmp(attributename,"ParentId") == 0)
+                        printf("- %s: %s\n",
+                                 xmlTextReaderName(node),
+                                 xmlTextReaderValue(node));
+             else if (strcmp(attributename,"CreationDate") == 0)
+                        printf("- %s: %s\n",
+                                 xmlTextReaderName(node),
+                                 xmlTextReaderValue(node));
+             else if (strcmp(attributename,"Score") == 0)
+                        printf("- %s: %s\n",
+                                 xmlTextReaderName(node),
+                                 xmlTextReaderValue(node));
              else if (strcmp(attributename,"OwnerUserId") == 0)
                         printf("- %s: %s\n",
                                  xmlTextReaderName(node),
@@ -74,15 +87,19 @@ static void processPost(xmlTextReaderPtr node) {
                         printf("- %s: %s\n",
                                  xmlTextReaderName(node),
                                  xmlTextReaderValue(node));
-             else if (strcmp(attributename,"CreationDate") == 0)
-                        printf("- %s: %s\n",
-                                 xmlTextReaderName(node),
-                                 xmlTextReaderValue(node));
              else if (strcmp(attributename,"Tags") == 0)
                         printf("- %s: %s\n",
                                  xmlTextReaderName(node),
                                  xmlTextReaderValue(node));
-             else if (strcmp(attributename,"ParentId") == 0)
+             else if (strcmp(attributename,"AnswerCount") == 0)
+                        printf("- %s: %s\n",
+                                 xmlTextReaderName(node),
+                                 xmlTextReaderValue(node));
+             else if (strcmp(attributename,"CommentCount") == 0)
+                        printf("- %s: %s\n",
+                                 xmlTextReaderName(node),
+                                 xmlTextReaderValue(node));
+             else if (strcmp(attributename,"FavoriteCount") == 0)
                         printf("- %s: %s\n",
                                  xmlTextReaderName(node),
                                  xmlTextReaderValue(node));
