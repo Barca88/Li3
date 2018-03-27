@@ -16,7 +16,7 @@ TAD_community init()
 
 // query 0
 TAD_community load(TAD_community com, char* dump_path){
-    streamUsers(com->hashUsers,dump_path);
+    //streamUsers(com->hashUsers,dump_path);
 
  /*   printf("------------------------------------------------------------------\n");
     long aux_id = 1;
