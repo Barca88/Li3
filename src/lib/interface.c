@@ -3,13 +3,13 @@
 #include "nodeUser.h"
 #include <stdlib.h>
 #include <stdio.h>
-typedef struct root{
+struct root{
     s_ptr_users hashUsers;
-} TCD_community;
+}; 
 
 TAD_community init()
 {
-    TAD_community n = malloc(sizeof(TCD_community));
+    TAD_community n = malloc(sizeof(struct root));
     n->hashUsers  = g_hash_table_new(g_int64_hash, g_int64_equal);
     return n;
 }
@@ -17,7 +17,14 @@ TAD_community init()
 // query 0
 TAD_community load(TAD_community com, char* dump_path){
     streamUsers(com->hashUsers,dump_path);
-    return com;
+
+ /*   printf("------------------------------------------------------------------\n");
+    long aux_id = 1;
+    if(aux_id!=-1){ 
+    ptr_user a = (ptr_user)g_hash_table_lookup(com->hashUsers,&aux_id);
+    print_user(a);}*/
+
+   return com;
 }  
 
 // query 1

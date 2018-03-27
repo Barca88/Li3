@@ -4,6 +4,4 @@
 
 void streamUsers(s_ptr_users hu,char* path);
 
-void streamFile(char* path);
-
 #endif
