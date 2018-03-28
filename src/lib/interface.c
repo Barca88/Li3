@@ -3,28 +3,34 @@
 #include "nodeUser.h"
 #include <stdlib.h>
 #include <stdio.h>
-typedef struct root{
+struct root{
     s_ptr_users hashUsers;
-} TCD_community;
+    gint64 keys[250000];
+    s_ptr_posts treePosts;
+}; 
 
 TAD_community init()
 {
-    TAD_community n = malloc(sizeof(TCD_community));
-    n->hashUsers  = g_hash_table_new(g_int64_hash, g_int64_equal);
+    TAD_community n = malloc(sizeof(struct root));
+    n->hashUsers = g_hash_table_new(g_int64_hash, g_int64_equal);
+    n->treePosts = g_tree_new((GCompareFunc)g_date_time_compare); 
     return n;
 }
 
 // query 0
 TAD_community load(TAD_community com, char* dump_path){
-    streamUsers(com->hashUsers,dump_path);
-    return com;
+
+    streamUsers(com->hashUsers,com->keys,dump_path);
+
+   return com;
 }  
 
 // query 1
 STR_pair info_from_post(TAD_community com, int id){
-        //ptr_user a = g_hash_table_lookup(com->hashUsers,(void*) &id);
-        //print_user(a);
-        return NULL;
+    printf("------------------------------------------------------------------\n");
+    ptr_user a = (ptr_user)g_hash_table_lookup(com->hashUsers,com->keys+0);
+    print_user(a);
+    return NULL;
 }
 
 // query 2

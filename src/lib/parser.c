@@ -9,20 +9,24 @@
 
 
 //Processar informacao de um user. 
-static void processUser(s_ptr_users hu ,xmlTextReaderPtr node) {
+static void processUser(s_ptr_users hu ,gint64* keys,xmlTextReaderPtr node) {
     xmlChar *name = xmlTextReaderName(node);
     if (strcmp((char*)name,"row") != 0){
         name = xmlStrdup(BAD_CAST "--");
     }
 
+    gint64 id = 0;
     ptr_user newUser = init_user();
-    long aux_id = 0;
+
     char *attributename = NULL;
 
     while(xmlTextReaderMoveToNextAttribute(node)){
              attributename = (char*)xmlTextReaderName(node); 
              if(strcmp(attributename,"Id") == 0){
-                 set_id_user(newUser,atol((char*)xmlTextReaderValue(node)));
+                 set_id_user(newUser,g_ascii_strtoll((char*)xmlTextReaderValue(node),NULL,10));
+                 id = g_ascii_strtoll((char*)xmlTextReaderValue(node),NULL,10);
+                 if(id==-1)id=0;
+                 keys[id]=id;
              }else if(strcmp(attributename,"DisplayName") == 0)
                  set_displayname_user(newUser,(char*)xmlTextReaderValue(node));
              else if (strcmp(attributename,"AboutMe") == 0)
@@ -31,15 +35,7 @@ static void processUser(s_ptr_users hu ,xmlTextReaderPtr node) {
                  set_reputation_user(newUser,atol((char*)xmlTextReaderValue(node)));
              else printf("Needless attribute-->%s\n",xmlTextReaderName(node));
     }
-    aux_id = get_id_user(newUser);
-    g_hash_table_insert(hu,&aux_id,newUser);
-      
-
-    printf("------------------------------------------------------------------\n");
-    if(aux_id!=-1){ 
-        aux_id=1;
-    ptr_user a = (ptr_user)g_hash_table_lookup(hu,&aux_id);
-    print_user(a);}
+    g_hash_table_insert(hu,keys+id,newUser);
 }
 
 //Processar informacao de um  post. 
@@ -137,23 +133,22 @@ static void processVote(xmlTextReaderPtr node) {
 }
 
 //Montar estrutura em memoria e avancar linha a linha.
-void streamUsers(s_ptr_users hu ,char *path) {
-    char aux[128];
+void streamUsers(s_ptr_users hu ,gint64* keys,char *path) {
+    char* aux = malloc(128 * sizeof(char));
     strcpy(aux,path);
     xmlTextReaderPtr stream = xmlNewTextReaderFilename(strcat(aux,"Users.xml"));
     int nodeReader;
-         
+    
     if (stream != NULL) {
         nodeReader = xmlTextReaderRead(stream);
 
         while (nodeReader == 1){
-             if (xmlTextReaderHasAttributes(stream))
-                 processUser(hu,stream);
+             if (xmlTextReaderHasAttributes(stream)){
+               processUser(hu,keys,stream);
+             }
              nodeReader = xmlTextReaderRead(stream);
         }
         xmlFreeTextReader(stream);
-    
-        printf("There are %d keys in the hash\n", g_hash_table_size(hu));
 
         if (nodeReader != 0) {
             printf("%s : failed to parse\n", "Users.xml");

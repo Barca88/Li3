@@ -1,11 +1,12 @@
 #ifndef __NODEUSER_H__
 #define __NODEUSER_H__
 
+#include <glib.h>
 typedef struct node* ptr_user;
 
 ptr_user init_user();
 
-void set_id_user(ptr_user user, long id);
+void set_id_user(ptr_user user, gint64 id);
 
 void set_displayname_user(ptr_user user, char* dn);
 
@@ -13,7 +14,7 @@ void set_aboutme_user(ptr_user user, char* am);
 
 void set_reputation_user(ptr_user user, long r); 
 
-long get_id_user(ptr_user user);
+gint64 get_id_user(ptr_user user);
 
 char* get_displayname_user(ptr_user user);
 

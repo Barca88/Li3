@@ -18,8 +18,8 @@ struct post {
     int favoriteCount;
 };
 //Metodo de Criação
-Post creat_post_id(long id){
-    Post p = malloc(sizeof(struct post));
+ptr_post creat_post_id(long id){
+    ptr_post p = malloc(sizeof(struct post));
     p->id = id;
     p->parentID = 0;
     p-> title = mystrdup("\0");
@@ -27,74 +27,76 @@ Post creat_post_id(long id){
     return p;
 }
 //Setters   
-void set_PostTypeId(int postTypeId, Post p){
+void set_post_type_id(int postTypeId, ptr_post p){
     p->postTypeId = postTypeId;
 }
-void set_ParentID(long parentID, Post p){
+void set_parent_id(long parentID, ptr_post p){
     p->parentID = parentID;
 }
-void set_CreationDate(Date creationDate, Post p){
+void set_creation_date(Date creationDate, ptr_post p){
     p->creationDate = creationDate;
 }
-void set_Score(int score, Post p){
+void set_score(int score, ptr_post p){
     p->score = score;
 }
-void set_OwnerUserID(long ownerUserID, Post p){
+void set_owner_user_id(long ownerUserID,ptr_post p){
     p->ownerUserID = ownerUserID;
 }
-void set_Title(char* title, Post p){
+void set_title(char* title,ptr_post p){
     free(p->title);
     p->title = mystrdup(title);  // isto fica mesmo assim? (mystrdup)
 }
-void set_tags(char* tags, Post p){
+void set_tags(char* tags, ptr_post p){
     free(p->tags);
     p->tags = mystrdup(tags);   // isto fica mesmo assim??
 }
-void set_AnswerCount(int answerCount, Post p){
+void set_answer_count(int answerCount, ptr_post p){
     p->answerCount = answerCount;
 }
-void set_CommentCount(int commentCount, Post p){
+void set_comment_count(int commentCount, ptr_post p){
     p->commentCount = commentCount;
 }
-void set_FavoriteCount(int favoriteCount, Post p){
+void set_favorite_count(int favoriteCount, ptr_post p){
     p->favoriteCount = favoriteCount;
 }
+
 //Getters
-int get_Id(Post p){
+int get_id(ptr_post p){
     return p->id;
 }
-int get_PostTypeId(Post p){
+int get_post_type_id(ptr_post p){
     return p->postTypeId;
 }
-long get_ParentID(Post p){
+long get_parent_id(ptr_post p){
     return p->parentID;
 }
-Date get_CreationDate(Post p){
+Date get_creation_date(ptr_post p){
     return p->creationDate;
 }
-int get_Score(Post p){
+int get_score(ptr_post p){
     return p->score;
 }
-long get_OwnerUserId(Post p){
+long get_owner_user_id(ptr_post p){
     return p->ownerUserID;
 }
-char* get_Title(Post p){
+char* get_title(ptr_post p){
     return p->title;      //TODO
 } 
-char* get_Tags(Post p){
+char* get_tags(ptr_post p){
     return p->tags;       // TODO
 }
-int get_AnswerCount(Post p){
+int get_answer_count(ptr_post p){
     return p->answerCount;
 }
-int get_CommentCount(Post p){
+int get_comment_count(ptr_post p){
     return p->commentCount;
 }
-int get_FavoriteCount(Post p){
+int get_favorite_count(ptr_post p){
     return p->favoriteCount;
 }
+
 //Apaga o post dando free na memoria pare ele alocada
-void free_Post(Post p){
+void free_post(ptr_post p){
     free(p->title);
     free(p->tags);
     free(p);
