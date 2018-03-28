@@ -9,6 +9,7 @@
 
 typedef struct root* TAD_community;
 typedef GHashTable* s_ptr_users;
+typedef GTree* s_ptr_posts;
 
 TAD_community init();
 
