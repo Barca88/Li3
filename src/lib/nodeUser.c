@@ -10,12 +10,12 @@ typedef struct node{
     long  Reputation;
 } nodeUser;
 
-ptr_user init_user(){
-    ptr_user n = malloc(sizeof(nodeUser));
-    n->Id = 0;
-    n->DisplayName = malloc(128 * sizeof(char));
-    n->AboutMe = malloc(4096 * sizeof(char));
-    n->Reputation = -1;
+ptr_user init_user(gint64 id, char* dn, char* am, long r){
+   ptr_user n = malloc(sizeof(nodeUser));
+    n->Id = id;
+    n->DisplayName = dn; //TODO
+    n->AboutMe = am; //TODO
+    n->Reputation = r;
     return n;
 }
 
@@ -37,15 +37,16 @@ gint64 get_id_user(ptr_user user){
     return user->Id;
 }
 char* get_displayname_user(ptr_user user){
-    return strdup(user->DisplayName);
+    return user->DisplayName;
 }
 char* get_aboutme_user(ptr_user user){
-    return strdup(user->AboutMe);
+   return user->AboutMe;
 }
 long get_reputation_user(ptr_user user){
     return user->Reputation;
 }
 
 void print_user(ptr_user user){
+    if(user != NULL)
    printf("user:\n\nId: %ld\nName:  %s\nAbouteMe: %s\nReputation: %ld\n",user->Id,user->DisplayName,user->AboutMe,user->Reputation); 
 }

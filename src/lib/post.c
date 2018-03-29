@@ -1,6 +1,8 @@
 #include "date.h"
 #include "post.h"
 #include "common.h"
+#include <stdio.h>
+#include <glib.h>
 #include <stdlib.h>
 
 // Post definitions
@@ -18,12 +20,19 @@ struct post {
     int favoriteCount;
 };
 //Metodo de Criação
-ptr_post creat_post_id(long id){
+ptr_post init_post(long id,int ptid,long pid,Date cd,int s,long ouid,char* ti,char* ta, int ac,int cc,int fc){
     ptr_post p = malloc(sizeof(struct post));
     p->id = id;
-    p->parentID = 0;
-    p-> title = mystrdup("\0");
-    p-> tags = mystrdup("\0");
+    p->postTypeId = ptid;
+    p->parentID = pid;
+    p->creationDate = cd;
+    p->score = s;
+    p->ownerUserID = ouid;
+    p->title = ti;
+    p->tags = ta;
+    p->answerCount = ac;
+    p->commentCount = cc;
+    p->favoriteCount = fc;
     return p;
 }
 //Setters   
@@ -43,12 +52,10 @@ void set_owner_user_id(long ownerUserID,ptr_post p){
     p->ownerUserID = ownerUserID;
 }
 void set_title(char* title,ptr_post p){
-    free(p->title);
-    p->title = mystrdup(title);  // isto fica mesmo assim? (mystrdup)
+    p->title = title;
 }
 void set_tags(char* tags, ptr_post p){
-    free(p->tags);
-    p->tags = mystrdup(tags);   // isto fica mesmo assim??
+    p->tags = tags; 
 }
 void set_answer_count(int answerCount, ptr_post p){
     p->answerCount = answerCount;
@@ -93,6 +100,11 @@ int get_comment_count(ptr_post p){
 }
 int get_favorite_count(ptr_post p){
     return p->favoriteCount;
+}
+
+void print_post(ptr_post post){
+    if(post != NULL)
+    printf("post:\n\nId: %ld\nPostTypeId:  %d\nParentId: %ld\nScore: %d\n",post->id,post->postTypeId,post->parentID,post->score); 
 }
 
 //Apaga o post dando free na memoria pare ele alocada

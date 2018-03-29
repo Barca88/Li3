@@ -3,10 +3,11 @@
 typedef struct post* ptr_post;
 
 // Metodo de Criação
-ptr_post creat_post(long id);
+
+ptr_post init_post(long id,int ptid,long pid,Date cd,int s,long ouid,char* ti,char* ta, int ac,int cc,int fc);
 
 //Setters
-void set_post_type_id(int postTypeId, ptr_post p);
+void set_id_post(int postTypeId, ptr_post p);
 void set_Parent_id(long parentID, ptr_post p);
 void set_creation_date(Date creationDate, ptr_post p);
 void set_score(int score, ptr_post p);
@@ -29,6 +30,9 @@ char* get_tags(ptr_post p);
 int get_answer_count(ptr_post p);
 int get_comment_count(ptr_post p);
 int get_favorite_count(ptr_post p);
+
+void print_post(ptr_post post);
+
 
 //Clear
 void free_post(ptr_post p);
