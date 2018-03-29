@@ -1,9 +1,10 @@
 #ifndef __PARSER_H__
 #define __PARSER_H__
 #include "interface.h"
+#include <glib.h>
 
-void streamUsers(s_ptr_users hu,char* path);
+void streamUsers(GHashTable* hu,char* path);
 
-void streamPosts(s_ptr_posts hu,char* path);
+void streamPosts(GTree* hu,char* path);
 
 #endif

@@ -4,16 +4,13 @@
 #include "interface.h"
 #include "parser.h"
 #include "nodeUser.h"
-<<<<<<< HEAD
-=======
 #include "date.h"
->>>>>>> hashtable e avl a carregar
 #include "post.h"
 
 
 
 //Processar informacao de um user. 
-static void processUser(s_ptr_users hu ,xmlTextReaderPtr node) {
+static void processUser(GHashTable* hu ,xmlTextReaderPtr node) {
     xmlChar *name = xmlTextReaderName(node);
     if (strcmp((char*)name,"row") != 0){
         name = xmlStrdup(BAD_CAST "--");
@@ -43,7 +40,7 @@ static void processUser(s_ptr_users hu ,xmlTextReaderPtr node) {
 }
 
 //Processar informacao de um  post. 
-static void processPost(s_ptr_posts tp, xmlTextReaderPtr node) {
+static void processPost(GTree* tp, xmlTextReaderPtr node) {
     xmlChar *name = xmlTextReaderName(node);
     if (strcmp((char*)name,"row") != 0){
         name = xmlStrdup(BAD_CAST "--");
@@ -133,7 +130,7 @@ print_post(a);
 }*/
 
 //Montar estrutura em memoria e avancar linha a linha.
-void streamUsers(s_ptr_users hu ,char *path) {
+void streamUsers(GHashTable* hu ,char *path) {
     char* aux = malloc(128 * sizeof(char));
     strcpy(aux,path);
     xmlTextReaderPtr stream = xmlNewTextReaderFilename(strcat(aux,"Users.xml"));
@@ -158,7 +155,7 @@ void streamUsers(s_ptr_users hu ,char *path) {
 
 
 //Montar estrutura em memoria e avancar linha a linha.
-void streamPosts(s_ptr_posts tp ,char *path) {
+void streamPosts(GTree* tp ,char *path) {
     char* aux = malloc(128 * sizeof(char));
     strcpy(aux,path);
     xmlTextReaderPtr stream = xmlNewTextReaderFilename(strcat(aux,"Posts.xml"));

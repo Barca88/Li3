@@ -3,9 +3,11 @@
 #include "nodeUser.h"
 #include <stdlib.h>
 #include <stdio.h>
-struct root{
-    s_ptr_users hashUsers;
-    s_ptr_posts treePosts;
+#include <glib.h>
+
+struct TCD_community{
+    GHashTable* hashUsers;
+    GTree* treePosts;
 }; 
 
 static int compare_long(gconstpointer p1, gconstpointer p2) {
@@ -16,7 +18,7 @@ static int compare_long(gconstpointer p1, gconstpointer p2) {
 
 TAD_community init()
 {
-    TAD_community n = malloc(sizeof(struct root));
+    TAD_community n = malloc(sizeof(struct TCD_community));
     n->hashUsers = g_hash_table_new(g_direct_hash, g_direct_equal);
     n->treePosts = g_tree_new((GCompareFunc)compare_long); 
     return n;
@@ -32,7 +34,7 @@ TAD_community load(TAD_community com, char* dump_path){
 }  
 
 // query 1
-STR_pair info_from_post(TAD_community com, int id){
+STR_pair info_from_post(TAD_community com, long id){
     printf("------------------------------------------------------------------\n");
     gint64 id2 = 11;
     ptr_user a = (ptr_user)g_hash_table_lookup(com->hashUsers,GSIZE_TO_POINTER(id2));
@@ -65,7 +67,7 @@ LONG_list contains_word(TAD_community com, char* word, int N);
 LONG_list both_participated(TAD_community com, long id1, long id2, int N);
 
 // query 10
-LONG_list better_answer(TAD_community com, int id);
+long better_answer(TAD_community com, long id);
 
 // query 11
 LONG_list most_used_best_rep(TAD_community com, int N, Date begin, Date end);
