@@ -29,18 +29,18 @@ int get_year(Date d) {
 
 //retorna -1 se d1 é mais antigo, 0 se iguais, 1 se d1 é mais recente
 int date_compare(Date d1, Date d2){
-    if (d1.year < d2.year)
+    if (get_year(d1) < get_year(d2))
         return -1;
-    else if (d1.year > d2.year)
+    else if (get_year(d1) > get_year(d2))
         return 1;
-    if (d1.year == d2.year){
-        if (d1.month < d2.month)
+    if (get_year(d1) == get_year(d2)){
+        if (get_month(d1) < get_month(d2))
             return -1;
-        else if (d1.month > d2.month)
+        else if (get_month(d1) > get_month(d2))
             return 1;
-        else if (d1.day < d2.day)
+        else if (get_day(d1) < get_day(d2))
             return -1;
-        else if(d1.day > d2.day)
+        else if(get_day(d1) > get_day(d2))
             return 1;
         else
             return 0;
