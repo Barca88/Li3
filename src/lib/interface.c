@@ -25,7 +25,6 @@ TAD_community init()
     return n;
 }
 
-
 // query 0
 TAD_community load(TAD_community com, char* dump_path){
 
