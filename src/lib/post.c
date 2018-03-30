@@ -88,10 +88,12 @@ long get_owner_user_id(ptr_post p){
     return p->ownerUserID;
 }
 char* get_title(ptr_post p){
-    return p->title;      //TODO
+    char* r = mystrdup(p->title); // é preciso dar malloc no que vamos retornar? 
+    return r;     
 } 
 char* get_tags(ptr_post p){
-    return p->tags;       // TODO
+    char* r = mystrdup(p->tags);
+    return r;     
 }
 int get_answer_count(ptr_post p){
     return p->answerCount;
