@@ -4,13 +4,13 @@
 #include <stdlib.h>
 
 typedef struct node{
-    gint64 Id;
+    long Id;
     char* DisplayName;
     char* AboutMe;
     long  Reputation;
 } nodeUser;
 
-ptr_user init_user(gint64 id, char* dn, char* am, long r){
+ptr_user init_user(long id, char* dn, char* am, long r){
    ptr_user n = malloc(sizeof(nodeUser));
     n->Id = id;
     n->DisplayName = dn; //TODO
@@ -19,7 +19,7 @@ ptr_user init_user(gint64 id, char* dn, char* am, long r){
     return n;
 }
 
-void set_id_user(ptr_user user, gint64 id){
+void set_id_user(ptr_user user, long id){
     user->Id = id;
 }
 void set_displayname_user(ptr_user user, char* dn){
@@ -33,7 +33,7 @@ void set_reputation_user(ptr_user user, long r){
     user->Reputation = r;
 }
 
-gint64 get_id_user(ptr_user user){
+long get_id_user(ptr_user user){
     return user->Id;
 }
 char* get_displayname_user(ptr_user user){
