@@ -20,9 +20,10 @@ static void processUser(GHashTable* hu ,xmlTextReaderPtr node) {
     char* dn = NULL;
     char* am = NULL;
     long r = -2;
-
     char *attributename = NULL;
-    printf("\n------------------------------------------------\n");
+
+printf("\n------------------------------------------------\n");
+
     while(xmlTextReaderMoveToNextAttribute(node)){
              attributename = (char*)xmlTextReaderName(node); 
              if(strcmp(attributename,"Id") == 0){
@@ -59,7 +60,7 @@ static void processPost(GTree* tp, xmlTextReaderPtr node) {
     int fc = -2;
     char *attributename = NULL;
 
-    printf("\n*********************************************\n");
+printf("\n*********************************************\n");
 
     while(xmlTextReaderMoveToNextAttribute(node)){
          attributename = (char*)xmlTextReaderName(node); 
@@ -90,12 +91,6 @@ static void processPost(GTree* tp, xmlTextReaderPtr node) {
     ptr_post new_post = init_post(id,ptid,pid,cd,s,ouid,ti,ta,ac,cc,fc);
     g_tree_insert(tp,GSIZE_TO_POINTER(id),new_post);
     free_date(cd);
-    
-printf("\n......................................................\n");
-long id2 = 10;
-ptr_post a = (ptr_post)g_tree_lookup(tp,GSIZE_TO_POINTER(id2));
-print_post(a);
-    
 }
 
 //Processar informacao de um vote. 

@@ -1,6 +1,7 @@
 #include "interface.h"
 #include "parser.h"
 #include "nodeUser.h"
+#include "post.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <glib.h>
@@ -35,11 +36,18 @@ TAD_community load(TAD_community com, char* dump_path){
 
 // query 1
 STR_pair info_from_post(TAD_community com, long id){
-    printf("------------------------------------------------------------------\n");
-    gint64 id2 = 11;
-    ptr_user a = (ptr_user)g_hash_table_lookup(com->hashUsers,GSIZE_TO_POINTER(id2));
-    print_user(a);
-    return NULL;
+    STR_pair sp; 
+    char* title, *name;
+    ptr_post p = (ptr_post)g_tree_lookup(com->treePosts,GSIZE_TO_POINTER(id));
+    ptr_user a;
+
+    if(get_post_type_id(p)==1){
+        title = get_title(p);
+        a = (ptr_user)g_hash_table_lookup(com->hashUsers,GSIZE_TO_POINTER(get_owner_user_id(p)));
+        name = get_displayname_user(a);
+    }
+
+    return sp =  create_str_pair(title,name);
 }
 
 // query 2

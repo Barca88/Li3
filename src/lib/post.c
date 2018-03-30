@@ -19,6 +19,7 @@ struct post {
     int commentCount;
     int favoriteCount;
 };
+
 //Metodo de Criação
 ptr_post init_post(long id,int ptid,long pid,Date cd,int s,long ouid,char* ti,char* ta, int ac,int cc,int fc){
     ptr_post p = malloc(sizeof(struct post));
