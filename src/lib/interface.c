@@ -5,9 +5,11 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <glib.h>
+#include <time.h>
 
 struct TCD_community{
     GHashTable* hashUsers;
+    GHashTable* hashPosts;
     GTree* treePosts;
 }; 
 
@@ -21,6 +23,7 @@ TAD_community init()
 {
     TAD_community n = malloc(sizeof(struct TCD_community));
     n->hashUsers = g_hash_table_new(g_direct_hash, g_direct_equal);
+    n->hashPosts = g_hash_table_new(g_direct_hash, g_direct_equal);
     n->treePosts = g_tree_new((GCompareFunc)compare_long); 
     return n;
 }
@@ -29,15 +32,19 @@ TAD_community init()
 TAD_community load(TAD_community com, char* dump_path){
 
     streamUsers(com->hashUsers,dump_path);
-    streamPosts(com->treePosts,dump_path);
+    streamPosts(com->treePosts,com->hashPosts,dump_path);
    return com;
 }  
 
 // query 1
 STR_pair info_from_post(TAD_community com, long id){
+
+clock_t tpf;
+tpf =clock();
+
     STR_pair sp; 
     char* title, *name;
-    ptr_post p = (ptr_post)g_tree_lookup(com->treePosts,GSIZE_TO_POINTER(id));
+    ptr_post p = (ptr_post)g_hash_table_lookup(com->hashPosts,GSIZE_TO_POINTER(id));
     ptr_user a;
 
     if(get_post_type_id(p)==1){
@@ -45,6 +52,9 @@ STR_pair info_from_post(TAD_community com, long id){
         a = (ptr_user)g_hash_table_lookup(com->hashUsers,GSIZE_TO_POINTER(get_owner_user_id(p)));
         name = get_displayname_user(a);
     }
+
+tpf =clock() -tpf;
+printf("Demorou %f segundos a encontrar o titulo e o nome\n",((float)tpf)/CLOCKS_PER_SEC);
 
     return sp =  create_str_pair(title,name);
 }

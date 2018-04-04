@@ -7,6 +7,7 @@
 #include "nodeUser.h"
 #include "date.h"
 #include "post.h"
+#include <string.h>
 
 
 
@@ -33,31 +34,27 @@ static void processUser(GHashTable* hu ,xmlTextReaderPtr node) {
                  am = (char*)xmlTextReaderValue(node);
              else if (strcmp(attributename,"Reputation") ==  0)
                  r  = atol((char*)xmlTextReaderValue(node));
-             else printf("Needless attribute-->%s\n",xmlTextReaderName(node));
+             else;
     }
     
     ptr_user newUser = init_user(id,dn,am,r);
     g_hash_table_insert(hu,GSIZE_TO_POINTER(id),newUser);
 }
 
-/*static Date date_from_string(char* date){
-    char year[4];
-    char month[2];
-    char day[2];
-
-    int i = 0;
-    for(;date[i]!='-'; i++)year[i]=date[i];
-    i++;
-    for(;date[i]!='-'; i++)month[i]=date[i];
-    i++;
-    for(;date[i]!='T'; i++)day[i]=date[i];
-
+static Date date_from_string(char* date){
+    *(date + 10) = '\0';
+    char* day = date+8;
+    *(date + 7) = '\0';
+    char* month = date+5;
+    *(date + 4) = '\0';
+    char* year = date;
+    
     Date a = createDate(atoi(day),atoi(month),atoi(year));
     return a;
-}*/
+}
 
 //Create new post and insert in post struct. 
-static void processPost(GTree* tp, xmlTextReaderPtr node) {
+static void processPost(GTree* tp,GHashTable* hp, xmlTextReaderPtr node) {
     xmlChar *name = xmlTextReaderName(node);
     if (strcmp((char*)name,"row") != 0){
         name = xmlStrdup(BAD_CAST "--");
@@ -100,10 +97,11 @@ static void processPost(GTree* tp, xmlTextReaderPtr node) {
                  cc = atoi((char*)xmlTextReaderValue(node));
          else if (strcmp(attributename,"FavoriteCount") == 0)
                  fc = atoi((char*)xmlTextReaderValue(node));
-         else printf("Needless attribute-->%s\n",xmlTextReaderName(node));
+         else;
     }
     ptr_post new_post = init_post(id,ptid,pid,cd,s,ouid,ti,ta,ac,cc,fc);
     g_tree_insert(tp,GSIZE_TO_POINTER(id),new_post);
+    g_hash_table_insert(hp,GSIZE_TO_POINTER(id),new_post);
     free_date(cd);
 }
 
@@ -133,7 +131,7 @@ static void processPost(GTree* tp, xmlTextReaderPtr node) {
                         printf("- %s: %s\n",
                                  xmlTextReaderName(node),
                                  xmlTextReaderValue(node));
-             else printf("Needless attribute-->%s\n",xmlTextReaderName(node));
+             else;
          }
      }
 }*/
@@ -159,12 +157,12 @@ void streamUsers(GHashTable* hu ,char *path) {
         if (nodeReader != 0) {
             printf("%s : failed to parse\n", "Users.xml");
         }
-    }else  printf("Unable to open %s\n", "Users.xml");
+    }else printf("Unable to open %s\n", "Users.xml");
 }
 
 
 //Process Posts.xml file.
-void streamPosts(GTree* tp ,char *path){
+void streamPosts(GTree* tp ,GHashTable* hp, char *path){
     char* aux = malloc(128 * sizeof(char));
     strcpy(aux,path);
     int nodeReader;
@@ -175,7 +173,7 @@ void streamPosts(GTree* tp ,char *path){
 
         while (nodeReader == 1){
              if (xmlTextReaderHasAttributes(stream)){
-                processPost(tp,stream);
+                processPost(tp,hp,stream);
              }
              nodeReader = xmlTextReaderRead(stream);
         }

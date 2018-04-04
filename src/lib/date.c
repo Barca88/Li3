@@ -49,6 +49,7 @@ int date_compare(gconstpointer p1, gconstpointer p2){
         else
             return 0;
     }
+    return -2;
 }
 
 void free_date(Date d) {

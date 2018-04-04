@@ -22,6 +22,8 @@ char* get_aboutme_user(ptr_user user);
 
 long get_reputation_user(ptr_user user);
 
+void inc_n_posts(ptr_user user);
+
 void print_user(ptr_user user);
 
 #endif

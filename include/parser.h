@@ -3,6 +3,6 @@
 #include <glib.h>
 void streamUsers(GHashTable* hu,char* path);
 
-void streamPosts(GTree* hu,char* path);
+void streamPosts(GTree* hu,GHashTable* hp,char* path);
 
 #endif
