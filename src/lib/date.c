@@ -30,8 +30,8 @@ int get_year(Date d) {
 
 //retorna -1 se d1 é mais antigo, 0 se iguais, 1 se d1 é mais recente
 int date_compare(gconstpointer p1, gconstpointer p2){
-    Date d1 = GPOINTER_TO_SIZE(p1);
-    Date d2 = GPOINTER_TO_SIZE(p2)
+    Date d1 = (Date)GPOINTER_TO_SIZE(p1);
+    Date d2 = (Date)GPOINTER_TO_SIZE(p2);
 
     if (get_year(d1) < get_year(d2))
         return -1;

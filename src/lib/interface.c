@@ -2,6 +2,7 @@
 #include "parser.h"
 #include "nodeUser.h"
 #include "post.h"
+#include "date.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <glib.h>
@@ -13,18 +14,12 @@ struct TCD_community{
     GTree* treePosts;
 }; 
 
-static int compare_long(gconstpointer p1, gconstpointer p2) {
-    long i1 = GPOINTER_TO_SIZE(p1);
-    long i2 = GPOINTER_TO_SIZE(p2);
-    return i1 == i2 ? 0 : i1 > i2 ? 1 : -1;
-}
-
 TAD_community init()
 {
     TAD_community n = malloc(sizeof(struct TCD_community));
     n->hashUsers = g_hash_table_new(g_direct_hash, g_direct_equal);
     n->hashPosts = g_hash_table_new(g_direct_hash, g_direct_equal);
-    n->treePosts = g_tree_new((GCompareFunc)compare_long); 
+    n->treePosts = g_tree_new((GCompareFunc)date_compare); 
     return n;
 }
 
@@ -49,7 +44,14 @@ tpf =clock();
 
     if(get_post_type_id(p)==1){
         title = get_title(p);
-        a = (ptr_user)g_hash_table_lookup(com->hashUsers,GSIZE_TO_POINTER(get_owner_user_id(p)));
+        a = (ptr_user)g_hash_table_lookup(com->hashUsers,
+                GSIZE_TO_POINTER(get_owner_user_id(p)));
+        name = get_displayname_user(a);
+    }else if(get_post_type_id(p) == 2){
+        p = (ptr_post)g_hash_table_lookup(com->hashPosts,GSIZE_TO_POINTER(get_parent_id(p)));
+        title = get_title(p);
+        a = (ptr_user)g_hash_table_lookup(com->hashUsers,
+                GSIZE_TO_POINTER(get_owner_user_id(p)));
         name = get_displayname_user(a);
     }
 

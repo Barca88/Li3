@@ -63,7 +63,7 @@ static void processPost(GTree* tp,GHashTable* hp, xmlTextReaderPtr node) {
     long id = -2;
     int ptid = -2;
     long pid = -2; //Optional if postTypeId = 2
-    Date cd = createDate(22,06,1995);
+    Date cd = NULL;
     int s = -2;
     long ouid = -2;
     char* ti = NULL;
@@ -100,7 +100,7 @@ static void processPost(GTree* tp,GHashTable* hp, xmlTextReaderPtr node) {
          else;
     }
     ptr_post new_post = init_post(id,ptid,pid,cd,s,ouid,ti,ta,ac,cc,fc);
-    g_tree_insert(tp,GSIZE_TO_POINTER(id),new_post);
+    g_tree_insert(tp,GSIZE_TO_POINTER(cd),new_post);
     g_hash_table_insert(hp,GSIZE_TO_POINTER(id),new_post);
     free_date(cd);
 }
