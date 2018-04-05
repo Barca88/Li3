@@ -25,7 +25,6 @@ TAD_community init()
 
 // query 0
 TAD_community load(TAD_community com, char* dump_path){
-
     streamUsers(com->hashUsers,dump_path);
     streamPosts(com->treePosts,com->hashPosts,dump_path);
    return com;
