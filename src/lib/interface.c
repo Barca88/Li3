@@ -87,7 +87,18 @@ LONG_list most_voted_answers(TAD_community com, int N, Date begin, Date end);
 LONG_list most_answered_questions(TAD_community com, int N, Date begin, Date end);
 
 // query 8
-LONG_list contains_word(TAD_community com, char* word, int N);
+LONG_list contains_word(TAD_community com, char* word, int N){
+    LONG_list l;
+    GhashTableIter iter;
+    gpointer key, value;
+    g_hash_table_iter_init(&iter, com->hashPosts);
+   
+    while(g_hash_table_iter_next(&iter, &key, &value) && N>0){
+        //TODO struct ordenada por data
+    }
+    return l;
+}
+        
 
 // query 9
 LONG_list both_participated(TAD_community com, long id1, long id2, int N);
