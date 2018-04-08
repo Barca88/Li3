@@ -39,6 +39,7 @@ static void processUser(GHashTable* hu ,xmlTextReaderPtr node) {
     
     ptr_user newUser = init_user(id,dn,am,r);
     g_hash_table_insert(hu,GSIZE_TO_POINTER(id),newUser);
+    newUser = g_hash_table_lookup(hu,GSIZE_TO_POINTER(id));
 }
 
 static Date date_from_string(char* date){
@@ -54,7 +55,7 @@ static Date date_from_string(char* date){
 }
 
 //Create new post and insert in post struct. 
-static void processPost(GTree* tp,GHashTable* hp, xmlTextReaderPtr node) {
+static void processPost(GTree* tp,GHashTable* hp, GHashTable* hu,xmlTextReaderPtr node) {
     xmlChar *name = xmlTextReaderName(node);
     if (strcmp((char*)name,"row") != 0){
         name = xmlStrdup(BAD_CAST "--");
@@ -99,7 +100,16 @@ static void processPost(GTree* tp,GHashTable* hp, xmlTextReaderPtr node) {
                  fc = atoi((char*)xmlTextReaderValue(node));
          else;
     }
+    
     ptr_post new_post = init_post(id,ptid,pid,cd,s,ouid,ti,ta,ac,cc,fc);
+
+    //Incrementar o numero de posts do respetivo user.
+    if(ouid!=-2){
+        ptr_user nu = (ptr_user)g_hash_table_lookup(hu,GSIZE_TO_POINTER(ouid));
+        inc_nr_posts(nu);
+    }
+    
+    //Inserir na estrura dos posts.
     g_tree_insert(tp,GSIZE_TO_POINTER(cd),new_post);
     g_hash_table_insert(hp,GSIZE_TO_POINTER(id),new_post);
     free_date(cd);
@@ -162,7 +172,7 @@ void streamUsers(GHashTable* hu ,char *path) {
 
 
 //Process Posts.xml file.
-void streamPosts(GTree* tp ,GHashTable* hp, char *path){
+void streamPosts(GTree* tp ,GHashTable* hp, GHashTable* hu,char *path){
     char* aux = malloc(128 * sizeof(char));
     strcpy(aux,path);
     int nodeReader;
@@ -173,7 +183,7 @@ void streamPosts(GTree* tp ,GHashTable* hp, char *path){
 
         while (nodeReader == 1){
              if (xmlTextReaderHasAttributes(stream)){
-                processPost(tp,hp,stream);
+                processPost(tp,hp,hu,stream);
              }
              nodeReader = xmlTextReaderRead(stream);
         }

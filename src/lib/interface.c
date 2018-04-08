@@ -12,7 +12,16 @@ struct TCD_community{
     GHashTable* hashUsers;
     GHashTable* hashPosts;
     GTree* treePosts;
+    GSList* sortUsers;
 }; 
+/*
+GHashTable* get_hash_users(TDA_community root){
+    return root->hashUser;
+}
+
+GHashTable* get_hash_post(TDA_community root){
+    return root->hashUser;
+}*/
 
 TAD_community init()
 {
@@ -20,21 +29,19 @@ TAD_community init()
     n->hashUsers = g_hash_table_new(g_direct_hash, g_direct_equal);
     n->hashPosts = g_hash_table_new(g_direct_hash, g_direct_equal);
     n->treePosts = g_tree_new((GCompareFunc)date_compare); 
+    n->sortUsers = g_slist_alloc();
     return n;
 }
 
 // query 0
 TAD_community load(TAD_community com, char* dump_path){
     streamUsers(com->hashUsers,dump_path);
-    streamPosts(com->treePosts,com->hashPosts,dump_path);
+    streamPosts(com->treePosts,com->hashPosts,com->hashUsers,dump_path);
    return com;
 }  
 
 // query 1
 STR_pair info_from_post(TAD_community com, long id){
-
-clock_t tpf;
-tpf =clock();
 
     STR_pair sp; 
     char* title, *name;
@@ -42,27 +49,28 @@ tpf =clock();
     ptr_user a;
 
     if(get_post_type_id(p)==1){
-        title = get_title(p);
         a = (ptr_user)g_hash_table_lookup(com->hashUsers,
                 GSIZE_TO_POINTER(get_owner_user_id(p)));
+        title = get_title(p);
         name = get_displayname_user(a);
     }else if(get_post_type_id(p) == 2){
-        p = (ptr_post)g_hash_table_lookup(com->hashPosts,GSIZE_TO_POINTER(get_parent_id(p)));
-        title = get_title(p);
+        p = (ptr_post)g_hash_table_lookup(com->hashPosts, 
+                GSIZE_TO_POINTER(get_parent_id(p)));
         a = (ptr_user)g_hash_table_lookup(com->hashUsers,
                 GSIZE_TO_POINTER(get_owner_user_id(p)));
+        title = get_title(p);
         name = get_displayname_user(a);
     }
-
-tpf =clock() -tpf;
-printf("Demorou %f segundos a encontrar o titulo e o nome\n",((float)tpf)/CLOCKS_PER_SEC);
 
     return sp =  create_str_pair(title,name);
 }
 
 // query 2
-LONG_list top_most_active(TAD_community com, int N);
-
+/*
+LONG_list top_most_active(TAD_community com, int N){
+    com->sortUsers = g_slist_insert_sorted(com->sortUsers,gpointer data,GCompareFunc func);
+}
+*/
 // query 3
 LONG_pair total_posts(TAD_community com, Date begin, Date end);
 

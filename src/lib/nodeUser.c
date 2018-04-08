@@ -8,6 +8,7 @@ typedef struct node{
     char* DisplayName;
     char* AboutMe;
     long  Reputation;
+    int nr_posts;
 } nodeUser;
 
 ptr_user init_user(long id, char* dn, char* am, long r){
@@ -16,6 +17,7 @@ ptr_user init_user(long id, char* dn, char* am, long r){
     n->DisplayName = dn; //TODO
     n->AboutMe = am; //TODO
     n->Reputation = r;
+    n->nr_posts = 0;
     return n;
 }
 
@@ -44,6 +46,15 @@ char* get_aboutme_user(ptr_user user){
 }
 long get_reputation_user(ptr_user user){
     return user->Reputation;
+}
+
+long get_nr_posts_user(ptr_user user){
+     return user->Reputation;
+}
+
+
+void inc_nr_posts(ptr_user user){
+    user->nr_posts++;
 }
 
 void print_user(ptr_user user){
