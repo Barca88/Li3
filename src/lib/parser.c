@@ -1,15 +1,5 @@
-#include <string.h>
-#include <stdlib.h>
-#include <xmlreader.h>
-#include <glib.h>
-#include "interface.h"
 #include "parser.h"
-#include "nodeUser.h"
-#include "date.h"
-#include "post.h"
-#include <string.h>
-
-
+#include "tcd.h"
 
 //Create new user and insert in user struct. 
 static void processUser(GHashTable* hu ,xmlTextReaderPtr node) {
@@ -172,7 +162,11 @@ void streamUsers(GHashTable* hu ,char *path) {
 
 
 //Process Posts.xml file.
-void streamPosts(GTree* tp ,GHashTable* hp, GHashTable* hu,char *path){
+void streamPosts(TAD_community com,char *path){
+    GTree *tp = get_tree_posts(com);
+    GHashTable *hp = get_hash_posts(com);
+    GHashTable *hu = get_hash_users(com);
+
     char* aux = malloc(128 * sizeof(char));
     strcpy(aux,path);
     int nodeReader;

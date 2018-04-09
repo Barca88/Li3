@@ -3,40 +3,21 @@
 #include "nodeUser.h"
 #include "post.h"
 #include "date.h"
+#include "tcd.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <glib.h>
 #include <time.h>
 
-struct TCD_community{
-    GHashTable* hashUsers;
-    GHashTable* hashPosts;
-    GTree* treePosts;
-    GSList* sortUsers;
-}; 
-/*
-GHashTable* get_hash_users(TDA_community root){
-    return root->hashUser;
-}
-
-GHashTable* get_hash_post(TDA_community root){
-    return root->hashUser;
-}*/
-
 TAD_community init()
 {
-    TAD_community n = malloc(sizeof(struct TCD_community));
-    n->hashUsers = g_hash_table_new(g_direct_hash, g_direct_equal);
-    n->hashPosts = g_hash_table_new(g_direct_hash, g_direct_equal);
-    n->treePosts = g_tree_new((GCompareFunc)date_compare); 
-    n->sortUsers = g_slist_alloc();
-    return n;
+    return init_tcd();
 }
 
 // query 0
 TAD_community load(TAD_community com, char* dump_path){
-    streamUsers(com->hashUsers,dump_path);
-    streamPosts(com->treePosts,com->hashPosts,com->hashUsers,dump_path);
+    streamUsers(get_hash_users(com),dump_path);
+    streamPosts(com,dump_path);
    return com;
 }  
 
@@ -45,18 +26,18 @@ STR_pair info_from_post(TAD_community com, long id){
 
     STR_pair sp; 
     char* title, *name;
-    ptr_post p = (ptr_post)g_hash_table_lookup(com->hashPosts,GSIZE_TO_POINTER(id));
+    ptr_post p = (ptr_post)g_hash_table_lookup(get_hash_posts(com),GSIZE_TO_POINTER(id));
     ptr_user a;
 
     if(get_post_type_id(p)==1){
-        a = (ptr_user)g_hash_table_lookup(com->hashUsers,
+        a = (ptr_user)g_hash_table_lookup(get_hash_users(com),
                 GSIZE_TO_POINTER(get_owner_user_id(p)));
         title = get_title(p);
         name = get_displayname_user(a);
     }else if(get_post_type_id(p) == 2){
-        p = (ptr_post)g_hash_table_lookup(com->hashPosts, 
+        p = (ptr_post)g_hash_table_lookup(get_hash_posts(com), 
                 GSIZE_TO_POINTER(get_parent_id(p)));
-        a = (ptr_user)g_hash_table_lookup(com->hashUsers,
+        a = (ptr_user)g_hash_table_lookup(get_hash_users(com),
                 GSIZE_TO_POINTER(get_owner_user_id(p)));
         title = get_title(p);
         name = get_displayname_user(a);
