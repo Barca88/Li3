@@ -88,8 +88,8 @@ LONG_list most_answered_questions(TAD_community com, int N, Date begin, Date end
 
 // query 8
 LONG_list contains_word(TAD_community com, char* word, int N){
-    LONG_list l;
-    GhashTableIter iter;
+    LONG_list l = create_list(N);
+    GHashTableIter iter;
     gpointer key, value;
     g_hash_table_iter_init(&iter, com->hashPosts);
    
