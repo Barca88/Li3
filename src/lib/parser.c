@@ -32,7 +32,11 @@ static void processUser(GHashTable* hu ,xmlTextReaderPtr node) {
 }
 
 //Create new post and insert in post struct. 
-static void processPost(GTree* tp,GHashTable* hp, GHashTable* hu,xmlTextReaderPtr node) {
+static void processPost(TAD_community com,xmlTextReaderPtr node) {
+    GTree *tp = get_tree_posts(com);
+    GHashTable *hp = get_hash_posts(com);
+    GHashTable *hu = get_hash_users(com);
+
     xmlChar *name = xmlTextReaderName(node);
     if (strcmp((char*)name,"row") != 0){
         name = xmlStrdup(BAD_CAST "--");
@@ -87,7 +91,8 @@ static void processPost(GTree* tp,GHashTable* hp, GHashTable* hu,xmlTextReaderPt
     }
     
     //Inserir na estrura dos posts.
-    g_tree_insert(tp,GSIZE_TO_POINTER(cd),new_post);
+    DatePair pair = creat_date_pair(cd,id);
+    g_tree_insert(tp,GSIZE_TO_POINTER(pair),new_post);
     g_hash_table_insert(hp,GSIZE_TO_POINTER(id),new_post);
     free_date(cd);
 }
@@ -150,9 +155,6 @@ void streamUsers(GHashTable* hu ,char *path) {
 
 //Process Posts.xml file.
 void streamPosts(TAD_community com,char *path){
-    GTree *tp = get_tree_posts(com);
-    GHashTable *hp = get_hash_posts(com);
-    GHashTable *hu = get_hash_users(com);
 
     char* aux = malloc(128 * sizeof(char));
     strcpy(aux,path);
@@ -164,7 +166,7 @@ void streamPosts(TAD_community com,char *path){
 
         while (nodeReader == 1){
              if (xmlTextReaderHasAttributes(stream)){
-                processPost(tp,hp,hu,stream);
+                processPost(com,stream);
              }
              nodeReader = xmlTextReaderRead(stream);
         }

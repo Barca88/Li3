@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <glib.h>
 #include <time.h>
+#include "date.h"
 #include "interface.h"
 
 typedef struct TCD_community TCD_community;

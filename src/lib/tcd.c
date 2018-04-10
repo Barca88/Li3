@@ -11,7 +11,7 @@ TAD_community init_tcd(){
 
     n->hashUsers = g_hash_table_new(g_direct_hash, g_direct_equal);
     n->hashPosts = g_hash_table_new(g_direct_hash, g_direct_equal);
-    n->treePosts = g_tree_new((GCompareFunc)date_compare); 
+    n->treePosts = g_tree_new((GCompareFunc)date_pair_compare); 
 
     return n;
 }
