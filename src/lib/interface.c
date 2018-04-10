@@ -26,22 +26,22 @@ STR_pair info_from_post(TAD_community com, long id){
 
     STR_pair sp; 
     char* title, *name;
-    ptr_user a;
-    ptr_post p = (ptr_post)g_hash_table_lookup(get_hash_posts(com),
+    ptr_user n;
+    ptr_post t = (ptr_post)g_hash_table_lookup(get_hash_posts(com),
             GSIZE_TO_POINTER(id));
 
-    if(get_post_type_id(p)==1){
-        a = (ptr_user)g_hash_table_lookup(get_hash_users(com),
-                GSIZE_TO_POINTER(get_owner_user_id(p)));
-        title = get_title(p);
-        name = get_displayname_user(a);
-    }else if(get_post_type_id(p) == 2){
-        p = (ptr_post)g_hash_table_lookup(get_hash_posts(com), 
-                GSIZE_TO_POINTER(get_parent_id(p)));
-        a = (ptr_user)g_hash_table_lookup(get_hash_users(com),
-                GSIZE_TO_POINTER(get_owner_user_id(p)));
-        title = get_title(p);
-        name = get_displayname_user(a);
+    if(get_post_type_id(t)==1){
+        n = (ptr_user)g_hash_table_lookup(get_hash_users(com),
+                GSIZE_TO_POINTER(get_owner_user_id(t)));
+        title = get_title(t);
+        name = get_displayname_user(n);
+    }else if(get_post_type_id(t) == 2){
+        t = (ptr_post)g_hash_table_lookup(get_hash_posts(com), 
+                GSIZE_TO_POINTER(get_parent_id(t)));
+        n = (ptr_user)g_hash_table_lookup(get_hash_users(com),
+                GSIZE_TO_POINTER(get_owner_user_id(t)));
+        title = get_title(t);
+        name = get_displayname_user(n);
     }
 
     return sp =  create_str_pair(title,name);
