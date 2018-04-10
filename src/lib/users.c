@@ -1,8 +1,8 @@
-#include <nodeUser.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include "common.h"
+#include "users.h"
 
 typedef struct node{
     long Id;
@@ -10,10 +10,11 @@ typedef struct node{
     char* AboutMe;
     long  Reputation;
     int nr_posts;
+    //TODO lista de posts (o mais recente primeiro) em que user participou 
 } nodeUser;
 
 ptr_user init_user(long id, char* dn, char* am, long r){
-   ptr_user n = malloc(sizeof(nodeUser));
+    ptr_user n = malloc(sizeof(nodeUser));
     n->Id = id;
     n->DisplayName = dn;
     n->AboutMe = am;

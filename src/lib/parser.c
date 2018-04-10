@@ -29,19 +29,6 @@ static void processUser(GHashTable* hu ,xmlTextReaderPtr node) {
     
     ptr_user newUser = init_user(id,dn,am,r);
     g_hash_table_insert(hu,GSIZE_TO_POINTER(id),newUser);
-    newUser = g_hash_table_lookup(hu,GSIZE_TO_POINTER(id));
-}
-
-static Date date_from_string(char* date){
-    *(date + 10) = '\0';
-    char* day = date+8;
-    *(date + 7) = '\0';
-    char* month = date+5;
-    *(date + 4) = '\0';
-    char* year = date;
-    
-    Date a = createDate(atoi(day),atoi(month),atoi(year));
-    return a;
 }
 
 //Create new post and insert in post struct. 

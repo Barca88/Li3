@@ -52,6 +52,18 @@ int date_compare(gconstpointer p1, gconstpointer p2){
     return -2;
 }
 
+Date date_from_string(char* date){
+    *(date + 10) = '\0';
+    char* day = date+8;
+    *(date + 7) = '\0';
+    char* month = date+5;
+    *(date + 4) = '\0';
+    char* year = date;
+    
+    Date a = createDate(atoi(day),atoi(month),atoi(year));
+    return a;
+}
+
 void free_date(Date d) {
     free(d);
 }

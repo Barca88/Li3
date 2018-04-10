@@ -1,6 +1,6 @@
 #include "interface.h"
 #include "parser.h"
-#include "nodeUser.h"
+#include "users.h"
 #include "post.h"
 #include "date.h"
 #include "tcd.h"
@@ -26,8 +26,9 @@ STR_pair info_from_post(TAD_community com, long id){
 
     STR_pair sp; 
     char* title, *name;
-    ptr_post p = (ptr_post)g_hash_table_lookup(get_hash_posts(com),GSIZE_TO_POINTER(id));
     ptr_user a;
+    ptr_post p = (ptr_post)g_hash_table_lookup(get_hash_posts(com),
+            GSIZE_TO_POINTER(id));
 
     if(get_post_type_id(p)==1){
         a = (ptr_user)g_hash_table_lookup(get_hash_users(com),
@@ -70,13 +71,13 @@ LONG_list most_answered_questions(TAD_community com, int N, Date begin, Date end
 // query 8
 LONG_list contains_word(TAD_community com, char* word, int N){
     LONG_list l = create_list(N);
-    GHashTableIter iter;
+    /*GHashTableIter iter;
     gpointer key, value;
     g_hash_table_iter_init(&iter, com->hashPosts);
    
     while(g_hash_table_iter_next(&iter, &key, &value) && N>0){
         //TODO struct ordenada por data
-    }
+    }*/
     return l;
 }
         

@@ -8,7 +8,7 @@
 #include <string.h>
 #include <glib.h>
 #include "interface.h"
-#include "nodeUser.h"
+#include "users.h"
 #include "date.h"
 #include "post.h"
 
