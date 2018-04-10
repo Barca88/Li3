@@ -94,7 +94,8 @@ LONG_list contains_word(TAD_community com, char* word, int N){
     g_hash_table_iter_init(&iter, com->hashPosts);
    
     while(g_hash_table_iter_next(&iter, &key, &value) && N>0){
-        //TODO struct ordenada por data
+
+        //TODO struct ordenada por data que não contenha apenas 1 post por dia 
     }
     return l;
 }
