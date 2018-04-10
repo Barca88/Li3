@@ -1,15 +1,5 @@
-#include <string.h>
-#include <stdlib.h>
-#include <xmlreader.h>
-#include <glib.h>
-#include "interface.h"
 #include "parser.h"
-#include "nodeUser.h"
-#include "date.h"
-#include "post.h"
-#include <string.h>
-
-
+#include "tcd.h"
 
 //Create new user and insert in user struct. 
 static void processUser(GHashTable* hu ,xmlTextReaderPtr node) {
@@ -39,23 +29,14 @@ static void processUser(GHashTable* hu ,xmlTextReaderPtr node) {
     
     ptr_user newUser = init_user(id,dn,am,r);
     g_hash_table_insert(hu,GSIZE_TO_POINTER(id),newUser);
-    newUser = g_hash_table_lookup(hu,GSIZE_TO_POINTER(id));
-}
-
-static Date date_from_string(char* date){
-    *(date + 10) = '\0';
-    char* day = date+8;
-    *(date + 7) = '\0';
-    char* month = date+5;
-    *(date + 4) = '\0';
-    char* year = date;
-    
-    Date a = createDate(atoi(day),atoi(month),atoi(year));
-    return a;
 }
 
 //Create new post and insert in post struct. 
-static void processPost(GTree* tp,GHashTable* hp, GHashTable* hu,xmlTextReaderPtr node) {
+static void processPost(TAD_community com,xmlTextReaderPtr node) {
+    GTree *tp = get_tree_posts(com);
+    GHashTable *hp = get_hash_posts(com);
+    GHashTable *hu = get_hash_users(com);
+
     xmlChar *name = xmlTextReaderName(node);
     if (strcmp((char*)name,"row") != 0){
         name = xmlStrdup(BAD_CAST "--");
@@ -110,7 +91,8 @@ static void processPost(GTree* tp,GHashTable* hp, GHashTable* hu,xmlTextReaderPt
     }
     
     //Inserir na estrura dos posts.
-    g_tree_insert(tp,GSIZE_TO_POINTER(cd),new_post);
+    DatePair pair = creat_date_pair(cd,id);
+    g_tree_insert(tp,GSIZE_TO_POINTER(pair),new_post);
     g_hash_table_insert(hp,GSIZE_TO_POINTER(id),new_post);
     free_date(cd);
 }
@@ -172,7 +154,8 @@ void streamUsers(GHashTable* hu ,char *path) {
 
 
 //Process Posts.xml file.
-void streamPosts(GTree* tp ,GHashTable* hp, GHashTable* hu,char *path){
+void streamPosts(TAD_community com,char *path){
+
     char* aux = malloc(128 * sizeof(char));
     strcpy(aux,path);
     int nodeReader;
@@ -183,7 +166,7 @@ void streamPosts(GTree* tp ,GHashTable* hp, GHashTable* hu,char *path){
 
         while (nodeReader == 1){
              if (xmlTextReaderHasAttributes(stream)){
-                processPost(tp,hp,hu,stream);
+                processPost(com,stream);
              }
              nodeReader = xmlTextReaderRead(stream);
         }

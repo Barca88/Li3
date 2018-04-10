@@ -1,7 +1,8 @@
-#ifndef __NODEUSER_H__
-#define __NODEUSER_H__
+#ifndef __USERS_H__
+#define __USERS_H__
 
 #include <glib.h>
+
 typedef struct node* ptr_user;
 
 ptr_user init_user();
