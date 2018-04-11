@@ -1,9 +1,4 @@
-#include "date.h"
 #include "post.h"
-#include "common.h"
-#include <stdio.h>
-#include <glib.h>
-#include <stdlib.h>
 
 // Post definitions
 struct post {
@@ -18,6 +13,7 @@ struct post {
     int answerCount;
     int commentCount;
     int favoriteCount;
+    GTree* answerTree;
 };
 
 //Metodo de Criação
@@ -34,6 +30,7 @@ ptr_post init_post(long id,int ptid,long pid,Date cd,int s,long ouid,char* ti,ch
     p->answerCount = ac;
     p->commentCount = cc;
     p->favoriteCount = fc;
+    p->answerTree = NULL;
     return p;
 }
 //Setters   
@@ -66,6 +63,9 @@ void set_comment_count(int commentCount, ptr_post p){
 }
 void set_favorite_count(int favoriteCount, ptr_post p){
     p->favoriteCount = favoriteCount;
+}
+void set_answer_tree(GTree* at, ptr_post p){
+    p->answerTree = at;
 }
 
 //Getters
@@ -103,6 +103,9 @@ int get_comment_count(ptr_post p){
 }
 int get_favorite_count(ptr_post p){
     return p->favoriteCount;
+}
+GTree* get_answer_tree(ptr_post p){
+    return p->answerTree;
 }
 
 void print_post(ptr_post post){

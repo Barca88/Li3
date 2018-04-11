@@ -4,6 +4,7 @@
 #include "post.h"
 #include "date.h"
 #include "tcd.h"
+#include <limits.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <glib.h>
@@ -53,8 +54,15 @@ LONG_list top_most_active(TAD_community com, int N){
     com->sortUsers = g_slist_insert_sorted(com->sortUsers,gpointer data,GCompareFunc func);
 }
 */
+
 // query 3
-LONG_pair total_posts(TAD_community com, Date begin, Date end);
+LONG_pair total_posts(TAD_community com, Date begin, Date end){
+//    g_tree_foreach(t,(GTraverseFunc)iter_btw, NULL);
+
+    LONG_pair lp = create_long_pair(1,LONG_MAX);
+
+    return lp;
+}
 
 // query 4
 LONG_list questions_with_tag(TAD_community com, char* tag, Date begin, Date end);
@@ -71,14 +79,14 @@ LONG_list most_answered_questions(TAD_community com, int N, Date begin, Date end
 // query 8
 LONG_list contains_word(TAD_community com, char* word, int N){
     LONG_list l = create_list(N);
-    GHashTableIter iter;
+    /*GHashTableIter iter;
     gpointer key, value;
     g_hash_table_iter_init(&iter, com->hashPosts);
    
     while(g_hash_table_iter_next(&iter, &key, &value) && N>0){
 
         //TODO struct ordenada por data que não contenha apenas 1 post por dia 
-    }
+    }*/
     return l;
 }
        

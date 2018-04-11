@@ -55,7 +55,6 @@ long get_nr_posts_user(ptr_user user){
      return user->Reputation;
 }
 
-
 void inc_nr_posts(ptr_user user){
     user->nr_posts++;
 }

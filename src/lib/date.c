@@ -1,6 +1,7 @@
 #include <stdlib.h>
-#include "date.h"
 #include <glib.h>
+#include <stdio.h>
+#include "date.h"
 
 struct date {
   int day;
@@ -28,6 +29,7 @@ int get_year(Date d) {
     return d->year;
 }
 
+//auxiliar struct
 struct date_id{
     Date fst;
     long scd;
