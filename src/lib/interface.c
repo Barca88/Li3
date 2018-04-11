@@ -55,11 +55,25 @@ LONG_list top_most_active(TAD_community com, int N){
 }
 */
 
+static gboolean func_n_answer(gpointer key,gpointer value,gpointer data){
+    int* pd = (int*)GPOINTER_TO_SIZE(data);
+    *pd += g_tree_nnodes(get_answer_tree(value));
+    return FALSE;
+}
+
 // query 3
 LONG_pair total_posts(TAD_community com, Date begin, Date end){
-//    g_tree_foreach(t,(GTraverseFunc)iter_btw, NULL);
+    int nq = (int)g_tree_nnodes(get_tree_posts(com));
+    int na = 0;
+    int* pna = &na;
 
-    LONG_pair lp = create_long_pair(1,LONG_MAX);
+    g_tree_foreach(get_tree_posts(com),(GTraverseFunc)func_n_answer,
+            GSIZE_TO_POINTER(pna));
+
+    printf("Numero de respostas: %d\n",na);
+    printf("Numero de perguntas: %d\n",nq);
+
+    LONG_pair lp = create_long_pair(nq,na);
 
     return lp;
 }
