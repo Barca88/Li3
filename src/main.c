@@ -11,7 +11,7 @@ int main(int argc,char** argv){
 
     info_from_post(new,1);
     Date a,b;
-    a = createDate(1,2,2012);
+    a = createDate(1,2,2016);
     b = createDate(3,10,2017);
 
     total_posts(new,a,b);

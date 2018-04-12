@@ -50,6 +50,10 @@ long get_scd(DatePair dp){
     return dp->scd;
 }
 
+void print_date(Date d){
+    printf("%dd-%dm-%da\n",d->day,d->month,d->year);
+}
+
 //retorna -1 se d1 é mais antigo, 0 se iguais, 1 se d1 é mais recente
 int date_pair_compare(gconstpointer p1, gconstpointer p2){
     DatePair dp1 = (DatePair)GPOINTER_TO_SIZE(p1);

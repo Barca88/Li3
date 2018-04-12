@@ -14,6 +14,7 @@ Date date_from_string(char* date);
 DatePair creat_date_pair(Date d,long id);
 Date get_fst(DatePair dp);
 long get_scd(DatePair dp);
+void print_date(Date d);
 
 int date_pair_compare(gconstpointer p1, gconstpointer p2);
 int date_compare(gconstpointer p1, gconstpointer p2);

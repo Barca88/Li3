@@ -55,29 +55,39 @@ LONG_list top_most_active(TAD_community com, int N){
 }
 */
 
-static gboolean func_n_answer(gpointer key,gpointer value,gpointer data){
-    int* pd = (int*)GPOINTER_TO_SIZE(data);
-    *pd += g_tree_nnodes(get_answer_tree(value));
-    return FALSE;
-}
 
 
 typedef struct date_pair{
     Date begin;
     Date end;
+    int nq;
+    int na;
 }* limitDates;
+
+static gboolean func_n_answer(gpointer key,gpointer value,gpointer data){
+    limitDates ld = (limitDates)GPOINTER_TO_SIZE(data);
+    Date b = ld->begin;
+    Date e = ld->end;
+      
+    if ((date_compare(get_creation_date(value),b)>0 && 
+          date_compare(e,get_creation_date(value))>0)){
+
+        ld->na += g_tree_nnodes(get_answer_tree(value));
+    }
+    return FALSE;
+}
 
 static gboolean func_q_btw(gpointer key,gpointer value,gpointer data){
     limitDates ld = (limitDates)GPOINTER_TO_SIZE(data);
     Date b = ld->begin;
     Date e = ld->end;
 
-    if (date_compare(b,get_creation_date(value))<=0 && 
-          date_compare(get_creation_date(value),e)<=0){
-        return FALSE;
+    if ((date_compare(get_creation_date(value),b)>0 && 
+          date_compare(e,get_creation_date(value))>0)){
+
+        ld->nq++;
     }
-    else
-        return TRUE;
+    return FALSE;
 }
 
 
@@ -86,23 +96,21 @@ LONG_pair total_posts(TAD_community com, Date begin, Date end){
     limitDates ld = malloc(sizeof(struct date_pair));
     ld->begin = begin;
     ld->end = end;
+    ld->nq = 0;
+    ld->na = 0;
 
     g_tree_foreach(get_tree_posts(com),(GTraverseFunc)func_q_btw,
             GSIZE_TO_POINTER(ld));
 
-    int nq = (int)g_tree_nnodes(get_tree_posts(com));
-    int na = 0;
-    int* pna = &na;
-
     g_tree_foreach(get_tree_posts(com),(GTraverseFunc)func_n_answer,
-            GSIZE_TO_POINTER(pna));
+            GSIZE_TO_POINTER(ld));
 
     printf("Numero de users: %d\n",g_hash_table_size(get_hash_users(com)));
-    printf("Numero de respostas: %d\n",na);
-    printf("Numero de perguntas: %d\n",nq);
-    printf("Numero de postss: %d\n",na+nq);
+    printf("Numero de respostas: %d\n",ld->na);
+    printf("Numero de perguntas: %d\n",ld->nq);
+    printf("Numero de posts: %d\n",ld->na+ld->nq);
 
-    LONG_pair lp = create_long_pair(nq,na);
+    LONG_pair lp = create_long_pair(ld->nq,ld->na);
     return lp;
 }
 
