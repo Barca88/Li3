@@ -16,5 +16,6 @@ Date get_fst(DatePair dp);
 long get_scd(DatePair dp);
 
 int date_pair_compare(gconstpointer p1, gconstpointer p2);
+int date_compare(gconstpointer p1, gconstpointer p2);
 void free_date(Date d);
 #endif

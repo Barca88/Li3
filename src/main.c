@@ -10,7 +10,11 @@ int main(int argc,char** argv){
     new = load(new,argv[1]);
 
     info_from_post(new,1);
-    total_posts(new,NULL,NULL);
+    Date a,b;
+    a = createDate(1,2,2012);
+    b = createDate(3,10,2017);
+
+    total_posts(new,a,b);
 
     tpf =clock() -tpf;
     printf("Demorou %f segundos a ler\n",((float)tpf)/CLOCKS_PER_SEC);

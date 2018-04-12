@@ -61,8 +61,35 @@ static gboolean func_n_answer(gpointer key,gpointer value,gpointer data){
     return FALSE;
 }
 
+
+typedef struct date_pair{
+    Date begin;
+    Date end;
+}* limitDates;
+
+static gboolean func_q_btw(gpointer key,gpointer value,gpointer data){
+    limitDates ld = (limitDates)GPOINTER_TO_SIZE(data);
+    Date b = ld->begin;
+    Date e = ld->end;
+
+    if (date_compare(b,get_creation_date(value))<=0 && 
+          date_compare(get_creation_date(value),e)<=0){
+        return FALSE;
+    }
+    else
+        return TRUE;
+}
+
+
 // query 3
 LONG_pair total_posts(TAD_community com, Date begin, Date end){
+    limitDates ld = malloc(sizeof(struct date_pair));
+    ld->begin = begin;
+    ld->end = end;
+
+    g_tree_foreach(get_tree_posts(com),(GTraverseFunc)func_q_btw,
+            GSIZE_TO_POINTER(ld));
+
     int nq = (int)g_tree_nnodes(get_tree_posts(com));
     int na = 0;
     int* pna = &na;
@@ -70,11 +97,12 @@ LONG_pair total_posts(TAD_community com, Date begin, Date end){
     g_tree_foreach(get_tree_posts(com),(GTraverseFunc)func_n_answer,
             GSIZE_TO_POINTER(pna));
 
+    printf("Numero de users: %d\n",g_hash_table_size(get_hash_users(com)));
     printf("Numero de respostas: %d\n",na);
     printf("Numero de perguntas: %d\n",nq);
+    printf("Numero de postss: %d\n",na+nq);
 
     LONG_pair lp = create_long_pair(nq,na);
-
     return lp;
 }
 

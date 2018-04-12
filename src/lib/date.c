@@ -85,6 +85,29 @@ int date_pair_compare(gconstpointer p1, gconstpointer p2){
     return -2;
 }
 
+
+int date_compare(gconstpointer t1, gconstpointer t2){
+    Date d1 = (Date)GPOINTER_TO_SIZE(t1);
+    Date d2 = (Date)GPOINTER_TO_SIZE(t2);
+
+    if (get_year(d1) < get_year(d2))
+        return -1;
+    else if (get_year(d1) > get_year(d2))
+        return 1;
+    if (get_year(d1) == get_year(d2)){
+        if (get_month(d1) < get_month(d2))
+            return -1;
+        else if (get_month(d1) > get_month(d2))
+            return 1;
+        else if (get_day(d1) < get_day(d2))
+            return -1;
+        else if(get_day(d1) > get_day(d2))
+            return 1;
+        else return 0;
+    }
+    return -2;
+}
+
 Date date_from_string(char* date){
     *(date + 10) = '\0';
     char* day = date+8;

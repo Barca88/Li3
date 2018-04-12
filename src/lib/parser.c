@@ -102,8 +102,6 @@ static void processPost(TAD_community com,xmlTextReaderPtr node) {
     }else if (ptid == 2)
         if(quest)
             g_tree_insert(get_answer_tree(quest),GSIZE_TO_POINTER(pair),new_post);
-
-    free_date(cd);
 }
 
 //Processar informacao de um vote. 
@@ -160,7 +158,6 @@ void streamUsers(GHashTable* hu ,char *path) {
         }
     }else printf("Unable to open %s\n", "Users.xml");
 }
-
 
 //Process Posts.xml file.
 void streamPosts(TAD_community com,char *path){
