@@ -51,15 +51,15 @@ long get_reputation_user(ptr_user user){
     return user->Reputation;
 }
 
-long get_nr_posts_user(ptr_user user){
-     return user->Reputation;
+int get_nr_posts_user(ptr_user user){
+     return user->nr_posts;
 }
 
 void inc_nr_posts(ptr_user user){
-    user->nr_posts++;
+    (user->nr_posts)++;
 }
 
 void print_user(ptr_user user){
     if(user != NULL)
-   printf("user:\n\nId: %ld\nName:  %s\nAbouteMe: %s\nReputation: %ld\n",user->Id,user->DisplayName,user->AboutMe,user->Reputation); 
+   printf("user:\n\nId: %ld\nName:  %s\nAbouteMe: %s\nReputation: %ld\nNr de Posts: %d\n",user->Id,user->DisplayName,user->AboutMe,user->Reputation,user->nr_posts); 
 }

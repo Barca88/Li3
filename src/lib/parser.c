@@ -83,12 +83,6 @@ static void processPost(TAD_community com,xmlTextReaderPtr node) {
     }
     
     ptr_post new_post = init_post(id,ptid,pid,cd,s,ouid,ti,ta,ac,cc,fc);
-
-    //Incrementar o numero de posts do respetivo user.
-    if(ouid!=-2){
-        ptr_user nu = (ptr_user)g_hash_table_lookup(hu,GSIZE_TO_POINTER(ouid));
-        inc_nr_posts(nu);
-    }
     
     //Inserir na estrura dos posts.
     g_hash_table_insert(hp,GSIZE_TO_POINTER(id),new_post);
@@ -102,6 +96,12 @@ static void processPost(TAD_community com,xmlTextReaderPtr node) {
     }else if (ptid == 2)
         if(quest)
             g_tree_insert(get_answer_tree(quest),GSIZE_TO_POINTER(pair),new_post);
+
+    //Incrementar o numero de posts do respetivo user.
+    if(ouid!=-2){
+        ptr_user nu = (ptr_user)g_hash_table_lookup(hu,GSIZE_TO_POINTER(ouid));
+        inc_nr_posts(nu);
+    }
 }
 
 //Processar informacao de um vote. 

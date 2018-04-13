@@ -1,4 +1,5 @@
 #include "interface.h"
+#include "common.h"
 #include "parser.h"
 #include "users.h"
 #include "post.h"
@@ -48,14 +49,41 @@ STR_pair info_from_post(TAD_community com, long id){
     return sp =  create_str_pair(title,name);
 }
 
-// query 2
-/*
-LONG_list top_most_active(TAD_community com, int N){
-    com->sortUsers = g_slist_insert_sorted(com->sortUsers,gpointer data,GCompareFunc func);
+//----------------------------------------------------------------------
+
+typedef struct dates_llink{
+    GSList* llink;
+}* DateLlink;
+
+void func(gpointer data,gpointer user_data){
+    printf("id: %ld nr de posts: %d\n",get_id_user(data),get_nr_posts_user(data));
 }
-*/
 
+static gint func_nr_posts2(gconstpointer a,gconstpointer b){
+    if(get_nr_posts_user((ptr_user)a)>get_nr_posts_user((ptr_user)b)) return 1;
+    else if(get_nr_posts_user((ptr_user)a)<get_nr_posts_user((ptr_user)b)) return -1;
+    else return 0;
+}
 
+static gboolean func_nr_posts(gpointer key,gpointer value,gpointer data){ 
+    DateLlink n = (DateLlink)GPOINTER_TO_SIZE(data);
+    n->llink = g_slist_prepend(n->llink,value);
+    return FALSE;
+}
+
+// query 2
+LONG_list top_most_active(TAD_community com, int N){
+    DateLlink dll = malloc(sizeof(struct dates_llink));
+    dll->llink = NULL;
+
+    g_hash_table_foreach(get_hash_users(com),(GHFunc)func_nr_posts,
+           GSIZE_TO_POINTER(dll));
+    dll->llink = g_slist_sort (dll->llink, func_nr_posts2);
+    //g_slist_foreach(dll->llink,func,NULL);
+    return NULL;
+}
+
+//----------------------------------------------------------------------
 
 typedef struct date_pair{
     Date begin;
@@ -65,7 +93,7 @@ typedef struct date_pair{
 }* limitDates;
 
 static gboolean func_n_answer(gpointer key,gpointer value,gpointer data){
-    limitDates ld = (limitDates)GPOINTER_TO_SIZE(data);
+limitDates ld = (limitDates)GPOINTER_TO_SIZE(data);
     Date b = ld->begin;
     Date e = ld->end;
       
@@ -114,8 +142,39 @@ LONG_pair total_posts(TAD_community com, Date begin, Date end){
     return lp;
 }
 
+//----------------------------------------------------------------------
+
+typedef struct tags{
+    Date begin;
+    Date end;
+}* tagsInfo;
+/*
+static gboolean func_q_tags(gpointer key,gpointer value,gpointer data){
+    limitDates ld = (limitDates)GPOINTER_TO_SIZE(data);
+    Date b = ld->begin;
+    Date e = ld->end;
+
+    if ((date_compare(get_creation_date(value),b)>0 && 
+          date_compare(e,get_creation_date(value))>0)){
+
+         if(strstr(get_tags(value),tag) != NULL) {
+            ld->nq++;
+         }
+    }
+    return FALSE;
+}*/
+
 // query 4
 LONG_list questions_with_tag(TAD_community com, char* tag, Date begin, Date end);
+/*    tagsInfo ld = malloc(sizeof(struct date_pair));
+    ld->begin = begin;
+    ld->end = end;
+
+    g_tree_foreach(get_tree_posts(com),(GTraverseFunc)func_q_tags,
+            GSIZE_TO_POINTER(ld));
+
+    LONG_list ll = create_long_list(5);
+    return ll;*/ 
 
 // query 5
 USER get_user_info(TAD_community com, long id);

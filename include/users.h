@@ -23,7 +23,7 @@ char* get_aboutme_user(ptr_user user);
 
 long get_reputation_user(ptr_user user);
 
-long get_nr_posts_user(ptr_user user);
+int get_nr_posts_user(ptr_user user);
 
 void inc_nr_posts(ptr_user user);
 
