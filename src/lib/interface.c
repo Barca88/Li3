@@ -66,6 +66,11 @@ static gint func_nr_posts2(gconstpointer a,gconstpointer b){
     else return 0;
 }
 
+static gboolean func_print(gpointer key,gpointer value,gpointer data){ 
+    print_user(value);
+    return TRUE;
+}
+
 static gboolean func_nr_posts(gpointer key,gpointer value,gpointer data){ 
     DateLlink n = (DateLlink)GPOINTER_TO_SIZE(data);
     n->llink = g_slist_prepend(n->llink,value);
@@ -78,7 +83,7 @@ LONG_list top_most_active(TAD_community com, int N){
     dll->llink = NULL;
 
     g_hash_table_foreach(get_hash_users(com),(GHFunc)func_nr_posts,
-           GSIZE_TO_POINTER(dll));
+          GSIZE_TO_POINTER(dll));
     dll->llink = g_slist_sort (dll->llink, func_nr_posts2);
     //g_slist_foreach(dll->llink,func,NULL);
     return NULL;
