@@ -1,6 +1,7 @@
 #include <stdlib.h>
-#include "date.h"
 #include <glib.h>
+#include <stdio.h>
+#include "date.h"
 
 struct date {
   int day;
@@ -28,6 +29,7 @@ int get_year(Date d) {
     return d->year;
 }
 
+//auxiliar struct
 struct date_id{
     Date fst;
     long scd;
@@ -46,6 +48,10 @@ Date get_fst(DatePair dp){
 
 long get_scd(DatePair dp){
     return dp->scd;
+}
+
+void print_date(Date d){
+    printf("%dd-%dm-%da\n",d->day,d->month,d->year);
 }
 
 //retorna -1 se d1 é mais antigo, 0 se iguais, 1 se d1 é mais recente
@@ -77,6 +83,29 @@ int date_pair_compare(gconstpointer p1, gconstpointer p2){
         else if(id1<id2)
             return -1;
         else if(id1>id2)
+            return 1;
+        else return 0;
+    }
+    return -2;
+}
+
+
+int date_compare(gconstpointer t1, gconstpointer t2){
+    Date d1 = (Date)GPOINTER_TO_SIZE(t1);
+    Date d2 = (Date)GPOINTER_TO_SIZE(t2);
+
+    if (get_year(d1) < get_year(d2))
+        return -1;
+    else if (get_year(d1) > get_year(d2))
+        return 1;
+    if (get_year(d1) == get_year(d2)){
+        if (get_month(d1) < get_month(d2))
+            return -1;
+        else if (get_month(d1) > get_month(d2))
+            return 1;
+        else if (get_day(d1) < get_day(d2))
+            return -1;
+        else if(get_day(d1) > get_day(d2))
             return 1;
         else return 0;
     }

@@ -83,18 +83,25 @@ static void processPost(TAD_community com,xmlTextReaderPtr node) {
     }
     
     ptr_post new_post = init_post(id,ptid,pid,cd,s,ouid,ti,ta,ac,cc,fc);
+    
+    //Inserir na estrura dos posts.
+    g_hash_table_insert(hp,GSIZE_TO_POINTER(id),new_post);
+
+    DatePair pair = creat_date_pair(cd,id);
+    ptr_post quest = (ptr_post)g_hash_table_lookup(hp,GSIZE_TO_POINTER(pid));
+
+    if(ptid == 1){
+        g_tree_insert(tp,GSIZE_TO_POINTER(pair),new_post);
+        set_answer_tree(g_tree_new((GCompareFunc)date_pair_compare),new_post);
+    }else if (ptid == 2)
+        if(quest)
+            g_tree_insert(get_answer_tree(quest),GSIZE_TO_POINTER(pair),new_post);
 
     //Incrementar o numero de posts do respetivo user.
     if(ouid!=-2){
         ptr_user nu = (ptr_user)g_hash_table_lookup(hu,GSIZE_TO_POINTER(ouid));
         inc_nr_posts(nu);
     }
-    
-    //Inserir na estrura dos posts.
-    DatePair pair = creat_date_pair(cd,id);
-    g_tree_insert(tp,GSIZE_TO_POINTER(pair),new_post);
-    g_hash_table_insert(hp,GSIZE_TO_POINTER(id),new_post);
-    free_date(cd);
 }
 
 //Processar informacao de um vote. 
@@ -151,7 +158,6 @@ void streamUsers(GHashTable* hu ,char *path) {
         }
     }else printf("Unable to open %s\n", "Users.xml");
 }
-
 
 //Process Posts.xml file.
 void streamPosts(TAD_community com,char *path){
