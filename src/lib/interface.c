@@ -26,8 +26,9 @@ TAD_community load(TAD_community com, char* dump_path){
 // query 1
 STR_pair info_from_post(TAD_community com, long id){
 
-    STR_pair sp; 
-    char* title, *name;
+    STR_pair sp = NULL; 
+    char* title = NULL;
+    char* name = NULL;
     ptr_user n;
     ptr_post t = (ptr_post)g_hash_table_lookup(get_hash_posts(com),
             GSIZE_TO_POINTER(id));
