@@ -15,11 +15,40 @@ TAD_community init()
 {
     return init_tcd();
 }
+// lixo
+void func(gpointer data,gpointer user_data){
+    printf("id: %ld nr de posts: %d\n",get_id_user(data),get_nr_posts_user(data));
+}
 
+static gint comp_nr_posts(gconstpointer a,gconstpointer b){
+    if(get_nr_posts_user((ptr_user)a)>get_nr_posts_user((ptr_user)b)) 
+        return 1;
+    else if(get_nr_posts_user((ptr_user)a)<get_nr_posts_user((ptr_user)b))
+        return -1;
+    else 
+        return 0;
+}
+
+static gboolean func_print(gpointer key,gpointer value,gpointer data){ 
+    print_user(value);
+    return TRUE;
+}
+
+static gboolean load_rank_gslist(gpointer key,gpointer value,gpointer data){ 
+    TAD_community com = (TAD_community)GPOINTER_TO_SIZE(data);
+    set_rank_n_posts(com, g_slist_prepend(get_rank_n_posts(com),value));
+    return FALSE;
+
+}
 // query 0
 TAD_community load(TAD_community com, char* dump_path){
     streamUsers(get_hash_users(com),dump_path);
     streamPosts(com,dump_path);
+    //load lista ligada de utilizadores organizada por nº de posts
+    g_hash_table_foreach(get_hash_users(com),(GHFunc)load_rank_gslist,
+            GSIZE_TO_POINTER(com));
+    set_rank_n_posts(com,
+            g_slist_sort(get_rank_n_posts(com), comp_nr_posts));
    return com;
 }  
 
@@ -50,43 +79,24 @@ STR_pair info_from_post(TAD_community com, long id){
     return sp =  create_str_pair(title,name);
 }
 
-//----------------------------------------------------------------------
-
-typedef struct dates_llink{
-    GSList* llink;
-}* DateLlink;
-
-void func(gpointer data,gpointer user_data){
-    printf("id: %ld nr de posts: %d\n",get_id_user(data),get_nr_posts_user(data));
-}
-
-static gint func_nr_posts2(gconstpointer a,gconstpointer b){
-    if(get_nr_posts_user((ptr_user)a)>get_nr_posts_user((ptr_user)b)) return 1;
-    else if(get_nr_posts_user((ptr_user)a)<get_nr_posts_user((ptr_user)b)) return -1;
-    else return 0;
-}
-
-static gboolean func_print(gpointer key,gpointer value,gpointer data){ 
-    print_user(value);
-    return TRUE;
-}
-
-static gboolean func_nr_posts(gpointer key,gpointer value,gpointer data){ 
-    DateLlink n = (DateLlink)GPOINTER_TO_SIZE(data);
-    n->llink = g_slist_prepend(n->llink,value);
-    return FALSE;
-}
-
 // query 2
 LONG_list top_most_active(TAD_community com, int N){
-    DateLlink dll = malloc(sizeof(struct dates_llink));
-    dll->llink = NULL;
-
-    g_hash_table_foreach(get_hash_users(com),(GHFunc)func_nr_posts,
-          GSIZE_TO_POINTER(dll));
-    dll->llink = g_slist_sort (dll->llink, func_nr_posts2);
-    //g_slist_foreach(dll->llink,func,NULL);
-    return NULL;
+    LONG_list l = create_list(N);
+    int i;
+    ptr_user u;
+    GSList *list = get_rank_n_posts(com);
+    
+    for(i=0;i<N && list->next != NULL;i++){
+        u =(ptr_user) GPOINTER_TO_SIZE(list->data);
+        set_list(l,i,get_id_user(u));
+        list = list->next;
+    }
+    
+    for(i=0;i<N;i++){
+        printf("Id do nº %d: %ld\n",i+1,get_list(l,i));
+    }
+    
+    return l;
 }
 
 //----------------------------------------------------------------------
@@ -124,7 +134,7 @@ static gboolean func_q_btw(gpointer key,gpointer value,gpointer data){
     return FALSE;
 }
 
-
+//------------------------------------------------------
 // query 3
 LONG_pair total_posts(TAD_community com, Date begin, Date end){
     limitDates ld = malloc(sizeof(struct date_pair));
