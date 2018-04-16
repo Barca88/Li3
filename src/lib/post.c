@@ -110,7 +110,7 @@ GTree* get_answer_tree(ptr_post p){
 
 void print_post(ptr_post post){
     if(post != NULL)
-    printf("post:\n\nId: %ld\nPostTypeId:  %d\nParentId: %ld\nScore: %d\n",post->id,post->postTypeId,post->parentID,post->score); 
+    printf("post:\n\nId: %ld\nPostTypeId: %d\nParentId: %ld\nScore: %d\nOwnerUserID: %ld\nTitle: %s\nTags: %s\nAnswerCount: %d\nCommentCount: %d\nFavoriteCount: %d\n",post->id,post->postTypeId,post->parentID,post->score,post->ownerUserID,post->title,post->tags,post->answerCount,post->commentCount,post->favoriteCount); 
     print_date(post->creationDate);
     printf("\n\n");
 }
