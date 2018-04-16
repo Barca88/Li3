@@ -17,6 +17,12 @@ TAD_community init()
 }
 // lixo
 
+static gboolean load_rank_gslist(gpointer key,gpointer value,gpointer data){ 
+    TAD_community com = (TAD_community)GPOINTER_TO_SIZE(data);
+    set_rank_n_posts(com, g_slist_prepend(get_rank_n_posts(com),value));
+    return FALSE;
+}
+
 static gint comp_nr_posts(gconstpointer a,gconstpointer b){
     if(get_nr_posts_user((ptr_user)a)>get_nr_posts_user((ptr_user)b)) 
         return -1;
@@ -26,17 +32,6 @@ static gint comp_nr_posts(gconstpointer a,gconstpointer b){
         return 0;
 }
 
-static gboolean func_print(gpointer key,gpointer value,gpointer data){ 
-    print_user(value);
-    return TRUE;
-}
-
-static gboolean load_rank_gslist(gpointer key,gpointer value,gpointer data){ 
-    TAD_community com = (TAD_community)GPOINTER_TO_SIZE(data);
-    set_rank_n_posts(com, g_slist_prepend(get_rank_n_posts(com),value));
-    return FALSE;
-
-}
 // query 0
 TAD_community load(TAD_community com, char* dump_path){
     streamUsers(get_hash_users(com),dump_path);
@@ -75,6 +70,10 @@ STR_pair info_from_post(TAD_community com, long id){
         name = get_displayname_user(n);
     }
 
+    printf("Query 1 com id %ld: \n\n",id);
+    printf("\tTitle: %s\n\tName: %s\n",title,name);
+    printf("\n\n");
+
     return sp =  create_str_pair(title,name);
 }
 
@@ -91,9 +90,11 @@ LONG_list top_most_active(TAD_community com, int N){
         list = list->next;
     }
     
+    printf("Query 2 com %d elementos: \n\n",N);
     for(i=0;i<N;i++){
-        printf("Id do nº %d: %ld\n",i+1,get_list(l,i));
+        printf("\tId do nº %d: %ld\n",i+1,get_list(l,i));
     }
+    printf("\n\n");
     
     return l;
 }
@@ -107,20 +108,7 @@ typedef struct date_pair{
     int na;
 }* limitDates;
 
-static gboolean func_n_answer(gpointer key,gpointer value,gpointer data){
-limitDates ld = (limitDates)GPOINTER_TO_SIZE(data);
-    Date b = ld->begin;
-    Date e = ld->end;
-      
-    if ((date_compare(get_creation_date(value),b)>0 && 
-          date_compare(e,get_creation_date(value))>0)){
-
-        ld->na += g_tree_nnodes(get_answer_tree(value));
-    }
-    return FALSE;
-}
-
-static gboolean func_q_btw(gpointer key,gpointer value,gpointer data){
+static gboolean count_posts(gpointer key,gpointer value,gpointer data){
     limitDates ld = (limitDates)GPOINTER_TO_SIZE(data);
     Date b = ld->begin;
     Date e = ld->end;
@@ -128,12 +116,22 @@ static gboolean func_q_btw(gpointer key,gpointer value,gpointer data){
     if ((date_compare(get_creation_date(value),b)>0 && 
           date_compare(e,get_creation_date(value))>0)){
 
-        ld->nq++;
+            ld->na += g_tree_nnodes(get_answer_tree(value));
+            ld->nq++;
     }
     return FALSE;
 }
 
-//------------------------------------------------------
+static gboolean func_print(gpointer key,gpointer value,gpointer data){ 
+    limitDates ld = (limitDates)GPOINTER_TO_SIZE(data);
+    if(ld->nq < 2){
+       print_post(value);
+       (ld->nq)++;
+       return FALSE;
+    }
+    return TRUE;
+}
+
 // query 3
 LONG_pair total_posts(TAD_community com, Date begin, Date end){
     limitDates ld = malloc(sizeof(struct date_pair));
@@ -142,16 +140,15 @@ LONG_pair total_posts(TAD_community com, Date begin, Date end){
     ld->nq = 0;
     ld->na = 0;
 
-    g_tree_foreach(get_tree_posts(com),(GTraverseFunc)func_q_btw,
+    g_tree_foreach(get_tree_posts(com),(GTraverseFunc)count_posts,
             GSIZE_TO_POINTER(ld));
 
-    g_tree_foreach(get_tree_posts(com),(GTraverseFunc)func_n_answer,
-            GSIZE_TO_POINTER(ld));
-
-    printf("Numero de users: %d\n",g_hash_table_size(get_hash_users(com)));
-    printf("Numero de respostas: %d\n",ld->na);
-    printf("Numero de perguntas: %d\n",ld->nq);
-    printf("Numero de posts: %d\n",ld->na+ld->nq);
+    printf("Query 3: \n\n");
+    printf("\tNumero de users: %d\n",g_hash_table_size(get_hash_users(com)));
+    printf("\tNumero de respostas: %d\n",ld->na);
+    printf("\tNumero de perguntas: %d\n",ld->nq);
+    printf("\tNumero de posts: %d\n",ld->na+ld->nq);
+    printf("\n\n");
 
     LONG_pair lp = create_long_pair(ld->nq,ld->na);
     return lp;

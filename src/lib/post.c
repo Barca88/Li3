@@ -111,6 +111,8 @@ GTree* get_answer_tree(ptr_post p){
 void print_post(ptr_post post){
     if(post != NULL)
     printf("post:\n\nId: %ld\nPostTypeId:  %d\nParentId: %ld\nScore: %d\n",post->id,post->postTypeId,post->parentID,post->score); 
+    print_date(post->creationDate);
+    printf("\n\n");
 }
 
 //Apaga o post dando free na memoria pare ele alocada
