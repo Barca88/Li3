@@ -15,8 +15,8 @@ TAD_community init()
 {
     return init_tcd();
 }
-// lixo
 
+// lixo
 static gboolean load_rank_gslist(gpointer key,gpointer value,gpointer data){ 
     TAD_community com = (TAD_community)GPOINTER_TO_SIZE(data);
     set_rank_n_posts(com, g_slist_prepend(get_rank_n_posts(com),value));
@@ -122,15 +122,19 @@ static gboolean count_posts(gpointer key,gpointer value,gpointer data){
     return FALSE;
 }
 
-static gboolean func_print(gpointer key,gpointer value,gpointer data){ 
+/*static gint func_print(gpointer key, gpointer data){ 
     limitDates ld = (limitDates)GPOINTER_TO_SIZE(data);
-    if(ld->nq < 2){
-       print_post(value);
-       (ld->nq)++;
-       return FALSE;
-    }
-    return TRUE;
-}
+    Date b = ld->begin;
+    Date e = ld->end;
+
+    if ((date_compare(get_fst(key),b)>0 && 
+          date_compare(e,get_fst(key))>0)){
+         print_date(get_fst(key));
+         ld->nq++;
+         return -1;
+    }else 
+        return 0;
+}*/
 
 // query 3
 LONG_pair total_posts(TAD_community com, Date begin, Date end){
@@ -142,6 +146,8 @@ LONG_pair total_posts(TAD_community com, Date begin, Date end){
 
     g_tree_foreach(get_tree_posts(com),(GTraverseFunc)count_posts,
             GSIZE_TO_POINTER(ld));
+
+//    g_tree_search(get_tree_posts(com),(GCompareFunc)func_print,GSIZE_TO_POINTER(ld));
 
     printf("Query 3: \n\n");
     printf("\tNumero de users: %d\n",g_hash_table_size(get_hash_users(com)));

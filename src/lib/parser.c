@@ -140,7 +140,7 @@ void streamUsers(GHashTable* hu ,char *path) {
     char* aux = malloc(128 * sizeof(char));
     strcpy(aux,path);
     int nodeReader;
-    xmlTextReaderPtr stream = xmlNewTextReaderFilename(strcat(aux,"Users.xml"));
+    xmlTextReaderPtr stream = xmlNewTextReaderFilename(strcat(aux,"/Users.xml"));
     
     if (stream != NULL) {
         nodeReader = xmlTextReaderRead(stream);
@@ -165,7 +165,7 @@ void streamPosts(TAD_community com,char *path){
     char* aux = malloc(128 * sizeof(char));
     strcpy(aux,path);
     int nodeReader;
-    xmlTextReaderPtr stream = xmlNewTextReaderFilename(strcat(aux,"Posts.xml"));
+    xmlTextReaderPtr stream = xmlNewTextReaderFilename(strcat(aux,"/Posts.xml"));
     
     if (stream != NULL) {
         nodeReader = xmlTextReaderRead(stream);
