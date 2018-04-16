@@ -18,5 +18,7 @@ GHashTable* get_hash_posts(TAD_community root);
 
 GTree* get_tree_posts(TAD_community root);
 
+void set_rank_n_posts(TAD_community root,GSList *new);
+
 GSList* get_rank_n_posts(TAD_community root);
 #endif
