@@ -16,15 +16,12 @@ TAD_community init()
     return init_tcd();
 }
 // lixo
-void func(gpointer data,gpointer user_data){
-    printf("id: %ld nr de posts: %d\n",get_id_user(data),get_nr_posts_user(data));
-}
 
 static gint comp_nr_posts(gconstpointer a,gconstpointer b){
     if(get_nr_posts_user((ptr_user)a)>get_nr_posts_user((ptr_user)b)) 
-        return 1;
-    else if(get_nr_posts_user((ptr_user)a)<get_nr_posts_user((ptr_user)b))
         return -1;
+    else if(get_nr_posts_user((ptr_user)a)<get_nr_posts_user((ptr_user)b))
+        return 1;
     else 
         return 0;
 }
@@ -44,12 +41,14 @@ static gboolean load_rank_gslist(gpointer key,gpointer value,gpointer data){
 TAD_community load(TAD_community com, char* dump_path){
     streamUsers(get_hash_users(com),dump_path);
     streamPosts(com,dump_path);
+
     //load lista ligada de utilizadores organizada por nº de posts
     g_hash_table_foreach(get_hash_users(com),(GHFunc)load_rank_gslist,
             GSIZE_TO_POINTER(com));
     set_rank_n_posts(com,
             g_slist_sort(get_rank_n_posts(com), comp_nr_posts));
-   return com;
+
+    return com;
 }  
 
 // query 1
