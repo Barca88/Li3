@@ -8,6 +8,7 @@ int main(int argc,char** argv){
 
     TAD_community new = init();
     new = load(new,argv[1]);
+
     Date a,b;
     a = createDate(1,2,1900);
     b = createDate(3,10,2020);
@@ -16,6 +17,13 @@ int main(int argc,char** argv){
     top_most_active(new,10);
     total_posts(new,a,b);
     //questions_with_tag(new,"rooting",a,b);
+    //get_user_info(new,1);
+    //most_voted_answers(new,10,a,b);
+    //most_answered_questions(new,10,a,b);
+    //contains_word(new,"rooting",10);
+    //both_participated(new,1,2,10);
+    //better_answer(new,1);
+    //most_used_best_rep(new,a,b);
 
     tpf =clock() - tpf;
     printf("Demorou %f segundos a ler\n",((float)tpf)/CLOCKS_PER_SEC);
