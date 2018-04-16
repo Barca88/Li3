@@ -7,7 +7,7 @@ struct tag {
 };
 
 ptr_tag create_tag(long id,char* s,int n){
-    ptr_tag t = malloc(sizeof(tag));
+    ptr_tag t = malloc(sizeof(struct tag));
     set_id_tag(t,id);
     set_tag(t,s);
     set_n_used(t,n);
@@ -31,7 +31,7 @@ void set_id_tag (ptr_tag t, long id_out) {
 }
 
 void set_tag (ptr_tag t, char* l) {
-    free(t->tag)
+    free(t->tag);
 	t->tag = mystrdup(l);
 }
 
@@ -40,7 +40,7 @@ void set_n_used (ptr_tag t, int count_tag) {
 }
 
 int equal_tag(ptr_tag t,char* s){
-    if(ptr_tag == NULL && s = '\0') return false;
+    if(t == NULL || s[0] == '\0') return -1;
     return strcmp(t->tag,s);
 }
 
