@@ -58,15 +58,14 @@ STR_pair info_from_post(TAD_community com, long id){
     Quest q;
     Answer a;
         
-    q = (Quest)g_hash_table_lookup(get_hash_quests(com),
-            GSIZE_TO_POINTER(id));
+    q = (Quest)g_hash_table_lookup(get_hash_quests(com), GSIZE_TO_POINTER(id));
     
     if(q != NULL){
         n = (ptr_user)g_hash_table_lookup(get_hash_users(com),
                 GSIZE_TO_POINTER(get_owner_id_quest(q)));
         title = get_title_quest(t);
         name = get_displayname_user(n);
-    }else if(a = (Answer)g_hash_table_lookup(get_hash_answer(com),
+    }else if(a = (Answer)g_hash_table_lookup(get_hash_answers(com),
                 GSIZE_TO_POINTER(id)){
 
         q = (Quest)g_hash_table_lookup(get_hash_posts(com), 

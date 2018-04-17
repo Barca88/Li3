@@ -1,4 +1,4 @@
-#ifndef __POST_H__
+#ifndef __QUEST_H__
 #define __POST_H__
 
 #include "answer.h"
@@ -21,7 +21,7 @@ char* get_tags_quest(Quest q);
 int get_answer_c_quest(Quest q);
 int get_comment_c_quest(Quest q);
 int get_favorite_c_quest(Quest q);
-GSList* get_answer_list_quest(QUest q);
+GSList* get_answer_list_quest(Quest q);
 
 void add_answer_quest(Quest q, Answer a);
 #endif
