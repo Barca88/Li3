@@ -53,7 +53,7 @@ STR_pair info_from_post(TAD_community com, long id){
     char* title = NULL;
     char* name = NULL;
     ptr_user n;
-    ptr_post t = (ptr_post)g_hash_table_lookup(get_hash_posts(com),
+     t = (ptr_post)g_hash_table_lookup(get_hash_posts(com),
             GSIZE_TO_POINTER(id));
 
     if(get_post_type_id(t)==1){
