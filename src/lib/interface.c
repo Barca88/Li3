@@ -119,13 +119,15 @@ static gboolean count_posts(gpointer key,gpointer value,gpointer data){
     Date b = ld->begin;
     Date e = ld->end;
 
-    printf("\tNumero de respostas: %d\n",ld->na);
-    printf("\tNumero de perguntas: %d\n",ld->nq);
+   // print_date(get_creation_date(value));
     if ((date_compare(get_creation_date(value),b)>0 && 
           date_compare(e,get_creation_date(value))>0)){
 print_date(value);
+            print_date(get_creation_date(value));
             ld->nq += get_n_quest(value);
             ld->na += get_n_answer(value);
+    printf("\tNumero de respostas: %d\n",get_n_quest(value));
+    printf("\tNumero de perguntas: %d\n",get_n_quest(value));
     }
     return FALSE;
 }

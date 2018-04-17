@@ -93,7 +93,6 @@ static void processPost(TAD_community com,xmlTextReaderPtr node) {
         Quest q = init_quest(id,cd,s,ouid,ti,ta,ac,cc,fc);
         //Inserir perguntas numa hash table de perguntas.
         g_hash_table_insert(hq,GSIZE_TO_POINTER(id),q);
-        print_date(get_date_quest(g_hash_table_lookup(hq,GSIZE_TO_POINTER(id))));
         //Inserir na linked list dos users.
         set_quests_user(g_hash_table_lookup(hu, GSIZE_TO_POINTER(ouid))
                         ,g_slist_prepend(get_quests_user(
@@ -103,6 +102,7 @@ static void processPost(TAD_community com,xmlTextReaderPtr node) {
         else{
             d = init_day(cd);
             add_quest_day(d,q);
+            g_tree_insert(td,GSIZE_TO_POINTER(cd),d);
         }
     }
     if(ptid == 2){
@@ -118,10 +118,12 @@ static void processPost(TAD_community com,xmlTextReaderPtr node) {
         else{
             d = init_day(cd);
             add_answer_day(d,a);
+            g_tree_insert(td,GSIZE_TO_POINTER(cd),d);
         }
         //TODO ligar as perguntas as respostas.
     }
 
+    
     //Incrementar o numero de posts do respetivo user.
     User nu = (User)g_hash_table_lookup(hu,GSIZE_TO_POINTER(ouid));
     inc_nr_posts(nu);
