@@ -12,12 +12,12 @@ struct answer{
 };
 
 // Criar nova resposta.
-Answer init_answer(long id,int ptid,Date cd,int s,long ouid,int cc,int fc){
+Answer init_answer(long id,int pid,Date cd,int s,long ouid,int cc,int fc){
     Answer a = malloc(sizeof(struct answer));
     a->id = id;
     a->parentId = pid;
-    p->creationDate = cd;
-    p->score = s;
+    a->creationDate = cd;
+    a->score = s;
     a->ownerUserId = ouid;
     a->commentCount = cc;
     a->favoriteCount = fc;
@@ -48,14 +48,12 @@ int get_favorite_count_answer(Answer a){
 }
 
 //Imprimir o conteudo da resposta.
-void print_Answer(Answer post){
+void print_answer(Answer post){
     if(post != NULL)
-    printf("Answer:\n\nId: %ld\nPostTypeId: %d\nParentId: %ld\nScore: %d\nOwnerUserID:
-            %ld\nTitle: %s\nTags: %s\nAnswerCount: %d\nCommentCount: 
-            %d\nFavoriteCount: %d\n",post->id,post->postTypeId,post->parentID,
-            post->score,post->ownerUserID,post->title,post->tags,
-            post->answerCount,post->commentCount,post->favoriteCount); 
     print_date(post->creationDate);
+    printf("Answer:\n\n\tId: %ld\n\tParentId: %ld\n\tScore: %d\n\tOwnerUserID: %ld\n\tCommentCount: %d\nFavoriteCount: %d\n",
+            post->id,post->parentId,post->score,
+            post->ownerUserId,post->commentCount,post->favoriteCount); 
     printf("\n\n");
 }
 
