@@ -30,7 +30,7 @@ static void processUser(GHashTable* hu ,xmlTextReaderPtr node) {
              else;
     }
     
-    ptr_user newUser = init_user(id,dn,am,r);
+    User newUser = init_user(id,dn,am,r);
     g_hash_table_insert(hu,GSIZE_TO_POINTER(id),newUser);
 }
 
@@ -122,7 +122,7 @@ static void processPost(TAD_community com,xmlTextReaderPtr node) {
     }
 
     //Incrementar o numero de posts do respetivo user.
-    ptr_user nu = (ptr_user)g_hash_table_lookup(hu,GSIZE_TO_POINTER(ouid));
+    User nu = (User)g_hash_table_lookup(hu,GSIZE_TO_POINTER(ouid));
     inc_nr_posts(nu);
     }
 }

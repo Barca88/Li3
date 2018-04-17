@@ -1,5 +1,5 @@
 #ifndef __QUEST_H__
-#define __POST_H__
+#define __QUEST_H__
 
 #include "answer.h"
 #include "date.h"

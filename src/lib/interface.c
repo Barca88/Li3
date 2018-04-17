@@ -26,9 +26,9 @@ static gboolean load_rank_gslist(gpointer key,gpointer value,gpointer data){
 }
 
 static gint comp_nr_posts(gconstpointer a,gconstpointer b){
-    if(get_nr_posts_user((ptr_user)a)>get_nr_posts_user((ptr_user)b)) 
+    if(get_nr_posts_user((User)a)>get_nr_posts_user((User)b)) 
         return -1;
-    else if(get_nr_posts_user((ptr_user)a)<get_nr_posts_user((ptr_user)b))
+    else if(get_nr_posts_user((User)a)<get_nr_posts_user((User)b))
         return 1;
     else 
         return 0;
@@ -53,24 +53,24 @@ STR_pair info_from_post(TAD_community com, long id){
     STR_pair sp = NULL; 
     /*char* title = NULL;
     char* name = NULL;
-    ptr_user n;
+    User n;
     Quest q;
     Answer a;
         
     q = (Quest)g_hash_table_lookup(get_hash_quests(com), GSIZE_TO_POINTER(id));
     
     if(q != NULL){
-        n = (ptr_user)g_hash_table_lookup(get_hash_users(com),
+        n = (User)g_hash_table_lookup(get_hash_users(com),
                 GSIZE_TO_POINTER(get_owner_id_quest(q)));
-        title = get_title_quest(t);
+        title = get_title_quest(q);
         name = get_displayname_user(n);
-    }else if(a =(Answer)g_hash_table_lookup(get_hash_answers(com)GSIZE_TO_POINTER(id)){
-
+    }else if(a = (Answer)g_hash_table_lookup(get_hash_answers(com),
+                GSIZE_TO_POINTER(id))){
         q = (Quest)g_hash_table_lookup(get_hash_posts(com), 
                 GSIZE_TO_POINTER(get_parent_id_answer(a)));
         n = (Quest)g_hash_table_lookup(get_hash_users(com),
                 GSIZE_TO_POINTER(get_owner_user_id_answer(a)));
-        title = get_title(t);
+        title = get_title(q);
         name = get_displayname_user(n);
     }
 
@@ -85,11 +85,11 @@ STR_pair info_from_post(TAD_community com, long id){
 LONG_list top_most_active(TAD_community com, int N){
     LONG_list l = create_list(N);
     int i;
-    ptr_user u;
+    User u;
     GSList *list = get_rank_n_posts(com);
     
     for(i=0;i<N && list->next != NULL;i++){
-        u =(ptr_user) GPOINTER_TO_SIZE(list->data);
+        u =(User) GPOINTER_TO_SIZE(list->data);
         set_list(l,i,get_id_user(u));
         list = list->next;
     }
