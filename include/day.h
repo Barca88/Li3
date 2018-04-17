@@ -23,4 +23,7 @@ GHashTable* get_hash_quest(Day d);
 GHashTable* get_hash_answer(Day d);
 Date get_day_day(Day d);
 
+//Print
+void print_day(Day day);
+
 #endif

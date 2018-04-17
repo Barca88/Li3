@@ -64,7 +64,7 @@ GSList* get_answer_list_quest(Quest q){
     return q->answerList;
 }
 
-//Imprimir o conteudo da resposta.
+//Imprimir o conteudo da pergunta.
 void print_quest(Quest post){
     if(post != NULL)
     print_date(post->creationDate);

@@ -46,3 +46,14 @@ GHashTable* get_hash_answer(Day d){
 Date get_day_day(Day d){
     return createDate(get_day(d->day),get_month(d->day),get_year(d->day));
 }
+
+//Imprimir o conteudo da data.
+void print_day(Day day){
+    if(day != NULL) {
+        print_date(day->day);
+        printf("Day:\n\n\tN_quest: %d\n\tN_answer: %d\n\t",
+                day->n_quest,day->n_answer); 
+        printf("\n\n"); 
+    }
+}
+
