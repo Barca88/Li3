@@ -99,11 +99,19 @@ static void processPost(TAD_community com,xmlTextReaderPtr node) {
     g_hash_table_insert(ha,GSIZE_TO_POINTER(id),a);
 
     //Inserir posts na tree de datas.
-    if(g_tree_lookup(td,cd)){
+    Day day = g_tree_lookup(td,cd);
+    if(day) 
+        if(ptid == 1)
+            add_quest_day(d,q);
+        else if (ptid == 2)
+            add_answer_day(d,q);
+    }else{
         Day d = init_day(cd);
-        g_tree_insert(td,GSIZE_TO_POINTER(cd),d);
-        add_post_day(d,new_post);
-    }else add_post_day(g_tree_lookup(td,cd),new_post);
+        if(ptid == 1)
+            add_quest_day(d,q);
+        else if (ptid == 2)
+            add_answer_day(d,q);
+    }
 
     //Incrementar o numero de posts do respetivo user.
     if(ouid!=-2){
