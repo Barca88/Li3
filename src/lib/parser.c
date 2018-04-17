@@ -93,6 +93,7 @@ static void processPost(TAD_community com,xmlTextReaderPtr node) {
         Quest q = init_quest(id,cd,s,ouid,ti,ta,ac,cc,fc);
         //Inserir perguntas numa hash table de perguntas.
         g_hash_table_insert(hq,GSIZE_TO_POINTER(id),q);
+        print_date(get_date_quest(g_hash_table_lookup(hq,GSIZE_TO_POINTER(id))));
         //Inserir na linked list dos users.
         set_quests_user(g_hash_table_lookup(hu, GSIZE_TO_POINTER(ouid))
                         ,g_slist_prepend(get_quests_user(

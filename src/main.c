@@ -13,9 +13,9 @@ int main(int argc,char** argv){
     a = createDate(1,2,1900);
     b = createDate(3,10,2020);
 
-    //info_from_post(new,1);
+    info_from_post(new,1);
     top_most_active(new,10);
-    //total_posts(new,a,b);
+    total_posts(new,a,b);
     //questions_with_tag(new,"rooting",a,b);
     //get_user_info(new,1);
     //most_voted_answers(new,10,a,b);

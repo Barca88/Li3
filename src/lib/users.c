@@ -14,8 +14,8 @@ typedef struct node{
     GSList* answers;
 } nodeUser;
 
-ptr_user init_user(long id, char* dn, char* am, long r){
-    ptr_user n = malloc(sizeof(nodeUser));
+User init_user(long id, char* dn, char* am, long r){
+    User n = malloc(sizeof(nodeUser));
     n->Id = id;
     n->DisplayName = dn;
     n->AboutMe = am;
@@ -40,15 +40,10 @@ void set_aboutme_user(User user, char* s){
 void set_reputation_user(User user, long r){
     user->Reputation = r;
 }
-<<<<<<< HEAD
-void set_quests_user(ptr_user user,GSList* q){
+void set_quests_user(User user,GSList* q){
     user->quests = q;
-=======
-void set_posts_user(User user,GSList* p){
-    user->posts = p;
->>>>>>> refs/remotes/origin/master
 }
-void set_answers_user(ptr_user user,GSList* a){
+void set_answers_user(User user,GSList* a){
     user->answers = a;
 }
 
@@ -68,16 +63,11 @@ long get_reputation_user(User user){
 int get_nr_posts_user(User user){
      return user->nr_posts;
 }
-<<<<<<< HEAD
-GSList* get_quests_user(ptr_user user){
+GSList* get_quests_user(User user){
      return user->quests;
 }
-GSList* get_answers_user(ptr_user user){
+GSList* get_answers_user(User user){
      return user->answers;
-=======
-GSList* get_posts_user(User user){
-     return user->posts;
->>>>>>> refs/remotes/origin/master
 }
 
 void inc_nr_posts(User user){

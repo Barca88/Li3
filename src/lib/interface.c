@@ -4,9 +4,11 @@
 #include "users.h"
 #include "quest.h"
 #include "answer.h"
-#include "post.h"
 #include "date.h"
 #include "tcd.h"
+#include "day.h"
+#include "answer.h"
+#include "quest.h"
 #include <limits.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -39,9 +41,10 @@ TAD_community load(TAD_community com, char* dump_path){
     streamUsers(get_hash_users(com),dump_path);
     streamPosts(com,dump_path);
 
-    //load lista ligada de utilizadores organizada por nº de posts
+    //load lista ligada de utilizadores organizada por nº de posts.
     g_hash_table_foreach(get_hash_users(com),(GHFunc)load_rank_gslist,
                          GSIZE_TO_POINTER(com));
+    //ordenar lista de utilizadores pelos nr_posts. 
     set_rank_n_posts(com,
                      g_slist_sort(get_rank_n_posts(com), comp_nr_posts));
 
@@ -51,34 +54,33 @@ TAD_community load(TAD_community com, char* dump_path){
 // query 1
 STR_pair info_from_post(TAD_community com, long id){
     STR_pair sp = NULL; 
-    /*char* title = NULL;
+    char* title = NULL;
     char* name = NULL;
-    User n;
-    Quest q;
+    User u;
     Answer a;
-        
-    q = (Quest)g_hash_table_lookup(get_hash_quests(com), GSIZE_TO_POINTER(id));
+    Quest q = (Quest)g_hash_table_lookup(get_hash_quests(com), GSIZE_TO_POINTER(id));
     
-    if(q != NULL){
-        n = (User)g_hash_table_lookup(get_hash_users(com),
+    if(q){
+        u = (User)g_hash_table_lookup(get_hash_users(com),
                 GSIZE_TO_POINTER(get_owner_id_quest(q)));
         title = get_title_quest(q);
-        name = get_displayname_user(n);
-    }else if(a = (Answer)g_hash_table_lookup(get_hash_answers(com),
-                GSIZE_TO_POINTER(id))){
-        q = (Quest)g_hash_table_lookup(get_hash_posts(com), 
+        name = get_displayname_user(u);
+    }else{
+        a = (Answer)g_hash_table_lookup(get_hash_answers(com),
+             GSIZE_TO_POINTER(id)); 
+        q = (Quest)g_hash_table_lookup(get_hash_quests(com), 
                 GSIZE_TO_POINTER(get_parent_id_answer(a)));
-        n = (Quest)g_hash_table_lookup(get_hash_users(com),
+        u = (User)g_hash_table_lookup(get_hash_users(com),
                 GSIZE_TO_POINTER(get_owner_user_id_answer(a)));
-        title = get_title(q);
-        name = get_displayname_user(n);
+        title = get_title_quest(q);
+        name = get_displayname_user(u);
     }
 
     printf("Query 1 com id %ld: \n\n",id);
     printf("\tTitle: %s\n\tName: %s\n",title,name);
     printf("\n\n");
-*/
-    return sp;// =  create_str_pair(title,name);
+
+    return sp = create_str_pair(title,name);
 }
 
 // query 2
@@ -117,11 +119,13 @@ static gboolean count_posts(gpointer key,gpointer value,gpointer data){
     Date b = ld->begin;
     Date e = ld->end;
 
+    printf("\tNumero de respostas: %d\n",ld->na);
+    printf("\tNumero de perguntas: %d\n",ld->nq);
     if ((date_compare(get_creation_date(value),b)>0 && 
           date_compare(e,get_creation_date(value))>0)){
-
-            ld->na += g_tree_nnodes(get_answer_tree(value));
-            ld->nq++;
+print_date(value);
+            ld->nq += get_n_quest(value);
+            ld->na += get_n_answer(value);
     }
     return FALSE;
 }
