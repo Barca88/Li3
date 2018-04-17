@@ -63,16 +63,16 @@ STR_pair info_from_post(TAD_community com, long id){
     if(q != NULL){
         n = (ptr_user)g_hash_table_lookup(get_hash_users(com),
                 GSIZE_TO_POINTER(get_owner_id_quest(q)));
-        title = get_title_quest(t);
+        title = get_title_quest(q);
         name = get_displayname_user(n);
     }else if(a = (Answer)g_hash_table_lookup(get_hash_answers(com),
-                GSIZE_TO_POINTER(id)){
+                GSIZE_TO_POINTER(id))){
 
         q = (Quest)g_hash_table_lookup(get_hash_posts(com), 
                 GSIZE_TO_POINTER(get_parent_id_answer(a)));
         n = (Quest)g_hash_table_lookup(get_hash_users(com),
                 GSIZE_TO_POINTER(get_owner_user_id_answer(a)));
-        title = get_title(t);
+        title = get_title(q);
         name = get_displayname_user(n);
     }
 
