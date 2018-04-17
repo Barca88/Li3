@@ -14,10 +14,10 @@ Day init_day(Date d);
 void add_post_day(Day d, ptr_post);
 
 //Gettres
-int get_n_p(Day d);
-int get_n_r(Day d);
-GHashTable* get_hash_p(Day d);
-GHashTable* get_hash_r(Day d);
+int get_n_quest(Day d);
+int get_n_answer(Day d);
+GHashTable* get_hash_quest(Day d);
+GHashTable* get_hash_answer(Day d);
 Date get_day_day(Day d);
 
 #endif
