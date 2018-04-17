@@ -23,3 +23,4 @@ int get_favorite_c_quest(Quest q);
 GSList* get_answer_list_quest(QUest q);
 
 void add_answer_quest(Quest q, Answer a);
+#endif

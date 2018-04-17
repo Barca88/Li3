@@ -2,6 +2,8 @@
 #include "common.h"
 #include "parser.h"
 #include "users.h"
+#include "quest.h"
+#include "answer.h"
 #include "post.h"
 #include "date.h"
 #include "tcd.h"
@@ -53,19 +55,24 @@ STR_pair info_from_post(TAD_community com, long id){
     char* title = NULL;
     char* name = NULL;
     ptr_user n;
-     t = (ptr_post)g_hash_table_lookup(get_hash_posts(com),
+    Quest q;
+    Answer a;
+        
+    q = (Quest)g_hash_table_lookup(get_hash_quests(com),
             GSIZE_TO_POINTER(id));
-
-    if(get_post_type_id(t)==1){
+    
+    if(q != NULL){
         n = (ptr_user)g_hash_table_lookup(get_hash_users(com),
-                GSIZE_TO_POINTER(get_owner_user_id(t)));
-        title = get_title(t);
+                GSIZE_TO_POINTER(get_owner_id_quest(q)));
+        title = get_title_quest(t);
         name = get_displayname_user(n);
-    }else if(get_post_type_id(t) == 2){
-        t = (ptr_post)g_hash_table_lookup(get_hash_posts(com), 
-                GSIZE_TO_POINTER(get_parent_id(t)));
-        n = (ptr_user)g_hash_table_lookup(get_hash_users(com),
-                GSIZE_TO_POINTER(get_owner_user_id(t)));
+    }else if(a = (Answer)g_hash_table_lookup(get_hash_answer(com),
+                GSIZE_TO_POINTER(id)){
+
+        q = (Quest)g_hash_table_lookup(get_hash_posts(com), 
+                GSIZE_TO_POINTER(get_parent_id_answer(a)));
+        n = (Quest)g_hash_table_lookup(get_hash_users(com),
+                GSIZE_TO_POINTER(get_owner_user_id_answer(a)));
         title = get_title(t);
         name = get_displayname_user(n);
     }
