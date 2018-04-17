@@ -27,7 +27,7 @@ void set_favorite_count(int favoriteCount, ptr_post p);
 void set_answer_tree(GTree* at, ptr_post p);
 
 //Getters
-int get_Id(ptr_post p);
+int get_id(ptr_post p);
 int get_post_type_id(ptr_post p);
 long get_parent_id(ptr_post p);
 Date get_creation_date(ptr_post p);
