@@ -24,48 +24,48 @@ ptr_user init_user(long id, char* dn, char* am, long r){
     return n;
 }
 
-void set_id_user(ptr_user user, long id){
+void set_id_user(User user, long id){
     user->Id = id;
 }
-void set_displayname_user(ptr_user user, char* s){
+void set_displayname_user(User user, char* s){
     free(user->DisplayName);
     user->DisplayName = mystrdup(s);
 }
-void set_aboutme_user(ptr_user user, char* s){
+void set_aboutme_user(User user, char* s){
     free(user->AboutMe);
     user->AboutMe = mystrdup(s);
 }
-void set_reputation_user(ptr_user user, long r){
+void set_reputation_user(User user, long r){
     user->Reputation = r;
 }
-void set_posts_user(ptr_user user,GSList* p){
+void set_posts_user(User user,GSList* p){
     user->posts = p;
 }
 
-long get_id_user(ptr_user user){
+long get_id_user(User user){
     return user->Id;
 }
-char* get_displayname_user(ptr_user user){
+char* get_displayname_user(User user){
     return mystrdup(user->DisplayName);
 }
-char* get_aboutme_user(ptr_user user){
+char* get_aboutme_user(User user){
    return mystrdup(user->AboutMe);
 }
-long get_reputation_user(ptr_user user){
+long get_reputation_user(User user){
     return user->Reputation;
 }
-int get_nr_posts_user(ptr_user user){
+int get_nr_posts_user(User user){
      return user->nr_posts;
 }
-GSList* get_posts_user(ptr_user user){
+GSList* get_posts_user(User user){
      return user->posts;
 }
 
-void inc_nr_posts(ptr_user user){
+void inc_nr_posts(User user){
     (user->nr_posts)++;
 }
 
-void print_user(ptr_user user){
+void print_user(User user){
     if(user != NULL)
    printf("user:\n\nId: %ld\nName:  %s\nAbouteMe: %s\nReputation: %ld\nNr de Posts: %d\n",user->Id,user->DisplayName,user->AboutMe,user->Reputation,user->nr_posts); 
 }

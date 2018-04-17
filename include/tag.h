@@ -5,24 +5,24 @@
 #include <glib.h>
 #include <string.h>
 #include <stdlib.h>
-typedef struct tag* ptr_tag;
+typedef struct tag* Tag;
 
 // Metodo de Criação
-ptr_tag create_tag(long id,char* tag, int t_ctag);
+Tag create_tag(long id,char* tag, int t_ctag);
 
 //Setters
-void set_id_tag (ptr_tag t, long id_out);
-void set_tag (ptr_tag t, char* g_tag);
-void set_n_used (ptr_tag t, int count_tag);
+void set_id_tag (Tag t, long id_out);
+void set_tag (Tag t, char* g_tag);
+void set_n_used (Tag t, int count_tag);
 
 //Getters
-long get_id_tag (ptr_tag t);
-char* get_tag (ptr_tag t);
-int get_n_used (ptr_tag t);
+long get_id_tag (Tag t);
+char* get_tag (Tag t);
+int get_n_used (Tag t);
 
 //Metodos
-int equal_tag(ptr_tag t,char* s);
+int equal_tag(Tag t,char* s);
 //free
-void free_tag(ptr_tag);
+void free_tag(Tag);
 
 #endif
