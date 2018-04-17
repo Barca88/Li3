@@ -144,10 +144,10 @@ LONG_pair total_posts(TAD_community com, Date begin, Date end){
     ld->nq = 0;
     ld->na = 0;
 
-    g_tree_foreach(get_tree_posts(com),(GTraverseFunc)count_posts,
+    g_tree_foreach(get_tree_days(com),(GTraverseFunc)count_posts,
             GSIZE_TO_POINTER(ld));
 
-//    g_tree_search(get_tree_posts(com),(GCompareFunc)func_print,GSIZE_TO_POINTER(ld));
+//    g_tree_search(get_tree_days(com),(GCompareFunc)func_print,GSIZE_TO_POINTER(ld));
 
     printf("Query 3: \n\n");
     printf("\tNumero de users: %d\n",g_hash_table_size(get_hash_users(com)));
@@ -188,7 +188,7 @@ LONG_list questions_with_tag(TAD_community com, char* tag, Date begin, Date end)
     ld->begin = begin;
     ld->end = end;
 
-    g_tree_foreach(get_tree_posts(com),(GTraverseFunc)func_q_tags,
+    g_tree_foreach(get_tree_days(com),(GTraverseFunc)func_q_tags,
             GSIZE_TO_POINTER(ld));
 
     LONG_list ll = create_long_list(5);

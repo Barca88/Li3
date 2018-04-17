@@ -33,7 +33,7 @@ static void processUser(GHashTable* hu ,xmlTextReaderPtr node) {
 
 //Create new post and insert in post struct. 
 static void processPost(TAD_community com,xmlTextReaderPtr node) {
-    GTree *tp = get_tree_posts(com);
+    GTree *td = get_tree_days(com);
     GHashTable *hp = get_hash_posts(com);
     GHashTable *hu = get_hash_users(com);
 
@@ -81,11 +81,25 @@ static void processPost(TAD_community com,xmlTextReaderPtr node) {
                  fc = atoi((char*)xmlTextReaderValue(node));
          else;
     }
-    
+    //criar nvo post 
     ptr_post new_post = init_post(id,ptid,pid,cd,s,ouid,ti,ta,ac,cc,fc);
     
-    //Inserir na estrura dos posts.
+    //Inserir posts na tree de datas.
+    if(g_tree_lookup(td,cd)){
+        ptr_day d = init_day(cd);
+        g_tree_insert(td,GSIZE_TO_POINTER(cd),d);
+        add_post_day(d,new_post);
+    }else add_post_day(g_tree_lookup(td,cd),new_post);
+
+
+    //Inserir postsnuma hash table de posts.
     g_hash_table_insert(hp,GSIZE_TO_POINTER(id),new_post);
+
+    //Incrementar o numero de posts do respetivo user.
+    if(ouid!=-2){
+        ptr_user nu = (ptr_user)g_hash_table_lookup(hu,GSIZE_TO_POINTER(ouid));
+        inc_nr_posts(nu);
+    }
 
     DatePair pair = creat_date_pair(cd,id);
     ptr_post quest = (ptr_post)g_hash_table_lookup(hp,GSIZE_TO_POINTER(pid));
@@ -97,11 +111,6 @@ static void processPost(TAD_community com,xmlTextReaderPtr node) {
         if(quest)
             g_tree_insert(get_answer_tree(quest),GSIZE_TO_POINTER(pair),new_post);
 
-    //Incrementar o numero de posts do respetivo user.
-    if(ouid!=-2){
-        ptr_user nu = (ptr_user)g_hash_table_lookup(hu,GSIZE_TO_POINTER(ouid));
-        inc_nr_posts(nu);
-    }
 }
 
 //Processar informacao de um vote. 
