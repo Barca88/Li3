@@ -1,5 +1,8 @@
 #include "parser.h"
 #include "tcd.h"
+#include "day.h"
+#include "quest.h"
+#include "answer.h"
 
 //Create new user and insert in user struct. 
 static void processUser(GHashTable* hu ,xmlTextReaderPtr node) {
@@ -34,7 +37,8 @@ static void processUser(GHashTable* hu ,xmlTextReaderPtr node) {
 //Create new post and insert in post struct. 
 static void processPost(TAD_community com,xmlTextReaderPtr node) {
     GTree *td = get_tree_days(com);
-    GHashTable *hp = get_hash_posts(com);
+    GHashTable *hq = get_hash_quests(com);
+    GHashTable *ha = get_hash_answers(com);
     GHashTable *hu = get_hash_users(com);
 
     xmlChar *name = xmlTextReaderName(node);
@@ -44,7 +48,7 @@ static void processPost(TAD_community com,xmlTextReaderPtr node) {
 
     long id = -2;
     int ptid = -2;
-    long pid = -2; //Optional if postTypeId = 2
+    long pid = -2; 
     Date cd = NULL;
     int s = -2;
     long ouid = -2;
@@ -81,19 +85,25 @@ static void processPost(TAD_community com,xmlTextReaderPtr node) {
                  fc = atoi((char*)xmlTextReaderValue(node));
          else;
     }
-    //criar nvo post 
-    ptr_post new_post = init_post(id,ptid,pid,cd,s,ouid,ti,ta,ac,cc,fc);
-    
+
+    //criar nova quest ou answer.
+    if(ptid == 1)
+        Quest q = init_quest(id,pid,cd,s,ouid,ti,ta,ac,cc,fc);
+    if(ptid == 2) 
+        Answer a = init_answer(id,pid,cd,s,ouid,cc,fc);
+
+    //Inserir perguntas numa hash table de perguntas.
+    g_hash_table_insert(hq,GSIZE_TO_POINTER(id),q);
+
+    //Inserir respostas numa hash table de respostas.
+    g_hash_table_insert(ha,GSIZE_TO_POINTER(id),a);
+
     //Inserir posts na tree de datas.
     if(g_tree_lookup(td,cd)){
-        ptr_day d = init_day(cd);
+        Day d = init_day(cd);
         g_tree_insert(td,GSIZE_TO_POINTER(cd),d);
         add_post_day(d,new_post);
     }else add_post_day(g_tree_lookup(td,cd),new_post);
-
-
-    //Inserir postsnuma hash table de posts.
-    g_hash_table_insert(hp,GSIZE_TO_POINTER(id),new_post);
 
     //Incrementar o numero de posts do respetivo user.
     if(ouid!=-2){
@@ -105,7 +115,7 @@ static void processPost(TAD_community com,xmlTextReaderPtr node) {
     ptr_post quest = (ptr_post)g_hash_table_lookup(hp,GSIZE_TO_POINTER(pid));
 
     if(ptid == 1){
-        g_tree_insert(tp,GSIZE_TO_POINTER(pair),new_post);
+        g_tree_insert(td,GSIZE_TO_POINTER(pair),new_post);
         set_answer_tree(g_tree_new((GCompareFunc)date_pair_compare),new_post);
     }else if (ptid == 2)
         if(quest)
