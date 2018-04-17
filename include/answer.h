@@ -12,7 +12,7 @@ typedef struct answer* Answer;
 Answer init_answer(long id,int ptid,Date cd,int s,long ouid,int cc,int fc);
 
 //Getters
-int get_Id(Answer a);
+int get_id_answer(Answer a);
 long get_parent_id_answer(Answer a);
 Date get_creation_date_answer(Answer a);
 int get_score_answer(Answer a);

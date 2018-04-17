@@ -10,7 +10,8 @@ typedef struct node{
     char* AboutMe;
     long  Reputation;
     int nr_posts;
-    GSList* posts;
+    GSList* quests;
+    GSList* answers;
 } nodeUser;
 
 ptr_user init_user(long id, char* dn, char* am, long r){
@@ -20,7 +21,8 @@ ptr_user init_user(long id, char* dn, char* am, long r){
     n->AboutMe = am;
     n->Reputation = r;
     n->nr_posts = 0;
-    n->posts = NULL;
+    n->quests = NULL;
+    n->answers = NULL;
     return n;
 }
 
@@ -38,9 +40,13 @@ void set_aboutme_user(ptr_user user, char* s){
 void set_reputation_user(ptr_user user, long r){
     user->Reputation = r;
 }
-void set_posts_user(ptr_user user,GSList* p){
-    user->posts = p;
+void set_quests_user(ptr_user user,GSList* q){
+    user->quests = q;
 }
+void set_answers_user(ptr_user user,GSList* a){
+    user->answers = a;
+}
+
 
 long get_id_user(ptr_user user){
     return user->Id;
@@ -57,8 +63,11 @@ long get_reputation_user(ptr_user user){
 int get_nr_posts_user(ptr_user user){
      return user->nr_posts;
 }
-GSList* get_posts_user(ptr_user user){
-     return user->posts;
+GSList* get_quests_user(ptr_user user){
+     return user->quests;
+}
+GSList* get_answers_user(ptr_user user){
+     return user->answers;
 }
 
 void inc_nr_posts(ptr_user user){

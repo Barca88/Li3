@@ -5,7 +5,7 @@ struct quest{
     long id;
     Date creationDate;
     int score;
-    long ownerUserID;
+    long ownerUserId;
     char* title;
     char* tags;
     int answer_c;
@@ -15,7 +15,7 @@ struct quest{
 };
 
 //Metodo de Criação
-Quest init_quest(long id, Date cd, int s, char* ti, char* ta, int ac,
+Quest init_quest(long id, Date cd, int s,long ouid, char* ti, char* ta, int ac,
         int cc, int fc){
     Quest q = malloc(sizeof(struct quest));
     q -> id = id;
@@ -36,14 +36,14 @@ long get_id_quest(Quest q){
     return q->id;
 }
 Date get_date_quest(Quest q){
-    Date d = d->creationDate;
-    return create_date(get_day(d),get_month(d),get_year(d));
+    Date d = q->creationDate;
+    return createDate(get_day(d),get_month(d),get_year(d));
 }
 int get_score_quest(Quest q){
     return q->score;
 }
 long get_owner_id_quest(Quest q){
-    return q->ownerUserID;
+    return q->ownerUserId;
 }
 char* get_title_quest(Quest q){
     return mystrdup(q->title);

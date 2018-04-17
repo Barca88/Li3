@@ -19,18 +19,15 @@ Day init_day(Date day){
 }
 
 //Métodos
-void add_post_day(Day d, ptr_post p){
-    GHashTable *hash;
-    if(get_post_type_id(p) == 1){
-        hash = d->hash_p;
-        g_hash_table_insert(hash,GSIZE_TO_POINTER(get_id(p)),p);
-        (d->n_p) += 1;
-    }
-    if(get_post_type_id(p) == 2){
-        hash = d->hash_r;
-        g_hash_table_insert(hash,GSIZE_TO_POINTER(get_id(p)),p);
-        (d->n_r) += 1;
-    }
+void add_quest_day(Day d, Quest q){
+    GHashTable* hq = d->hash_p;
+    g_hash_table_insert(hq,GSIZE_TO_POINTER(get_id_quest(q)),q);
+    (d->n_p)++;
+}
+void add_answer_day(Day d, Answer a){
+    GHashTable* ha = d->hash_r;
+    g_hash_table_insert(ha,GSIZE_TO_POINTER(get_id_answer(a)),a);
+    (d->n_r)++;
 }
 
 //Getters

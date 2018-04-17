@@ -3,6 +3,8 @@
 
 #include "post.h"
 #include "date.h"
+#include "answer.h"
+#include "quest.h"
 #include <glib.h>
 #include <stdlib.h>
 typedef struct day* Day;
@@ -11,7 +13,8 @@ typedef struct day* Day;
 Day init_day(Date d);
 
 //Métodos
-void add_post_day(Day d, ptr_post);
+void add_quest_day(Day d, Quest q);
+void add_answer_day(Day d, Answer a);
 
 //Gettres
 int get_n_p(Day d);

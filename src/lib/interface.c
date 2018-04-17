@@ -41,18 +41,17 @@ TAD_community load(TAD_community com, char* dump_path){
 
     //load lista ligada de utilizadores organizada por nº de posts
     g_hash_table_foreach(get_hash_users(com),(GHFunc)load_rank_gslist,
-            GSIZE_TO_POINTER(com));
+                         GSIZE_TO_POINTER(com));
     set_rank_n_posts(com,
-            g_slist_sort(get_rank_n_posts(com), comp_nr_posts));
+                     g_slist_sort(get_rank_n_posts(com), comp_nr_posts));
 
     return com;
 }  
 
 // query 1
 STR_pair info_from_post(TAD_community com, long id){
-
     STR_pair sp = NULL; 
-    char* title = NULL;
+    /*char* title = NULL;
     char* name = NULL;
     ptr_user n;
     Quest q;
@@ -65,8 +64,7 @@ STR_pair info_from_post(TAD_community com, long id){
                 GSIZE_TO_POINTER(get_owner_id_quest(q)));
         title = get_title_quest(t);
         name = get_displayname_user(n);
-    }else if(a = (Answer)g_hash_table_lookup(get_hash_answers(com),
-                GSIZE_TO_POINTER(id)){
+    }else if(a =(Answer)g_hash_table_lookup(get_hash_answers(com)GSIZE_TO_POINTER(id)){
 
         q = (Quest)g_hash_table_lookup(get_hash_posts(com), 
                 GSIZE_TO_POINTER(get_parent_id_answer(a)));
@@ -79,8 +77,8 @@ STR_pair info_from_post(TAD_community com, long id){
     printf("Query 1 com id %ld: \n\n",id);
     printf("\tTitle: %s\n\tName: %s\n",title,name);
     printf("\n\n");
-
-    return sp =  create_str_pair(title,name);
+*/
+    return sp;// =  create_str_pair(title,name);
 }
 
 // query 2

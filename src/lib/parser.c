@@ -86,54 +86,45 @@ static void processPost(TAD_community com,xmlTextReaderPtr node) {
          else;
     }
 
+    if(ouid!=-2){
     //criar nova quest ou answer.
-    if(ptid == 1)
-        Quest q = init_quest(id,pid,cd,s,ouid,ti,ta,ac,cc,fc);
-    if(ptid == 2) 
-        Answer a = init_answer(id,pid,cd,s,ouid,cc,fc);
-
-    //Inserir perguntas numa hash table de perguntas.
-    g_hash_table_insert(hq,GSIZE_TO_POINTER(id),q);
-
-    //Inserir respostas numa hash table de respostas.
-    g_hash_table_insert(ha,GSIZE_TO_POINTER(id),a);
-
-    //Inserir posts na tree de datas.
-    Day day = g_tree_lookup(td,cd);
-    if(day) 
-        if(ptid == 1)
+    Day d = g_tree_lookup(td,cd);
+    if(ptid == 1){
+        Quest q = init_quest(id,cd,s,ouid,ti,ta,ac,cc,fc);
+        //Inserir perguntas numa hash table de perguntas.
+        g_hash_table_insert(hq,GSIZE_TO_POINTER(id),q);
+        //Inserir na linked list dos users.
+        set_quests_user(g_hash_table_lookup(hu, GSIZE_TO_POINTER(ouid))
+                        ,g_slist_prepend(get_quests_user(
+                        g_hash_table_lookup(hu, GSIZE_TO_POINTER(ouid))),q));
+        //Inserir quests na tree de datas.
+        if(d) add_quest_day(d,q);
+        else{
+            d = init_day(cd);
             add_quest_day(d,q);
-        else if (ptid == 2)
-            add_answer_day(d,q);
-    }else{
-        Day d = init_day(cd);
-        if(ptid == 1)
-            add_quest_day(d,q);
-        else if (ptid == 2)
-            add_answer_day(d,q);
+        }
     }
-
-    //TODO inserir na linked list dos users.
-      //g_slist_prepend(get_posts_user(g_hash_table_lookup(hu,ouid)), ); ;
-    
-    //TODO ligar as perguntas as respostas.
+    if(ptid == 2){
+        Answer a = init_answer(id,pid,cd,s,ouid,cc,fc);
+        //Inserir respostas numa hash table de respostas.
+        g_hash_table_insert(ha,GSIZE_TO_POINTER(id),a);
+        //Inserir na linked list dos users.
+        set_answers_user(g_hash_table_lookup(hu, GSIZE_TO_POINTER(ouid))
+                        ,g_slist_prepend(get_answers_user(
+                        g_hash_table_lookup(hu, GSIZE_TO_POINTER(ouid))),a));
+        //Inserir answers na tree de datas.
+        if(d) add_answer_day(d,a);
+        else{
+            d = init_day(cd);
+            add_answer_day(d,a);
+        }
+        //TODO ligar as perguntas as respostas.
+    }
 
     //Incrementar o numero de posts do respetivo user.
-    if(ouid!=-2){
-        ptr_user nu = (ptr_user)g_hash_table_lookup(hu,GSIZE_TO_POINTER(ouid));
-        inc_nr_posts(nu);
+    ptr_user nu = (ptr_user)g_hash_table_lookup(hu,GSIZE_TO_POINTER(ouid));
+    inc_nr_posts(nu);
     }
-
-    DatePair pair = creat_date_pair(cd,id);
-    ptr_post quest = (ptr_post)g_hash_table_lookup(hp,GSIZE_TO_POINTER(pid));
-
-    if(ptid == 1){
-        g_tree_insert(td,GSIZE_TO_POINTER(pair),new_post);
-        set_answer_tree(g_tree_new((GCompareFunc)date_pair_compare),new_post);
-    }else if (ptid == 2)
-        if(quest)
-            g_tree_insert(get_answer_tree(quest),GSIZE_TO_POINTER(pair),new_post);
-
 }
 
 //Processar informacao de um vote. 
