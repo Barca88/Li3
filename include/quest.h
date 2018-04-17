@@ -23,5 +23,8 @@ int get_comment_c_quest(Quest q);
 int get_favorite_c_quest(Quest q);
 GSList* get_answer_list_quest(Quest q);
 
+//Print
+void print_quest(Quest post);
+
 void add_answer_quest(Quest q, Answer a);
 #endif

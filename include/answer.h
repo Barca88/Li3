@@ -21,7 +21,7 @@ int get_comment_count_answer(Answer a);
 int get_favorite_count_answer(Answer a);
 
 //Print
-void print_answer(Answer aost);
+void print_answer(Answer post);
 
 //Clear
 void free_answer(Answer a);

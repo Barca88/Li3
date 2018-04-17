@@ -64,6 +64,16 @@ GSList* get_answer_list_quest(Quest q){
     return q->answerList;
 }
 
+//Imprimir o conteudo da resposta.
+void print_quest(Quest post){
+    if(post != NULL)
+    print_date(post->creationDate);
+    printf("Quest:\n\n\tId: %ld\n\tScore: %d\n\tOwnerUserID: %ld\n\tTitle: %s\n\t Tags: %s\n\t Answer_c: %d\n\tComment_c: %d\n\tFavorite_c: %d\n\t",
+            post->id,post->score,
+            post->ownerUserId,post->title,post->tags,post->answer_c,post->comment_c,post->favorite_c); 
+    printf("\n\n");
+}
+
 void add_answer_quest(Quest q, Answer a){
     GSList* l = q->answerList;
     q->answerList = g_slist_prepend(l,a);
