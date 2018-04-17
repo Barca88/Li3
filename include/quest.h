@@ -11,6 +11,7 @@ typedef struct quest* Quest;
 //Metodo de Criação
 Quest init_quest(long id, Date cd, int s, char* ti, char* ta, int ac, 
         int cc, int fc);
+
 long get_id_quest(Quest q);
 Date get_date_quest(Quest q);
 int get_score_quest(Quest q);

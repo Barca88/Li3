@@ -113,6 +113,11 @@ static void processPost(TAD_community com,xmlTextReaderPtr node) {
             add_answer_day(d,q);
     }
 
+    //TODO inserir na linked list dos users.
+      //g_slist_prepend(get_posts_user(g_hash_table_lookup(hu,ouid)), ); ;
+    
+    //TODO ligar as perguntas as respostas.
+
     //Incrementar o numero de posts do respetivo user.
     if(ouid!=-2){
         ptr_user nu = (ptr_user)g_hash_table_lookup(hu,GSIZE_TO_POINTER(ouid));
