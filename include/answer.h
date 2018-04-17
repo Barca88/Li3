@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct *answer Answer;
+typedef struct answer* Answer;
 
 //Metodo de Criação
 Answer init_answer(long id,int ptid,Date cd,int s,long ouid,int cc,int fc);
