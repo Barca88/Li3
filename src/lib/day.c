@@ -23,9 +23,7 @@ void add_quest_day(Day d, Quest q){
     GHashTable* hq = d->hash_quest;
     g_hash_table_insert(hq,GSIZE_TO_POINTER(get_id_quest(q)),q);
     (d->n_quest)++;
-    print_quest(q);
-   // print_date(get_day_day(d));
-   // print_date(get_date_quest(q));
+   // print_quest(q);
 }
 void add_answer_day(Day d, Answer a){
     GHashTable* ha = d->hash_answer;

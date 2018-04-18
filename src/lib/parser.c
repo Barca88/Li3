@@ -122,7 +122,7 @@ static void processPost(TAD_community com,xmlTextReaderPtr node) {
         }
         //TODO ligar as perguntas as respostas.
     }
-
+//print_day(g_tree_lookup(td,GSIZE_TO_POINTER(cd)));
     
     //Incrementar o numero de posts do respetivo user.
     User nu = (User)g_hash_table_lookup(hu,GSIZE_TO_POINTER(ouid));

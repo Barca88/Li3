@@ -112,28 +112,24 @@ typedef struct date_pair{
     Date end;
     int nq;
     int na;
-}* limitDates;
+}* query3;
 
 static gboolean count_posts(gpointer key,gpointer value,gpointer data){
-    limitDates ld = (limitDates)GPOINTER_TO_SIZE(data);
+    query3 ld = (query3)GPOINTER_TO_SIZE(data);
     Date b = ld->begin;
     Date e = ld->end;
 
-   // print_date(get_creation_date(value));
-    if ((date_compare(get_creation_date(value),b)>0 && 
-          date_compare(e,get_creation_date(value))>0)){
-print_date(value);
-            print_date(get_creation_date(value));
+
+    if ((date_compare(get_day_day(value),b)>0 && 
+          date_compare(e,get_day_day(value))>0)){
             ld->nq += get_n_quest(value);
             ld->na += get_n_answer(value);
-    printf("\tNumero de respostas: %d\n",get_n_quest(value));
-    printf("\tNumero de perguntas: %d\n",get_n_quest(value));
     }
     return FALSE;
 }
 
 /*static gint func_print(gpointer key, gpointer data){ 
-    limitDates ld = (limitDates)GPOINTER_TO_SIZE(data);
+    query3 ld = (query3)GPOINTER_TO_SIZE(data);
     Date b = ld->begin;
     Date e = ld->end;
 
@@ -148,7 +144,7 @@ print_date(value);
 
 // query 3
 LONG_pair total_posts(TAD_community com, Date begin, Date end){
-    limitDates ld = malloc(sizeof(struct date_pair));
+    query3 ld = malloc(sizeof(struct date_pair));
     ld->begin = begin;
     ld->end = end;
     ld->nq = 0;
@@ -178,7 +174,7 @@ typedef struct tags{
 }* tagsInfo;
 /*
 static gboolean func_q_tags(gpointer key,gpointer value,gpointer data){
-    limitDates ld = (limitDates)GPOINTER_TO_SIZE(data);
+    query3 ld = (query3)GPOINTER_TO_SIZE(data);
     Date b = ld->begin;
     Date e = ld->end;
 
