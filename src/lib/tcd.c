@@ -22,10 +22,10 @@ TAD_community init_tcd(){
 GHashTable* get_hash_users(TAD_community root){
     return root->hashUsers;
 }
-GHashTable* get_hash_quests(TAD_community root){
+GHashTable* get_hash_quest_days(TAD_community root){
     return root->hashQuests;
 }
-GHashTable* get_hash_answers(TAD_community root){
+GHashTable* get_hash_answer_days(TAD_community root){
     return root->hashAnswers;
 }
 GTree* get_tree_days(TAD_community root){

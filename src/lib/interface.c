@@ -58,7 +58,7 @@ STR_pair info_from_post(TAD_community com, long id){
     char* name = NULL;
     User u;
     Answer a;
-    Quest q = (Quest)g_hash_table_lookup(get_hash_quests(com), GSIZE_TO_POINTER(id));
+    Quest q = (Quest)g_hash_table_lookup(get_hash_quest_days(com), GSIZE_TO_POINTER(id));
     
     if(q){
         u = (User)g_hash_table_lookup(get_hash_users(com),
@@ -66,9 +66,9 @@ STR_pair info_from_post(TAD_community com, long id){
         title = get_title_quest(q);
         name = get_displayname_user(u);
     }else{
-        a = (Answer)g_hash_table_lookup(get_hash_answers(com),
+        a = (Answer)g_hash_table_lookup(get_hash_answer_days(com),
              GSIZE_TO_POINTER(id)); 
-        q = (Quest)g_hash_table_lookup(get_hash_quests(com), 
+        q = (Quest)g_hash_table_lookup(get_hash_quest_days(com), 
                 GSIZE_TO_POINTER(get_parent_id_answer(a)));
         u = (User)g_hash_table_lookup(get_hash_users(com),
                 GSIZE_TO_POINTER(get_owner_user_id_answer(a)));
@@ -120,8 +120,8 @@ static gboolean count_posts(gpointer key,gpointer value,gpointer data){
     Date e = ld->end;
 
 
-    if ((date_compare(get_day_day(value),b)>0 && 
-          date_compare(e,get_day_day(value))>0)){
+    if ((date_compare(get_date_day(value),b)>0 && 
+          date_compare(e,get_date_day(value))>0)){
             ld->nq += get_n_quest(value);
             ld->na += get_n_answer(value);
     }

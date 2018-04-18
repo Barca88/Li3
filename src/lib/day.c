@@ -38,13 +38,13 @@ int get_n_quest(Day d){
 int get_n_answer(Day d){
     return d->n_answer;
 }
-GHashTable* get_hash_quest(Day d){
+GHashTable* get_hash_quest_day_day(Day d){
     return d->hash_quest;
 }
-GHashTable* get_hash_answer(Day d){
+GHashTable* get_hash_answer_day_day(Day d){
     return d->hash_answer;
 }
-Date get_day_day(Day d){
+Date get_date_day(Day d){
     return createDate(get_day(d->day),get_month(d->day),get_year(d->day));
 }
 

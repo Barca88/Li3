@@ -37,8 +37,8 @@ static void processUser(GHashTable* hu ,xmlTextReaderPtr node) {
 //Create new post and insert in post struct. 
 static void processPost(TAD_community com,xmlTextReaderPtr node) {
     GTree *td = get_tree_days(com);
-    GHashTable *hq = get_hash_quests(com);
-    GHashTable *ha = get_hash_answers(com);
+    GHashTable *hq = get_hash_quest_days(com);
+    GHashTable *ha = get_hash_answer_days(com);
     GHashTable *hu = get_hash_users(com);
 
     xmlChar *name = xmlTextReaderName(node);
