@@ -12,6 +12,8 @@
 #include "date.h"
 #include "post.h"
 
+void streamTags(GHashTable* ht,char* path);
+
 void streamUsers(GHashTable* hu,char* path);
 
 void streamPosts(TAD_community com,char* path);

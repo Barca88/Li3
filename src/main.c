@@ -14,11 +14,11 @@ int main(int argc,char** argv){
     b = createDate(3,10,2020);
 
     info_from_post(new,1);
-    top_most_active(new,10);
+    top_most_active(new,12);
     total_posts(new,a,b);
-    //questions_with_tag(new,"rooting",a,b);
-    get_user_info(new,88);
-    //most_voted_answers(new,10,a,b);
+    questions_with_tag(new,"handcent-sms",a,b);
+    //get_user_info(new,88);
+    most_voted_answers(new,10,a,b);
     //most_answered_questions(new,10,a,b);
     //contains_word(new,"rooting",10);
     //both_participated(new,1,2,10);

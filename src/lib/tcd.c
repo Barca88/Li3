@@ -1,6 +1,7 @@
 #include "tcd.h"
 
 struct TCD_community{
+    GHashTable* hashTags;
     GHashTable* hashUsers;
     GHashTable* hashQuests;
     GHashTable* hashAnswers;
@@ -11,6 +12,7 @@ struct TCD_community{
 TAD_community init_tcd(){
     TAD_community n = malloc(sizeof(struct TCD_community));
 
+    n->hashTags = g_hash_table_new(g_direct_hash, g_direct_equal);
     n->hashUsers = g_hash_table_new(g_direct_hash, g_direct_equal);
     n->hashQuests = g_hash_table_new(g_direct_hash, g_direct_equal);
     n->hashAnswers = g_hash_table_new(g_direct_hash, g_direct_equal);
@@ -19,13 +21,16 @@ TAD_community init_tcd(){
     return n;
 }
 
+GHashTable* get_hash_tags(TAD_community root){
+    return root->hashTags;
+}
 GHashTable* get_hash_users(TAD_community root){
     return root->hashUsers;
 }
-GHashTable* get_hash_quests(TAD_community root){
+GHashTable* get_hash_quest_days(TAD_community root){
     return root->hashQuests;
 }
-GHashTable* get_hash_answers(TAD_community root){
+GHashTable* get_hash_answer_days(TAD_community root){
     return root->hashAnswers;
 }
 GTree* get_tree_days(TAD_community root){
@@ -39,4 +44,4 @@ void set_rank_n_posts(TAD_community root, GSList *new){
     root->rankNPosts = new;
 }
 
- void free_tcd(TAD_community root); //TODO
+void free_tcd(TAD_community root); //TODO

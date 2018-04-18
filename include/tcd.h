@@ -12,9 +12,10 @@ typedef struct TCD_community TCD_community;
 
 TAD_community init_tcd();
 
+GHashTable* get_hash_tags(TAD_community root);
 GHashTable* get_hash_users(TAD_community root);
-GHashTable* get_hash_quests(TAD_community root);
-GHashTable* get_hash_answers(TAD_community root);
+GHashTable* get_hash_quest_days(TAD_community root);
+GHashTable* get_hash_answer_days(TAD_community root);
 GTree* get_tree_days(TAD_community root);
 GSList* get_rank_n_posts(TAD_community root);
 

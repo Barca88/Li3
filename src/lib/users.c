@@ -4,7 +4,7 @@
 #include "common.h"
 #include "users.h"
 
-typedef struct node{
+struct node{
     long Id;
     char* DisplayName;
     char* AboutMe;
@@ -12,10 +12,10 @@ typedef struct node{
     int nr_posts;
     GSList* quests;
     GSList* answers;
-} nodeUser;
+};
 
 User init_user(long id, char* dn, char* am, long r){
-    User n = malloc(sizeof(nodeUser));
+    User n = malloc(sizeof(struct node));
     n->Id = id;
     n->DisplayName = dn;
     n->AboutMe = am;

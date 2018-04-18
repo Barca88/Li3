@@ -3,6 +3,34 @@
 #include "day.h"
 #include "quest.h"
 #include "answer.h"
+#include "tag.h"
+
+//Create new tag and insert in tag struct. 
+static void processTag(GHashTable* ht ,xmlTextReaderPtr node) {
+    xmlChar *name = xmlTextReaderName(node);
+    if (strcmp((char*)name,"row") != 0){
+        name = xmlStrdup(BAD_CAST "--");
+    }
+
+    long id = -2;
+    char* tag = NULL;
+    int n = -2;
+    char *attributename = NULL;
+
+    while(xmlTextReaderMoveToNextAttribute(node)){
+             attributename = (char*)xmlTextReaderName(node); 
+             if(strcmp(attributename,"Id") == 0)
+                 id = atol((char*)xmlTextReaderValue(node));
+             else if(strcmp(attributename,"TagName") == 0)
+                 tag = (char*)xmlTextReaderValue(node);
+             else if (strcmp(attributename,"Count") == 0)
+                 n = atoi((char*)xmlTextReaderValue(node));
+             else;
+    }
+    
+    Tag t = create_tag(id,tag,n);
+    g_hash_table_insert(ht,GSIZE_TO_POINTER(id),t);
+}
 
 //Create new user and insert in user struct. 
 static void processUser(GHashTable* hu ,xmlTextReaderPtr node) {
@@ -37,8 +65,8 @@ static void processUser(GHashTable* hu ,xmlTextReaderPtr node) {
 //Create new post and insert in post struct. 
 static void processPost(TAD_community com,xmlTextReaderPtr node) {
     GTree *td = get_tree_days(com);
-    GHashTable *hq = get_hash_quests(com);
-    GHashTable *ha = get_hash_answers(com);
+    GHashTable *hq = get_hash_quest_days(com);
+    GHashTable *ha = get_hash_answer_days(com);
     GHashTable *hu = get_hash_users(com);
 
     xmlChar *name = xmlTextReaderName(node);
@@ -122,7 +150,6 @@ static void processPost(TAD_community com,xmlTextReaderPtr node) {
         }
         //TODO ligar as perguntas as respostas.
     }
-//print_day(g_tree_lookup(td,GSIZE_TO_POINTER(cd)));
     
     //Incrementar o numero de posts do respetivo user.
     User nu = (User)g_hash_table_lookup(hu,GSIZE_TO_POINTER(ouid));
@@ -130,36 +157,29 @@ static void processPost(TAD_community com,xmlTextReaderPtr node) {
     }
 }
 
-//Processar informacao de um vote. 
-/*static void processVote(xmlTextReaderPtr node) {
-    xmlChar *name;
-    char *attributename;
+//Process Tags.xml file.
+void streamTags(GHashTable* ht ,char *path) {
+    char* aux = malloc(128 * sizeof(char));
+    strcpy(aux,path);
+    int nodeReader;
+    xmlTextReaderPtr stream = xmlNewTextReaderFilename(strcat(aux,"/Tags.xml"));
+    
+    if (stream != NULL) {
+        nodeReader = xmlTextReaderRead(stream);
 
-    name = xmlTextReaderName(node);
-    if (name == NULL)
-        name = xmlStrdup(BAD_CAST "--");
+        while (nodeReader == 1){
+             if (xmlTextReaderHasAttributes(stream)){
+                processTag(ht,stream);
+             }
+             nodeReader = xmlTextReaderRead(stream);
+        }
+        xmlFreeTextReader(stream);
 
-
-    if (xmlTextReaderHasAttributes(node)){
-        printf("------------------------------------------------------------------\n");
-         while(xmlTextReaderMoveToNextAttribute(node)){
-             attributename = (char*)xmlTextReaderName(node); 
-             if(strcmp(attributename,"Id") == 0)
-                        printf("- %s: %s\n",
-                                 xmlTextReaderName(node),
-                                 xmlTextReaderValue(node));
-             else if(strcmp(attributename,"PostId") == 0)
-                        printf("- %s: %s\n",
-                                 xmlTextReaderName(node),
-                                 xmlTextReaderValue(node));
-             else if (strcmp(attributename,"VoteTypeId") == 0)
-                        printf("- %s: %s\n",
-                                 xmlTextReaderName(node),
-                                 xmlTextReaderValue(node));
-             else;
-         }
-     }
-}*/
+        if (nodeReader != 0) {
+            printf("%s : failed to parse\n", "Tags.xml");
+        }
+    }else printf("Unable to open %s\n", "Tags.xml");
+}
 
 //Process Users.xml file.
 void streamUsers(GHashTable* hu ,char *path) {
