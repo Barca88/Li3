@@ -24,6 +24,7 @@ GHashTable* get_hash_answer_day(Day d);
 Date get_date_day(Day d);
 
 //Print
+void print_aux(gpointer key,gpointer value,gpointer data);
 void print_day(Day day);
 
 #endif

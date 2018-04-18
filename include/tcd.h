@@ -12,6 +12,7 @@ typedef struct TCD_community TCD_community;
 
 TAD_community init_tcd();
 
+GHashTable* get_hash_tags(TAD_community root);
 GHashTable* get_hash_users(TAD_community root);
 GHashTable* get_hash_quest_days(TAD_community root);
 GHashTable* get_hash_answer_days(TAD_community root);

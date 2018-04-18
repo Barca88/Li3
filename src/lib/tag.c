@@ -8,9 +8,9 @@ struct tag {
 
 Tag create_tag(long id,char* s,int n){
     Tag t = malloc(sizeof(struct tag));
-    set_id_tag(t,id);
-    set_tag(t,s);
-    set_n_used(t,n);
+    t->id = id;
+    t->tag =  mystrdup(s);
+    t->n_used = n;
     return t;
 }
 

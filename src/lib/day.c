@@ -38,22 +38,27 @@ int get_n_quest(Day d){
 int get_n_answer(Day d){
     return d->n_answer;
 }
-GHashTable* get_hash_quest_day_day(Day d){
+GHashTable* get_hash_quest_day(Day d){
     return d->hash_quest;
 }
-GHashTable* get_hash_answer_day_day(Day d){
+GHashTable* get_hash_answer_day(Day d){
     return d->hash_answer;
 }
 Date get_date_day(Day d){
     return createDate(get_day(d->day),get_month(d->day),get_year(d->day));
 }
-
+void print_aux(gpointer key,gpointer value,gpointer data){
+    Quest q = (Quest)GPOINTER_TO_SIZE(value);
+    print_quest(q);
+}
+    
 //Imprimir o conteudo da data.
 void print_day(Day day){
     if(day != NULL) {
         print_date(day->day);
-        printf("Day:\n\n\tN_quest: %d\n\tN_answer: %d\n\t",
+        printf("Day:\n\n\n\tN_quest: %d\n\tN_answer: %d\n\t",
                 day->n_quest,day->n_answer); 
+        g_hash_table_foreach(day->hash_quest,(GHFunc)print_aux,NULL);
         printf("\n\n"); 
     }
 }
