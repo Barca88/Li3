@@ -73,8 +73,17 @@ GSList* get_answers_user(User user){
 void inc_nr_posts(User user){
     (user->nr_posts)++;
 }
-
+void print_q(gpointer data,gpointer n){
+    Quest q = (Quest)GPOINTER_TO_SIZE(data);
+    print_quest(q);
+}
+void print_a(gpointer data,gpointer n){
+    Answer a = (Answer)GPOINTER_TO_SIZE(data);
+    print_answer(a);
+}
 void print_user(User user){
     if(user != NULL)
    printf("user:\n\nId: %ld\nName:  %s\nAbouteMe: %s\nReputation: %ld\nNr de Posts: %d\n",user->Id,user->DisplayName,user->AboutMe,user->Reputation,user->nr_posts); 
+    g_slist_foreach(user->quests,(GFunc)print_q,NULL);
+    g_slist_foreach(user->answers,(GFunc)print_a,NULL);
 }

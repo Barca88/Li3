@@ -201,7 +201,28 @@ LONG_list questions_with_tag(TAD_community com, char* tag, Date begin, Date end)
     return ll;*/ 
 
 // query 5
-USER get_user_info(TAD_community com, long id);
+USER get_user_info(TAD_community com, long id){
+    GHashTable* users = get_hash_users(com);
+    User u = g_hash_table_lookup(users,GSIZE_TO_POINTER(id));
+    print_user(u);
+    GSList* quests = get_quests_user(u);
+    GSList* answers = get_quests_user(u);
+    long* l;
+    int i;
+    Date dq,da;
+    for(i = 0; i<10; i++){
+        dq = get_date_quest(quests->data);
+        da = get_date_answer(quests->data);
+        if(date_compare(dq,dd) <= 0 && quests != NULL){
+            Quest q = (Quest)GPOINTER_TO_SIZE(quests->data);
+            l[i] = get_id_quest(q);
+            quests = quests->next;
+        }else if(answers != NULL){
+            Answer a = (Answer)GPONTER_TO_SIZE(answers->data);
+            l[i] = get_id_answer(a);
+            answers = answers->next;
+
+}
 
 // query 6
 LONG_list most_voted_answers(TAD_community com, int N, Date begin, Date end);

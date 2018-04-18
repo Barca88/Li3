@@ -2,6 +2,8 @@
 #define __USERS_H__
 
 #include <glib.h>
+#include "answer.h"
+#include "quest.h"
 
 typedef struct node* User;
 
@@ -24,6 +26,8 @@ GSList* get_answers_user(User user);
 
 void inc_nr_posts(User user);
 
+void print_q(gpointer data, gpointer n);
+void print_a(gpointer data, gpointer n);
 void print_user(User user);
 
 #endif
