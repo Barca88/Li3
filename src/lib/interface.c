@@ -108,7 +108,7 @@ LONG_list top_most_active(TAD_community com, int N){
 
 //----------------------------------------------------------------------
 
-typedef struct date_pair{
+typedef struct aux3{
     Date begin;
     Date end;
     int nq;
@@ -145,7 +145,7 @@ static gboolean count_posts(gpointer key,gpointer value,gpointer data){
 
 // query 3
 LONG_pair total_posts(TAD_community com, Date begin, Date end){
-    query3 ld = malloc(sizeof(struct date_pair));
+    query3 ld = malloc(sizeof(struct aux3));
     ld->begin = begin;
     ld->end = end;
     ld->nq = 0;
@@ -169,7 +169,7 @@ LONG_pair total_posts(TAD_community com, Date begin, Date end){
 
 //----------------------------------------------------------------------
 
-typedef struct tags{
+typedef struct aux4{
     Date begin;
     Date end;
     char* tag;
@@ -208,7 +208,7 @@ static gint date_compare_aux(gconstpointer a,gconstpointer b){
 }*/
 // query 4
 LONG_list questions_with_tag(TAD_community com, char* tag, Date begin, Date end){
-    query4 ld = malloc(sizeof(struct tags));
+    query4 ld = malloc(sizeof(struct aux4));
     ld->begin = begin;
     ld->end = end;
     ld->tag = tag;
@@ -332,7 +332,7 @@ static gint score_compare(gconstpointer a,gconstpointer b){
 
 // query 6
 LONG_list most_voted_answers(TAD_community com, int N, Date begin, Date end){
-    query6 ld = malloc(sizeof(struct tags));
+    query6 ld = malloc(sizeof(struct aux6));
     ld->begin = begin;
     ld->end = end;
     ld->list = NULL;
