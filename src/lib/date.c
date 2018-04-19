@@ -2,6 +2,8 @@
 #include <glib.h>
 #include <stdio.h>
 #include "date.h"
+#include "quest.h"
+#include "answer.h"
 
 struct date {
   int day;
@@ -89,7 +91,6 @@ int date_pair_compare(gconstpointer p1, gconstpointer p2){
     return -2;
 }
 
-
 int date_compare(gconstpointer t1, gconstpointer t2){
     Date d1 = (Date)GPOINTER_TO_SIZE(t1);
     Date d2 = (Date)GPOINTER_TO_SIZE(t2);
@@ -112,6 +113,19 @@ int date_compare(gconstpointer t1, gconstpointer t2){
     return -2;
 }
 
+int quest_compare(gconstpointer t1, gconstpointer t2){
+    Date d1 = get_date_quest((Quest)GPOINTER_TO_SIZE(t1));
+    Date d2 = get_date_quest((Quest)GPOINTER_TO_SIZE(t2));
+
+    return date_compare(d1,d2); 
+}
+
+int answer_compare(gconstpointer t1, gconstpointer t2){
+    Date d1 = get_date_answer((Answer)GPOINTER_TO_SIZE(t1));
+    Date d2 = get_date_answer((Answer)GPOINTER_TO_SIZE(t2));
+   
+    return date_compare(d1,d2);
+}
 Date date_from_string(char* date){
     *(date + 10) = '\0';
     char* day = date+8;

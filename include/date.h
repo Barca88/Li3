@@ -18,5 +18,7 @@ void print_date(Date d);
 
 int date_pair_compare(gconstpointer p1, gconstpointer p2);
 int date_compare(gconstpointer p1, gconstpointer p2);
+int quest_compare(gconstpointer p1, gconstpointer p2);
+int answer_compare(gconstpointer p1, gconstpointer p2);
 void free_date(Date d);
 #endif
