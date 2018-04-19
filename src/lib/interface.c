@@ -253,44 +253,50 @@ USER get_user_info(TAD_community com, long id){
     //Atualizar o utilizador com as listas ordenadas
     set_quests_user(u,quests);
     set_answers_user(u,answers);
+
     long l[10];
+    char* am = get_aboutme_user(u);   
+    
     int i;
     Date dq,da;
+    Quest q;
+    Answer a;
 
-    if(quests )
-    for(i = 0; i<10; i++){
-        if(quests != NULL && answers != NULL){
-            Quest q = (Quest) GPOINTER_TO_SIZE(quests->data);
-            Answer a = (Answer) GPOINTER_TO_SIZE(answers->data);
-            dq = get_date_quest(q);
-            da = get_date_answer(a);
-            if(date_compare(dq,da) <= 0){
-                l[i] = get_id_quest(q);
-                quests = quests->next;
-            }else {
-                l[i] = get_id_answer(a);
-                answers = answers->next;
-            }
+    for(i=0;i<10;i++){
+        if(!quests && !answers)l[i] = 0;
+        else if(!quests){
+               a = (Answer)GPOINTER_TO_SIZE(answers->data);
+               l[i] = get_id_answer(a);
+               answers = answers->next;
+           }
+        else if(!answers){
+               q = (Quest)GPOINTER_TO_SIZE(quests->data);
+               l[i] = get_id_quest(q);
+               quests = quests->next;
+           }
+        else{
+             Quest q = (Quest) GPOINTER_TO_SIZE(quests->data);
+             Answer a = (Answer) GPOINTER_TO_SIZE(answers->data);
+
+             dq = get_date_quest(q);
+             da = get_date_answer(a);
+             if(date_compare(dq,da) <= 0){
+                 l[i] = get_id_quest(q);
+                 quests = quests->next;
+             }else {
+                 l[i] = get_id_answer(a);
+                 answers = answers->next;
+             }
         }
-        if(quests == NULL && answers != NULL){
-            Answer a = (Answer) GPOINTER_TO_SIZE(answers->data);
-            l[i] = get_id_answer(a);
-            answers = answers->next;
-        }else if(quests != NULL && answers == NULL){
-            Quest q = (Quest) GPOINTER_TO_SIZE(quests->data);
-            l[i] = get_id_quest(q);
-            quests = quests->next;
-        }else l[i]=-1;
     }
-    USER r = create_user(get_aboutme_user(u),l);
-    printf("Query 5 id = %ld \n\n",get_id_user(u));
+    printf("Query 5 com id %ld: \n\n",get_id_user(u));
     print_user(u);
-    printf("\n\t\t\tAbout Me do USER: \n%s\n",get_bio(r));
+    printf("\n\tAbout Me do USER: \n%s\n",am);
     for(i=0;i<10;i++)
-        printf("\tId post mais recente nº %d: %ld.\n",i+1,l[i]);
-
+        printf("\tId post mais recente nº %d: %ld\n",i+1,l[i]);
+    printf("\n\n");
+    USER r = create_user(am,l);
     return r;
-
 }
 
 //----------------------------------------------------------------------
