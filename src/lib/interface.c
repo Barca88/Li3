@@ -243,21 +243,30 @@ USER get_user_info(TAD_community com, long id){
     User u = g_hash_table_lookup(users,GSIZE_TO_POINTER(id));
     print_user(u);
     GSList* quests = get_quests_user(u);
-    GSList* answers = get_quests_user(u);
-    long* l;
+    GSList* answers = get_answers_user(u);
+    long l[10];
     int i;
     Date dq,da;
+
+    printf("<-------------------Inicio do for\n");
     for(i = 0; i<10; i++){
-        dq = get_date_quest(quests->data);
-        da = get_date_answer(quests->data);
-        if(date_compare(dq,dd) <= 0 && quests != NULL){
-            Quest q = (Quest)GPOINTER_TO_SIZE(quests->data);
+        printf("\t\t=========a\n");
+        Quest q = (Quest) GPOINTER_TO_SIZE(quests->data);
+        printf("\t\t=========b\n");
+        Answer a = (Answer) GPOINTER_TO_SIZE(answers->data);
+        printf("\t\t=========a\n");
+        dq = get_date_quest(q);
+        da = get_date_answer(a);
+        if(date_compare(dq,da) <= 0 && quests != NULL){
             l[i] = get_id_quest(q);
             quests = quests->next;
         }else if(answers != NULL){
-            Answer a = (Answer)GPONTER_TO_SIZE(answers->data);
             l[i] = get_id_answer(a);
             answers = answers->next;
+        }
+    }
+    USER r = create_user(get_aboutme_user(u),l);
+    return r;
 
 }
 

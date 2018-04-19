@@ -31,7 +31,7 @@ int get_id_answer(Answer a){
 long get_parent_id_answer(Answer a){
     return a->parentId;
 }
-Date get_creation_date_answer(Answer a){
+Date get_date_answer(Answer a){
     return a->creationDate;
 }
 int get_score_answer(Answer a){
