@@ -236,7 +236,7 @@ LONG_list questions_with_tag(TAD_community com, char* tag, Date begin, Date end)
 
     return l; 
 }
-
+/*
 // query 5
 USER get_user_info(TAD_community com, long id){
     GHashTable* users = get_hash_users(com);
@@ -249,8 +249,9 @@ USER get_user_info(TAD_community com, long id){
     Date dq,da;
 
     printf("<-------------------Inicio do for\n");
+    if(quests )
     for(i = 0; i<10; i++){
-        printf("\t\t=========a\n");
+      ntf("\t\t=========a\n");
         Quest q = (Quest) GPOINTER_TO_SIZE(quests->data);
         printf("\t\t=========b\n");
         Answer a = (Answer) GPOINTER_TO_SIZE(answers->data);
@@ -269,7 +270,7 @@ USER get_user_info(TAD_community com, long id){
     return r;
 
 }
-
+*/
 //----------------------------------------------------------------------
 
 typedef struct aux6{
