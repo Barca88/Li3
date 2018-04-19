@@ -236,41 +236,62 @@ LONG_list questions_with_tag(TAD_community com, char* tag, Date begin, Date end)
 
     return l; 
 }
-/*
+
 // query 5
 USER get_user_info(TAD_community com, long id){
+    //Carregar a hash de users
     GHashTable* users = get_hash_users(com);
+    //Carregar o user da hash table
     User u = g_hash_table_lookup(users,GSIZE_TO_POINTER(id));
-    print_user(u);
+    //Carregar as hashs de quests e answers do user
     GSList* quests = get_quests_user(u);
     GSList* answers = get_answers_user(u);
+    //Ordenar as listas por data
+    quests = g_slist_sort(quests,quest_compare);
+    answers = g_slist_sort(answers,answer_compare);
+    //Atualizar o utilizador com as listas ordenadas
+    set_quests_user(u,quests);
+    set_answers_user(u,answers);
     long l[10];
     int i;
     Date dq,da;
 
-    printf("<-------------------Inicio do for\n");
     if(quests )
     for(i = 0; i<10; i++){
-      ntf("\t\t=========a\n");
-        Quest q = (Quest) GPOINTER_TO_SIZE(quests->data);
-        printf("\t\t=========b\n");
-        Answer a = (Answer) GPOINTER_TO_SIZE(answers->data);
-        printf("\t\t=========a\n");
-        dq = get_date_quest(q);
-        da = get_date_answer(a);
-        if(date_compare(dq,da) <= 0 && quests != NULL){
-            l[i] = get_id_quest(q);
-            quests = quests->next;
-        }else if(answers != NULL){
+        if(quests != NULL && answers != NULL){
+            Quest q = (Quest) GPOINTER_TO_SIZE(quests->data);
+            Answer a = (Answer) GPOINTER_TO_SIZE(answers->data);
+            dq = get_date_quest(q);
+            da = get_date_answer(a);
+            if(date_compare(dq,da) <= 0){
+                l[i] = get_id_quest(q);
+                quests = quests->next;
+            }else {
+                l[i] = get_id_answer(a);
+                answers = answers->next;
+            }
+        }
+        if(quests == NULL && answers != NULL){
+            Answer a = (Answer) GPOINTER_TO_SIZE(answers->data);
             l[i] = get_id_answer(a);
             answers = answers->next;
-        }
+        }else if(quests != NULL && answers == NULL){
+            Quest q = (Quest) GPOINTER_TO_SIZE(quests->data);
+            l[i] = get_id_quest(q);
+            quests = quests->next;
+        }else l[i]=-1;
     }
     USER r = create_user(get_aboutme_user(u),l);
+    printf("Query 5 id = %ld \n\n",get_id_user(u));
+    print_user(u);
+    printf("\n\t\t\tAbout Me do USER: \n%s\n",get_bio(r));
+    for(i=0;i<10;i++)
+        printf("\tId post mais recente nº %d: %ld.\n",i+1,l[i]);
+
     return r;
 
 }
-*/
+
 //----------------------------------------------------------------------
 
 typedef struct aux6{

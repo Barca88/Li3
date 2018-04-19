@@ -17,7 +17,7 @@ int main(int argc,char** argv){
     top_most_active(new,12);
     total_posts(new,a,b);
     questions_with_tag(new,"handcent-sms",a,b);
-    //get_user_info(new,88);
+    get_user_info(new,88);
     most_voted_answers(new,10,a,b);
     //most_answered_questions(new,10,a,b);
     //contains_word(new,"rooting",10);
