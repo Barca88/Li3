@@ -27,10 +27,10 @@ GHashTable* get_hash_tags(TAD_community root){
 GHashTable* get_hash_users(TAD_community root){
     return root->hashUsers;
 }
-GHashTable* get_hash_quest_days(TAD_community root){
+GHashTable* get_hash_quest_tcd(TAD_community root){
     return root->hashQuests;
 }
-GHashTable* get_hash_answer_days(TAD_community root){
+GHashTable* get_hash_answer_tcd(TAD_community root){
     return root->hashAnswers;
 }
 GTree* get_tree_days(TAD_community root){

@@ -18,8 +18,8 @@ int main(int argc,char** argv){
     total_posts(new,a,b);
     questions_with_tag(new,"handcent-sms",a,b);
     get_user_info(new,88);
-    most_voted_answers(new,10,a,b);
-    //most_answered_questions(new,10,a,b);
+    most_voted_answers(new,11,a,b);
+    most_answered_questions(new,12,a,b);
     //contains_word(new,"rooting",10);
     //both_participated(new,1,2,10);
     //better_answer(new,1);

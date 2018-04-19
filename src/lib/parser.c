@@ -65,8 +65,8 @@ static void processUser(GHashTable* hu ,xmlTextReaderPtr node) {
 //Create new post and insert in post struct. 
 static void processPost(TAD_community com,xmlTextReaderPtr node) {
     GTree *td = get_tree_days(com);
-    GHashTable *hq = get_hash_quest_days(com);
-    GHashTable *ha = get_hash_answer_days(com);
+    GHashTable *hq = get_hash_quest_tcd(com);
+    GHashTable *ha = get_hash_answer_tcd(com);
     GHashTable *hu = get_hash_users(com);
 
     xmlChar *name = xmlTextReaderName(node);
@@ -149,6 +149,10 @@ static void processPost(TAD_community com,xmlTextReaderPtr node) {
             g_tree_insert(td,GSIZE_TO_POINTER(cd),d);
         }
         //TODO ligar as perguntas as respostas.
+        set_answer_list_quest((Quest)g_hash_table_lookup(hq,GSIZE_TO_POINTER(pid)),
+                              g_slist_prepend(get_answer_list_quest(
+                              (Quest)g_hash_table_lookup(hq,
+                                                    GSIZE_TO_POINTER(pid))),a));
     }
     
     //Incrementar o numero de posts do respetivo user.

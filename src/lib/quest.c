@@ -61,7 +61,14 @@ int get_favorite_c_quest(Quest q){
     return q->favorite_c;
 }
 GSList* get_answer_list_quest(Quest q){
-    return q->answerList;
+    if(q)
+        return q->answerList;
+    return NULL;
+}
+
+void set_answer_list_quest(Quest q,GSList* l){
+    if(q)
+        q->answerList = l;
 }
 
 //Imprimir o conteudo da pergunta.

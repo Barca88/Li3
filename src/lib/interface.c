@@ -59,7 +59,7 @@ STR_pair info_from_post(TAD_community com, long id){
     char* name = NULL;
     User u;
     Answer a;
-    Quest q = (Quest)g_hash_table_lookup(get_hash_quest_days(com), GSIZE_TO_POINTER(id));
+    Quest q = (Quest)g_hash_table_lookup(get_hash_quest_tcd(com), GSIZE_TO_POINTER(id));
     
     if(q){
         u = (User)g_hash_table_lookup(get_hash_users(com),
@@ -67,9 +67,9 @@ STR_pair info_from_post(TAD_community com, long id){
         title = get_title_quest(q);
         name = get_displayname_user(u);
     }else{
-        a = (Answer)g_hash_table_lookup(get_hash_answer_days(com),
+        a = (Answer)g_hash_table_lookup(get_hash_answer_tcd(com),
              GSIZE_TO_POINTER(id)); 
-        q = (Quest)g_hash_table_lookup(get_hash_quest_days(com), 
+        q = (Quest)g_hash_table_lookup(get_hash_quest_tcd(com), 
                 GSIZE_TO_POINTER(get_parent_id_answer(a)));
         u = (User)g_hash_table_lookup(get_hash_users(com),
                 GSIZE_TO_POINTER(get_owner_user_id_answer(a)));
@@ -233,6 +233,7 @@ LONG_list questions_with_tag(TAD_community com, char* tag, Date begin, Date end)
     printf("Query 4 com %d elementos: \n\n",N);
     for(i=0;i<N;i++)
         printf("\tId do nº %d: %ld\n",i+1,get_list(l,i));
+    printf("\n\n");
 
     return l; 
 }
@@ -300,6 +301,7 @@ typedef struct aux6{
     GSList* list;
 }* query6;
 
+//Quest para a lista ligada.
 static void to_list(gpointer key,gpointer value,gpointer data){
     query6 ld = (query6)GPOINTER_TO_SIZE(data);
     ld->list = g_slist_prepend(ld->list,value);    
@@ -354,11 +356,75 @@ LONG_list most_voted_answers(TAD_community com, int N, Date begin, Date end){
         for(i=0;i<N;i++)
             printf("\tId do nº %d: %ld\n",i+1,get_list(l,i));
     }else printf("Lista query6 vazia.\n");
+    printf("\n\n");
     return l;
 }
 
+///----------------------------------------------------------------------
+
+typedef struct aux7{
+    Date begin;
+    Date end;
+    GSList* list;
+}* query7;
+
+static void to_list7(gpointer key,gpointer value,gpointer data){
+    query7 ld = (query7)GPOINTER_TO_SIZE(data);
+    ld->list = g_slist_prepend(ld->list,value);    
+}
+
+//O que fazer por cada dia. 
+static gboolean iter_day7(gpointer key,gpointer value,gpointer data){
+    query7 ld = (query7)GPOINTER_TO_SIZE(data);
+    Date b = ld->begin;
+    Date e = ld->end;
+    GHashTable* hq = get_hash_quest_day((Day)value);
+
+    if ((date_compare(get_date_day(value),b)>0 && 
+         date_compare(e,get_date_day(value))>0)){
+         g_hash_table_foreach(hq,(GHFunc)to_list7,data);
+    }
+    return FALSE;
+}
+
+//Funcao de comparacao de score para ordenar lista ligada.
+static gint  answer_c_compare(gconstpointer a,gconstpointer b){
+     int f = get_answer_c_quest((Quest)a);
+     int s = get_answer_c_quest((Quest)b);
+     if(f<s) return 1;
+     else if(f>s) return -1;
+     else return 0;
+}
+
 // query 7
-LONG_list most_answered_questions(TAD_community com, int N, Date begin, Date end);
+LONG_list most_answered_questions(TAD_community com, int N, Date begin, Date end){
+    query7 ld = (query7)malloc(sizeof(struct aux7));
+    ld->begin = begin;
+    ld->end = end;
+    ld->list = NULL;
+
+    g_tree_foreach(get_tree_days(com),(GTraverseFunc)iter_day7,
+                   GSIZE_TO_POINTER(ld));
+    ld->list = g_slist_sort(ld->list,answer_c_compare);
+
+    int i;
+    Quest q;
+    LONG_list l = create_list(N);
+    GSList* list = ld->list;
+    if(list){
+        for(i=0;i<N;i++){
+            q = (Quest)GPOINTER_TO_SIZE(list->data);
+            set_list(l,i,get_id_quest(q));
+            list = list->next;
+        }
+
+        printf("Query 7 com %d elementos: \n\n",N);
+        for(i=0;i<N;i++)
+            printf("\tId do nº %d: %ld\n",i+1,get_list(l,i));
+    }else printf("Lista query7 vazia.\n");
+    printf("\n\n");
+    return l;
+}
 
 // query 8
 LONG_list contains_word(TAD_community com, char* word, int N){
