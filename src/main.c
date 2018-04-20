@@ -22,7 +22,7 @@ int main(int argc,char** argv){
     most_answered_questions(new,12,a,b);
     contains_word(new,"rooting",10);
     //both_participated(new,1,2,10);
-    //better_answer(new,1);
+    better_answer(new,1);
     //most_used_best_rep(new,a,b);
 
     tpf =clock() - tpf;
