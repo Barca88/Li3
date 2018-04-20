@@ -566,7 +566,7 @@ long better_answer(TAD_community com, long id){
         average_answer((Answer)laux->data,get_hash_users(com));
     list = g_slist_sort(list,compare_average);
 
-    printf("Query 10 melhor resposta a pergunta %ld: \n\n Melhor resposta = %ld\n\n",id,get_id_answer(list->data));
+    printf("Query 10 melhor resposta a pergunta %ld: \n\n\tMelhor resposta = %ld\n\n",id,get_id_answer(list->data));
 
     return get_id_answer(list->data);
 
