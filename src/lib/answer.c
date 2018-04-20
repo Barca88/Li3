@@ -9,6 +9,7 @@ struct answer{
     long ownerUserId;
     int commentCount;
     int favoriteCount;
+    float average;
 };
 
 // Criar nova resposta.
@@ -21,11 +22,12 @@ Answer init_answer(long id,int pid,Date cd,int s,long ouid,int cc,int fc){
     a->ownerUserId = ouid;
     a->commentCount = cc;
     a->favoriteCount = fc;
+    a->average = 0;
     return a;
 }
 
 //Obter valor das variaveis da estrutura.
-int get_id_answer(Answer a){
+long get_id_answer(Answer a){
     return a->id;
 }
 long get_parent_id_answer(Answer a){
@@ -45,6 +47,14 @@ int get_comment_count_answer(Answer a){
 }
 int get_favorite_count_answer(Answer a){
     return a->favoriteCount;
+}
+
+float get_average_answer(Answer a){
+    return a->average;
+}
+
+void set_average_answer(Answer a,float average){
+    a->average = average;
 }
 
 //Imprimir o conteudo da resposta.

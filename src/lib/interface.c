@@ -565,8 +565,35 @@ LONG_list both_participated(TAD_community com, long id1, long id2, int N){
     free(aux);
     return l;
 }
+
+static void average_answer(Answer a,GHashTable* users){
+    set_average_answer(a,(get_score_answer(a)*0.45)+(get_comment_count_answer(a)*0.1)
+              +(get_score_answer(a)*0.2)+(get_reputation_user(g_hash_table_lookup(users,GSIZE_TO_POINTER(get_owner_user_id_answer(a))))));
+}
+
+static gint compare_average(gconstpointer a,gconstpointer b){
+        float a1 = get_average_answer((Answer)a);
+        float a2 = get_average_answer((Answer)b);
+        if(a1<a2) return -1;
+        else if(a1>a2) return 1;
+        else return 0;
+}
+
 // query 10
-long better_answer(TAD_community com, long id);
+long better_answer(TAD_community com, long id){
+    GHashTable* hq = get_hash_quest_tcd(com);
+    GSList *laux,*list = get_answer_list_quest((Quest)g_hash_table_lookup(hq,
+                                          GSIZE_TO_POINTER(id))); 
+   
+    for(laux = list;laux->next;laux=laux->next)
+        average_answer((Answer)laux->data,get_hash_users(com));
+    list = g_slist_sort(list,compare_average);
+
+    printf("Query 10 melhor resposta a pergunta %ld: \n\n\tMelhor resposta = %ld\n\n",id,get_id_answer(list->data));
+
+    return get_id_answer(list->data);
+
+}
 
 // query 11
 LONG_list most_used_best_rep(TAD_community com, int N, Date begin, Date end);

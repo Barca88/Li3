@@ -21,8 +21,8 @@ int main(int argc,char** argv){
     most_voted_answers(new,11,a,b);
     most_answered_questions(new,12,a,b);
     contains_word(new,"rooting",10);
-    //both_participated(new,16575,1465,10);
-    //better_answer(new,1);
+    //both_participated(new,1,2,10);
+    better_answer(new,1);
     //most_used_best_rep(new,a,b);
 
     tpf =clock() - tpf;
