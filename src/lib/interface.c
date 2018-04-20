@@ -498,9 +498,9 @@ LONG_list both_participated(TAD_community com, long id1, long id2, int N){
     set_quests_user(b,questsb);
     set_answers_user(a,answersa);
 
-    long l = create_list(N);
-    
-/*    int i;
+    LONG_list l = create_list(N);
+ /*  
+    int i;
     Date dq,da;
     Quest q;
     Answer a;
@@ -536,12 +536,11 @@ LONG_list both_participated(TAD_community com, long id1, long id2, int N){
     printf("Query 9 com id %ld: \n\n",get_id_user(u));
     for(i=0;i<10;i++)
         printf("\tId pergunta mais recente, em que ambos participaram, nº %d: %ld\n",i+1,l[i]);
-    printf("\n\n");
+    printf("\n\n");*/
 
     list = g_slist_sort(list,quest_compare);
 
-    USER r = create_user(am,l);*/
-    return NULL;//r;
+    return l;
 }
 
 // query 10
