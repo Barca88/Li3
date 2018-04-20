@@ -41,7 +41,7 @@ TAD_community load(TAD_community com, char* dump_path){
     streamTags(get_hash_tags(com),dump_path);
     streamUsers(get_hash_users(com),dump_path);
     streamPosts(com,dump_path);
-print_user(g_hash_table_lookup(get_hash_users(com),GSIZE_TO_POINTER(10)));
+    
     //load lista ligada de utilizadores organizada por nº de posts.
     g_hash_table_foreach(get_hash_users(com),(GHFunc)load_rank_gslist,
                          GSIZE_TO_POINTER(com));
@@ -476,7 +476,7 @@ LONG_list contains_word(TAD_community com, char* w, int N){
        
 // query 9
 LONG_list both_participated(TAD_community com, long id1, long id2, int N){
-/*    GSList* list = NULL;
+    GSList* list = NULL;
     //Carregar a hash de users
     GHashTable* users = get_hash_users(com);
     //Carregar o user da hash table
@@ -500,7 +500,7 @@ LONG_list both_participated(TAD_community com, long id1, long id2, int N){
 
     long l = create_list(N);
     
-    int i;
+/*    int i;
     Date dq,da;
     Quest q;
     Answer a;
