@@ -124,7 +124,7 @@ int answer_compare(gconstpointer t1, gconstpointer t2){
     Date d1 = get_date_answer((Answer)GPOINTER_TO_SIZE(t1));
     Date d2 = get_date_answer((Answer)GPOINTER_TO_SIZE(t2));
    
-    return date_compare(d1,d2);
+    return (-1)*date_compare(d1,d2);
 }
 Date date_from_string(char* date){
     *(date + 10) = '\0';
