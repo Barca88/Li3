@@ -41,7 +41,7 @@ TAD_community load(TAD_community com, char* dump_path){
     streamTags(get_hash_tags(com),dump_path);
     streamUsers(get_hash_users(com),dump_path);
     streamPosts(com,dump_path);
-
+print_user(g_hash_table_lookup(get_hash_users(com),GSIZE_TO_POINTER(10)));
     //load lista ligada de utilizadores organizada por nº de posts.
     g_hash_table_foreach(get_hash_users(com),(GHFunc)load_rank_gslist,
                          GSIZE_TO_POINTER(com));
@@ -290,7 +290,6 @@ USER get_user_info(TAD_community com, long id){
         }
     }
     printf("Query 5 com id %ld: \n\n",get_id_user(u));
-    print_user(u);
     printf("\n\tAbout Me do USER: \n%s\n",am);
     for(i=0;i<10;i++)
         printf("\tId post mais recente nº %d: %ld\n",i+1,l[i]);
@@ -476,7 +475,74 @@ LONG_list contains_word(TAD_community com, char* w, int N){
 
        
 // query 9
-LONG_list both_participated(TAD_community com, long id1, long id2, int N);
+LONG_list both_participated(TAD_community com, long id1, long id2, int N){
+    GSList* list = NULL;
+    //Carregar a hash de users
+    GHashTable* users = get_hash_users(com);
+    //Carregar o user da hash table
+    User a = g_hash_table_lookup(users,GSIZE_TO_POINTER(id1));
+    User b = g_hash_table_lookup(users,GSIZE_TO_POINTER(id2));
+    //Carregar as hashs de quests e answers do user
+    GSList* questsa = get_quests_user(a);
+    GSList* answersb = get_answers_user(b);
+    GSList* questsb = get_quests_user(b);
+    GSList* answersa = get_answers_user(a);
+    //Ordenar as listas por data
+    questsa = g_slist_sort(questsa,quest_compare);
+    answersb = g_slist_sort(answersb,answer_compare);
+    questsb = g_slist_sort(questsb,quest_compare);
+    answersa = g_slist_sort(answersa,answer_compare);
+    //Atualizar o utilizador com as listas ordenadas
+    set_quests_user(a,questsa);
+    set_answers_user(b,answersb);
+    set_quests_user(b,questsb);
+    set_answers_user(a,answersa);
+
+    long l = create_list(N);
+    
+    /* int i;
+    Date dq,da;
+    Quest q;
+    Answer a;
+
+    for(i=0;i<N;i++){
+        if(!quests && !answers)l[i] = 0;
+        else if(!quests){
+               a = (Answer)GPOINTER_TO_SIZE(answers->data);
+               l[i] = get_id_answer(a);
+               answers = answers->next;
+           }
+        else if(!answers){
+               q = (Quest)GPOINTER_TO_SIZE(quests->data);
+               l[i] = get_id_quest(q);
+               quests = quests->next;
+           }
+        else{
+             Quest q = (Quest) GPOINTER_TO_SIZE(quests->data);
+             Answer a = (Answer) GPOINTER_TO_SIZE(answers->data);
+
+             dq = get_date_quest(q);
+             da = get_date_answer(a);
+             if(date_compare(dq,da) <= 0){
+                 l[i] = get_id_quest(q);
+                 quests = quests->next;
+             }else {
+                 l[i] = get_id_answer(a);
+                 answers = answers->next;
+             }
+        }
+    }
+
+    printf("Query 9 com id %ld: \n\n",get_id_user(u));
+    for(i=0;i<10;i++)
+        printf("\tId pergunta mais recente, em que ambos participaram, nº %d: %ld\n",i+1,l[i]);
+    printf("\n\n");
+
+    list = g_slist_sort(list,quest_compare);
+
+    USER r = create_user(am,l);*/
+    return NULL;//r;
+}
 
 // query 10
 long better_answer(TAD_community com, long id);
