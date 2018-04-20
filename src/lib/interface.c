@@ -461,8 +461,6 @@ LONG_list contains_word(TAD_community com, char* w, int N){
     if(list){
         for(i=0;i<N;i++){
             q = (Quest)GPOINTER_TO_SIZE(list->data);
-            printf("i=%d com id: %ld\t\t\t",i,get_id_quest(q));
-            print_date(get_date_quest(q));
             set_list(l,i,get_id_quest(q));
             list = list->next;
         }
