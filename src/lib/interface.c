@@ -425,22 +425,52 @@ LONG_list most_answered_questions(TAD_community com, int N, Date begin, Date end
     printf("\n\n");
     return l;
 }
-
+//----------------------------------------------------
+typedef struct aux8{
+    char* word;
+    GSList* list;
+}* query8;
+static void iter_quest8(gpointer key, gpointer value, gpointer data){
+    query8  aux = (query8) GPOINTER_TO_SIZE(data);
+    char* w = aux->word;
+    Quest q = (Quest) GPOINTER_TO_SIZE(value);
+    char* t = get_title_quest(q);
+    if(strstr(t,w)){
+        aux->list = g_slist_prepend(aux->list,value);
+    }
+    free(t);
+}
 // query 8
-LONG_list contains_word(TAD_community com, char* word, int N){
-    LONG_list l = create_list(N);
-    /*GHashTableIter iter;
-    gpointer key, value;
-    g_hash_table_iter_init(&iter, com->hashPosts);
-   
-    while(g_hash_table_iter_next(&iter, &key, &value) && N>0){
+LONG_list contains_word(TAD_community com, char* w, int N){
+    query8 aux = (query8)malloc(sizeof(struct aux8));
+    aux->word = mystrdup(w);
+    aux->list = NULL;
 
-        //TODO struct ordenada por data que não contenha apenas 1 post por dia 
-    }*/
+    g_hash_table_foreach(get_hash_quest_tcd(com),(GHFunc)iter_quest8,aux);
+
+    GSList *list = g_slist_sort(aux->list,quest_compare);
+    LONG_list l = create_list(N);
+    Quest q;
+    int i;
+    if(list){
+        for(i=0;i<N;i++){
+            q = (Quest)GPOINTER_TO_SIZE(list->data);
+            printf("i=%d com id: %ld\t\t\t",i,get_id_quest(q));
+            print_date(get_date_quest(q));
+            set_list(l,i,get_id_quest(q));
+            list = list->next;
+        }
+        printf("Query 8 title contains %s e com %d elementos: \n\n",w,N);
+        for(i=0;i<N;i++)
+            printf("\tId do nº %d: %ld\n",i+1,get_list(l,i));
+    }else printf("Lista query8 vazia.\n");
+    printf("\n\n");
+    free(aux->word);
+    free(aux);
     return l;
 }
-       
 
+       
 // query 9
 LONG_list both_participated(TAD_community com, long id1, long id2, int N);
 
