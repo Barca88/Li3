@@ -476,7 +476,7 @@ LONG_list contains_word(TAD_community com, char* w, int N){
        
 // query 9
 LONG_list both_participated(TAD_community com, long id1, long id2, int N){
-    GSList* list = NULL;
+/*    GSList* list = NULL;
     //Carregar a hash de users
     GHashTable* users = get_hash_users(com);
     //Carregar o user da hash table
@@ -500,7 +500,7 @@ LONG_list both_participated(TAD_community com, long id1, long id2, int N){
 
     long l = create_list(N);
     
-    /* int i;
+    int i;
     Date dq,da;
     Quest q;
     Answer a;
