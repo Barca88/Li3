@@ -1,20 +1,20 @@
 #include "quest.h"
 
-// Questions definitions
+/* Definição da estrutura das perguntas (quest). */
 struct quest{
-    long id;
-    Date creationDate;
-    int score;
-    long ownerUserId;
-    char* title;
-    char* tags;
-    int answer_c;
-    int comment_c;
-    int favorite_c;
-    GSList* answerList;
+    long id; /* Id da quest. */
+    Date creationDate; /* Data de criação da quest. */
+    int score; /* Pontuação da quest. */
+    long ownerUserId; /* Id do user que elaborou a quest. */
+    char* title; /* Título da pergunta. */
+    char* tags; /* Tag da pergunta. */
+    int answer_c; /* Nº de answer. */
+    int comment_c; /* Nº de comentários que a quest obteve. */
+    int favorite_c; /* Nº de quest com mais votos. */
+    GSList* answerList; /* Lista das answer de uma quest. */
 };
 
-//Metodo de Criação
+/* Função que inicia a estrutura quest. */
 Quest init_quest(long id, Date cd, int s,long ouid, char* ti, char* ta, int ac,
         int cc, int fc){
     Quest q = malloc(sizeof(struct quest));
@@ -31,7 +31,7 @@ Quest init_quest(long id, Date cd, int s,long ouid, char* ti, char* ta, int ac,
     return q;
 }
 
-//Getters
+/* Gets (Obter valor das variaveis da estrutura) */
 long get_id_quest(Quest q){
     return q->id;
 }
@@ -71,7 +71,7 @@ void set_answer_list_quest(Quest q,GSList* l){
         q->answerList = l;
 }
 
-//Imprimir o conteudo da pergunta.
+/* Imprimir o conteudo da pergunta. */
 void print_quest(Quest post){
     if(post != NULL)
     print_date(post->creationDate);
@@ -81,6 +81,7 @@ void print_quest(Quest post){
     printf("\n\n");
 }
 
+/* Função resposável por adicionar as answers às quests. */
 void add_answer_quest(Quest q, Answer a){
     GSList* l = q->answerList;
     q->answerList = g_slist_prepend(l,a);

@@ -4,16 +4,18 @@
 #include "common.h"
 #include "users.h"
 
+/* Definição da estrutura dos users. */
 struct node{
-    long Id;
-    char* DisplayName;
-    char* AboutMe;
-    long  Reputation;
-    int nr_posts;
-    GSList* quests;
-    GSList* answers;
+    long Id; /* Id do user. */
+    char* DisplayName; /* DisplayName de um user. */
+    char* AboutMe; /* Short bio de um user. */
+    long  Reputation; /* Reputação de um user. */
+    int nr_posts; /* Nº de posts de um user. */
+    GSList* quests; /* Id da answer. */
+    GSList* answers; /* Lista das answer que um user fez. */
 };
 
+/* Função que inicia a estrutura dos users. */
 User init_user(long id, char* dn, char* am, long r){
     User n = malloc(sizeof(struct node));
     n->Id = id;
@@ -47,7 +49,7 @@ void set_answers_user(User user,GSList* a){
     user->answers = a;
 }
 
-
+/* Gets (Obter valor das variaveis da estrutura) */
 long get_id_user(User user){
     return user->Id;
 }
@@ -81,6 +83,8 @@ void print_a(gpointer data,gpointer n){
     Answer a = (Answer)GPOINTER_TO_SIZE(data);
     print_answer(a);
 }
+
+/* Imprimir o conteúdo de um user. */
 void print_user(User user){
     if(user != NULL)
    printf("user:\n\nId: %ld\nName:  %s\nAbouteMe: %s\nReputation: %ld\nNr de Posts: %d\n",user->Id,user->DisplayName,user->AboutMe,user->Reputation,user->nr_posts); 
