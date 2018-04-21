@@ -494,12 +494,6 @@ static gboolean iter_hash9(gpointer data, gpointer user_data){
     if(g_hash_table_contains(b,data)) return FALSE;
     return TRUE;
 }
-/*
-static void iter_to_long(gpointer key,gpointer value,gpointer data){
-    query9 aux = (query9)GPOINTER_TO_SIZE(data);
-    GSList* l = aux->l;
-    aux->l = g_slist_prepend(l,key);
-}*/
 //povoa a lista da estrutura aux com quests
 static void iter_id_to_quest(gpointer data,gpointer user_data){
     query9 aux = (query9)GPOINTER_TO_SIZE(user_data);
@@ -515,18 +509,26 @@ LONG_list both_participated(TAD_community com, long id1, long id2, int N){
     GHashTable* users = get_hash_users(com);
 
     //Carregar o user da hash table
-    User a = g_hash_table_lookup(users, GSIZE_TO_POINTER(id1));
-    User b = g_hash_table_lookup(users, GSIZE_TO_POINTER(id2));
+    User a = (User) g_hash_table_lookup(users, GSIZE_TO_POINTER(id1));
+    User b = (User) g_hash_table_lookup(users, GSIZE_TO_POINTER(id2));
+    printf("\t\t Hashs on!! \n");
 
+    print_user(a);
     //Carregar as hashs de quests e answers do user
     GSList* questsa  = get_quests_user(a);
+    printf("quest a");
     GSList* questsb  = get_quests_user(b);
+    printf("quest b");
     GSList* answersa = get_answers_user(a);
+    printf("answer a");
     GSList* answersb = get_answers_user(b);
+    printf("answer b");
+    printf("\t\t carregar hash de quests e ansewer");
     
     //Criar Hashtables temporarias para ids de quests
     GHashTable* ha = g_hash_table_new(g_direct_hash, g_direct_equal); 
     GHashTable* hb = g_hash_table_new(g_direct_hash, g_direct_equal); 
+    printf("\t\t hashs temporarias ids de quests");
 
     //Carrgar as hash com longs que são ids de quests
     g_slist_foreach(questsa ,iter_quest9 ,GSIZE_TO_POINTER(ha));
@@ -536,6 +538,7 @@ LONG_list both_participated(TAD_community com, long id1, long id2, int N){
 
     //A partir de agora temos a HashTable ha só com ids de quests em que os 2 participaram 
     g_hash_table_foreach_steal(ha,(GHRFunc)iter_hash9,GSIZE_TO_POINTER(hb));
+    printf("\t\tmeio\n");
    
     //Cria a estrutura aux e inicializa
     query9 aux = (query9)malloc(sizeof(struct aux9));
