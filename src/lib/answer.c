@@ -1,18 +1,18 @@
 #include "answer.h"
 
-// Answer definitions.
+/* Definição da estrutura das respostas (answer). */
 struct answer{
-    long id;
-    long parentId; 
-    Date creationDate;
-    int score;
-    long ownerUserId;
-    int commentCount;
-    int favoriteCount;
-    float average;
+    long id; /* Id da answer. */
+    long parentId; /* Tipo de post (1 caso seja answer). */
+    Date creationDate; /* Data de criação da answer. */
+    int score; /* Pontuação da answer. */
+    long ownerUserId; /* Id do user que elaborou a answer. */
+    int commentCount; /* Nº de comentários que a answer obteve. */
+    int favoriteCount; /* Nº de answes com mais votos. */
+    float average; /* Média. */
 };
 
-// Criar nova resposta.
+/* Função que inicia a estrutura dados */
 Answer init_answer(long id,int pid,Date cd,int s,long ouid,int cc,int fc){
     Answer a = malloc(sizeof(struct answer));
     a->id = id;
@@ -26,7 +26,7 @@ Answer init_answer(long id,int pid,Date cd,int s,long ouid,int cc,int fc){
     return a;
 }
 
-//Obter valor das variaveis da estrutura.
+/* Gets (Obter valor das variaveis da estrutura) */
 long get_id_answer(Answer a){
     return a->id;
 }
@@ -57,7 +57,7 @@ void set_average_answer(Answer a,float average){
     a->average = average;
 }
 
-//Imprimir o conteudo da resposta.
+/* Imprimir o conteudo da resposta. */
 void print_answer(Answer post){
     if(post != NULL)
     print_date(post->creationDate);
@@ -67,7 +67,7 @@ void print_answer(Answer post){
     printf("\n\n");
 }
 
-//Apaga a resposta dando free na memoria alocada.
+/* Apaga a resposta dando free na memoria alocada. */
 void free_answer(Answer a){
     free(a);
 }

@@ -1,3 +1,11 @@
+/** @file answer.h
+ *  @brief Protótipos das funções que trabalham com as Answer.
+ *
+ *  O ficheiro contem os prototipos das funçoes da estrutura Answer.
+ *
+ *  @author Grupo 19
+ */
+
 #ifndef __ANSWER_H__
 #define __ANSWER_H__
 
@@ -6,26 +14,90 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+/**
+ * @brief Declaração do tipo Answer, um tipo abstrato. 
+ */
 typedef struct answer* Answer;
 
-//Metodo de Criação
+/** @brief Inicializa a estrutura Answer, alocando espaço para a mesma. 
+ *  @param id id da answer.
+ *  @param ptid parentId (tipo de post).
+ *  @param cd creationDate.
+ *  @param s score.
+ *  @param ouid ownerUserId .
+ *  @param cc commentCount.
+ *  @param fc favoriteCount.
+ *  @return Answer.
+ */
 Answer init_answer(long id,int ptid,Date cd,int s,long ouid,int cc,int fc);
 
 //Getters
+
+/** @brief Retorna o id da resposta.
+ *
+ *  @param a Answer.
+ *  @return Id da resposta.
+ */
 long get_id_answer(Answer a);
+/** @brief Retorna tipo de post.
+ *
+ *  @param a Answer.
+ *  @return parentId.
+ */
 long get_parent_id_answer(Answer a);
+/** @brief Retorna a data da criação da answer.
+ *
+ *  @param a Answer.
+ *  @return date answer.
+ */
 Date get_date_answer(Answer a);
+/** @brief Retorna o score de uma answer.
+ *
+ *  @param a Answer.
+ *  @return score da answer.
+ */
 int get_score_answer(Answer a);
+/** @brief Retorna o ownerUserId do utilizador que fez a answer.
+ *
+ *  @param a Answer.
+ *  @return ownerUserId.
+ */
 long get_owner_user_id_answer(Answer a);
+/** @brief Retorna commentCount de uma answer.
+ *
+ *  @param a Answer.
+ *  @return Nº de comentários de uma answer.
+ */
 int get_comment_count_answer(Answer a);
+/** @brief Retorna pergunta com mais pontuação.
+ *
+ *  @param a Answer.
+ *  @return Answer com mais pontuação.
+ */
 int get_favorite_count_answer(Answer a);
+/** @brief Retorna a média de respostas.
+ *
+ *  @param a Answer.
+ *  @return average answer.
+ */
 float get_average_answer(Answer a);
+
+/** @brief altera o total de revisãoes de uma Heap 
+ *
+ *  @param a Answer.
+ *  @param f.
+ *  @return Void.
+ */
 void set_average_answer(Answer a,float f);
 
-//Print
+/* Imprime o conteudo do post */
 void print_answer(Answer post);
 
-//Clear
+/** @brief Liberta o espaço pela answer
+ *
+ *  @param a Answer.
+ *  @return Void.
+ */
 void free_answer(Answer a);
 
 #endif
