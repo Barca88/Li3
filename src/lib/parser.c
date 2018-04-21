@@ -5,7 +5,7 @@
 #include "answer.h"
 #include "tag.h"
 
-//Create new tag and insert in tag struct. 
+//Cria uma tag e insere-a na estrutura das tags. 
 static void processTag(GHashTable* ht ,xmlTextReaderPtr node) {
     xmlChar *name = xmlTextReaderName(node);
     if (strcmp((char*)name,"row") != 0){
@@ -32,7 +32,7 @@ static void processTag(GHashTable* ht ,xmlTextReaderPtr node) {
     g_hash_table_insert(ht,GSIZE_TO_POINTER(id),t);
 }
 
-//Create new user and insert in user struct. 
+//Cria um novo user e insere-o na estrutura dos users. 
 static void processUser(GHashTable* hu ,xmlTextReaderPtr node) {
     xmlChar *name = xmlTextReaderName(node);
     if (strcmp((char*)name,"row") != 0){
@@ -62,7 +62,7 @@ static void processUser(GHashTable* hu ,xmlTextReaderPtr node) {
     g_hash_table_insert(hu,GSIZE_TO_POINTER(id),newUser);
 }
 
-//Create new post and insert in post struct. 
+//Cria um novo post e insere-o na estrutura dos posts. 
 static void processPost(TAD_community com,xmlTextReaderPtr node) {
     GTree *td = get_tree_days(com);
     GHashTable *hq = get_hash_quest_tcd(com);
@@ -115,17 +115,17 @@ static void processPost(TAD_community com,xmlTextReaderPtr node) {
     }
 
     if(ouid!=-2){
-    //criar nova quest ou answer.
+    //Resposável por criar uma nova quest ou answer
     Day d = g_tree_lookup(td,cd);
     if(ptid == 1){
         Quest q = init_quest(id,cd,s,ouid,ti,ta,ac,cc,fc);
-        //Inserir perguntas numa hash table de perguntas.
+        //Insere perguntas numa hash table de perguntas.
         g_hash_table_insert(hq,GSIZE_TO_POINTER(id),q);
-        //Inserir na linked list dos users.
+        //Insere na linked list dos users.
         set_quests_user(g_hash_table_lookup(hu, GSIZE_TO_POINTER(ouid))
                         ,g_slist_prepend(get_quests_user(
                         g_hash_table_lookup(hu, GSIZE_TO_POINTER(ouid))),q));
-        //Inserir quests na tree de datas.
+        //Insere quests na tree de datas.
         if(d) add_quest_day(d,q);
         else{
             d = init_day(cd);
@@ -135,27 +135,27 @@ static void processPost(TAD_community com,xmlTextReaderPtr node) {
     }
     if(ptid == 2){
         Answer a = init_answer(id,pid,cd,s,ouid,cc,fc);
-        //Inserir respostas numa hash table de respostas.
+        //Insere respostas numa hash table de respostas.
         g_hash_table_insert(ha,GSIZE_TO_POINTER(id),a);
-        //Inserir na linked list dos users.
+        //Insere na linked list dos users.
         set_answers_user(g_hash_table_lookup(hu, GSIZE_TO_POINTER(ouid))
                         ,g_slist_prepend(get_answers_user(
                         g_hash_table_lookup(hu, GSIZE_TO_POINTER(ouid))),a));
-        //Inserir answers na tree de datas.
+        //Insere answers na tree de datas.
         if(d) add_answer_day(d,a);
         else{
             d = init_day(cd);
             add_answer_day(d,a);
             g_tree_insert(td,GSIZE_TO_POINTER(cd),d);
         }
-        //TODO ligar as perguntas as respostas.
+        //TODO - Resposável por ligar as perguntas às respostas.
         set_answer_list_quest((Quest)g_hash_table_lookup(hq,GSIZE_TO_POINTER(pid)),
                               g_slist_prepend(get_answer_list_quest(
                               (Quest)g_hash_table_lookup(hq,
                                                     GSIZE_TO_POINTER(pid))),a));
     }
     
-    //Incrementar o numero de posts do respetivo user.
+    //Incrementar o número de posts do respetivo user.
     User nu = (User)g_hash_table_lookup(hu,GSIZE_TO_POINTER(ouid));
     inc_nr_posts(nu);
     }

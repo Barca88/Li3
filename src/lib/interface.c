@@ -15,12 +15,12 @@
 #include <glib.h>
 #include <time.h>
 
+/*Função responsável por inicializar a estrutura. */
 TAD_community init()
 {
     return init_tcd();
 }
 
-// lixo
 static gboolean load_rank_gslist(gpointer key,gpointer value,gpointer data){ 
     TAD_community com = (TAD_community)GPOINTER_TO_SIZE(data);
     set_rank_n_posts(com, g_slist_prepend(get_rank_n_posts(com),value));
@@ -36,7 +36,7 @@ static gint comp_nr_posts(gconstpointer a,gconstpointer b){
         return 0;
 }
 
-// query 0
+/*Função resposável por carregar uma estrutura. */
 TAD_community load(TAD_community com, char* dump_path){
     streamTags(get_hash_tags(com),dump_path);
     streamUsers(get_hash_users(com),dump_path);
@@ -45,14 +45,14 @@ TAD_community load(TAD_community com, char* dump_path){
     //load lista ligada de utilizadores organizada por nº de posts.
     g_hash_table_foreach(get_hash_users(com),(GHFunc)load_rank_gslist,
                          GSIZE_TO_POINTER(com));
-    //ordenar lista de utilizadores pelos nr_posts. 
+    //Ordenar lista de utilizadores pelos nr_posts. 
     set_rank_n_posts(com,
                      g_slist_sort(get_rank_n_posts(com), comp_nr_posts));
 
     return com;
 }  
 
-// query 1
+/** QUERY 1 */
 STR_pair info_from_post(TAD_community com, long id){
     STR_pair sp = NULL; 
     char* title = NULL;
@@ -84,7 +84,7 @@ STR_pair info_from_post(TAD_community com, long id){
     return sp = create_str_pair(title,name);
 }
 
-// query 2
+/** QUERY 2 */
 LONG_list top_most_active(TAD_community com, int N){
     LONG_list l = create_list(N);
     int i;
@@ -143,7 +143,7 @@ static gboolean count_posts(gpointer key,gpointer value,gpointer data){
         return 0;
 }*/
 
-// query 3
+/** QUERY 3 */
 LONG_pair total_posts(TAD_community com, Date begin, Date end){
     query3 ld = malloc(sizeof(struct aux3));
     ld->begin = begin;
@@ -206,7 +206,7 @@ static gint date_compare_aux(gconstpointer a,gconstpointer b){
 /*static void func_print(gpointer data,gpointer user){
     print_quest(data);
 }*/
-// query 4
+/** QUERY 4 */
 LONG_list questions_with_tag(TAD_community com, char* tag, Date begin, Date end){
     query4 ld = malloc(sizeof(struct aux4));
     ld->begin = begin;
@@ -238,19 +238,19 @@ LONG_list questions_with_tag(TAD_community com, char* tag, Date begin, Date end)
     return l; 
 }
 
-// query 5
+/** QUERY 5 */
 USER get_user_info(TAD_community com, long id){
-    //Carregar a hash de users
+    //Carregar a hash de users.
     GHashTable* users = get_hash_users(com);
-    //Carregar o user da hash table
+    //Carregar o user da hash table.
     User u = g_hash_table_lookup(users,GSIZE_TO_POINTER(id));
-    //Carregar as hashs de quests e answers do user
+    //Carregar as hashs de quests e as answers do user.
     GSList* quests = get_quests_user(u);
     GSList* answers = get_answers_user(u);
-    //Ordenar as listas por data
+    //Ordenar as listas por data.
     quests = g_slist_sort(quests,quest_compare);
     answers = g_slist_sort(answers,answer_compare);
-    //Atualizar o utilizador com as listas ordenadas
+    //Atualizar o utilizador com as listas ordenadas.
     set_quests_user(u,quests);
     set_answers_user(u,answers);
 
@@ -312,7 +312,7 @@ static void to_list(gpointer key,gpointer value,gpointer data){
     ld->list = g_slist_prepend(ld->list,value);    
 }
 
-//O que fazer por cada dia. 
+//Função resposável pelo que fazer por cada dia.
 static gboolean iter_day6(gpointer key,gpointer value,gpointer data){
     query6 ld = (query6)GPOINTER_TO_SIZE(data);
     Date b = ld->begin;
@@ -326,7 +326,7 @@ static gboolean iter_day6(gpointer key,gpointer value,gpointer data){
     return FALSE;
 }
 
-//Funcao de comparacao de score para ordenar lista ligada.
+//Função de comparação de score para ordenar uma lista ligada.
 static gint score_compare(gconstpointer a,gconstpointer b){
      int f = get_score_answer((Answer)a);
      int s = get_score_answer((Answer)b);
@@ -335,7 +335,7 @@ static gint score_compare(gconstpointer a,gconstpointer b){
      else return 0;
 }
 
-// query 6
+/** QUERY 6 */
 LONG_list most_voted_answers(TAD_community com, int N, Date begin, Date end){
     query6 ld = malloc(sizeof(struct aux6));
     ld->begin = begin;
@@ -378,7 +378,7 @@ static void to_list7(gpointer key,gpointer value,gpointer data){
     ld->list = g_slist_prepend(ld->list,value);    
 }
 
-//O que fazer por cada dia. 
+//Função resposável pelo que fazer por cada dia. 
 static gboolean iter_day7(gpointer key,gpointer value,gpointer data){
     query7 ld = (query7)GPOINTER_TO_SIZE(data);
     Date b = ld->begin;
@@ -392,7 +392,7 @@ static gboolean iter_day7(gpointer key,gpointer value,gpointer data){
     return FALSE;
 }
 
-//Funcao de comparacao de score para ordenar lista ligada.
+//Funcao de comparação de score para ordenar uma lista ligada.
 static gint  answer_c_compare(gconstpointer a,gconstpointer b){
      int f = get_answer_c_quest((Quest)a);
      int s = get_answer_c_quest((Quest)b);
@@ -401,7 +401,7 @@ static gint  answer_c_compare(gconstpointer a,gconstpointer b){
      else return 0;
 }
 
-// query 7
+/** QUERY 7 */
 LONG_list most_answered_questions(TAD_community com, int N, Date begin, Date end){
     query7 ld = (query7)malloc(sizeof(struct aux7));
     ld->begin = begin;
@@ -445,7 +445,7 @@ static void iter_quest8(gpointer key, gpointer value, gpointer data){
     }
     free(t);
 }
-// query 8
+/** QUERY 10 */
 LONG_list contains_word(TAD_community com, char* w, int N){
     query8 aux = (query8)malloc(sizeof(struct aux8));
     aux->word = mystrdup(w);
@@ -488,7 +488,7 @@ static void iter_answer9(gpointer data,gpointer user_data){
     Answer a = (Answer)GPOINTER_TO_SIZE(data);
     g_hash_table_add(h,GSIZE_TO_POINTER(get_parent_id_answer(a)));
 }
-//usada para iterar a hash e retirar os elementos que não estão presentes em ambas hashs :)
+//Função responsável por iterar a hash e retirar os elementos que não estão presentes em ambas hashs.
 static gboolean iter_hash9(gpointer data, gpointer user_data){
     GHashTable* b = (GHashTable*)GPOINTER_TO_SIZE(user_data);
     if(g_hash_table_contains(b,data)) return FALSE;
@@ -502,7 +502,7 @@ static void iter_id_to_quest(gpointer data,gpointer user_data){
     aux->l = g_slist_prepend(aux->l,
             g_hash_table_lookup(q,GSIZE_TO_POINTER(id))); 
 }
-// query 9
+/** QUERY 9 */
 LONG_list both_participated(TAD_community com, long id1, long id2, int N){
 
     //Carregar a hash de users
@@ -514,7 +514,7 @@ LONG_list both_participated(TAD_community com, long id1, long id2, int N){
     printf("\t\t Hashs on!! \n");
 
     print_user(a);
-    //Carregar as hashs de quests e answers do user
+    //Carregar as hashs de quests e as answers do user
     GSList* questsa  = get_quests_user(a);
     printf("quest a");
     GSList* questsb  = get_quests_user(b);
@@ -530,25 +530,25 @@ LONG_list both_participated(TAD_community com, long id1, long id2, int N){
     GHashTable* hb = g_hash_table_new(g_direct_hash, g_direct_equal); 
     printf("\t\t hashs temporarias ids de quests");
 
-    //Carrgar as hash com longs que são ids de quests
+    //Carrgar as hash com longs (ids de quests).
     g_slist_foreach(questsa ,iter_quest9 ,GSIZE_TO_POINTER(ha));
     g_slist_foreach(questsb ,iter_quest9 ,GSIZE_TO_POINTER(hb));
     g_slist_foreach(answersa,iter_answer9,GSIZE_TO_POINTER(ha));
     g_slist_foreach(answersb,iter_answer9,GSIZE_TO_POINTER(hb));
 
-    //A partir de agora temos a HashTable ha só com ids de quests em que os 2 participaram 
+    //HashTable carregada só com os ids das quests em que 2 utilizadores participaram.
     g_hash_table_foreach_steal(ha,(GHRFunc)iter_hash9,GSIZE_TO_POINTER(hb));
     printf("\t\tmeio\n");
    
-    //Cria a estrutura aux e inicializa
+    //Cria a estrutura aux e inicializa a mesma.
     query9 aux = (query9)malloc(sizeof(struct aux9));
     aux->com = com;
     aux->l = NULL;
 
-    //criar uma lista de quests
+    //Criação de uma lista de quests.
     g_hash_table_foreach(ha, (GHFunc)iter_id_to_quest,
             GSIZE_TO_POINTER(aux));
-    //ordena a lista de quests
+    //Ordena a lista de quests.
     GSList* list = g_slist_sort(aux->l, quest_compare);
 
     LONG_list l = create_list(N);
@@ -582,7 +582,7 @@ static gint compare_average(gconstpointer a,gconstpointer b){
         else return 0;
 }
 
-// query 10
+/** QUERY 10 */
 long better_answer(TAD_community com, long id){
     GHashTable* hq = get_hash_quest_tcd(com);
     GSList *laux,*list = get_answer_list_quest((Quest)g_hash_table_lookup(hq,
@@ -598,7 +598,8 @@ long better_answer(TAD_community com, long id){
 
 }
 
-// query 11
+/** QUERY 11 */
 LONG_list most_used_best_rep(TAD_community com, int N, Date begin, Date end);
 
+/** Função clean. */
 TAD_community clean(TAD_community com);
