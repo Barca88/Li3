@@ -1,13 +1,15 @@
 #include "day.h"
 
+/* Definição da estrutura dos dias (day). */
 struct day {
-    Date day;
-    int n_quest;
-    int n_answer;
-    GHashTable* hash_quest;
-    GHashTable* hash_answer;
+    Date day; /* Data de um dia. */
+    int n_quest; /* Nº de quest num dia. */
+    int n_answer; /* Nº de answer num dia. */
+    GHashTable* hash_quest; /* Hash com as quest. */
+    GHashTable* hash_answer; /* Hash com as answer. */
 };
 
+/* Função que inicia a estrutura Day. */
 Day init_day(Date day){
     Day d = malloc(sizeof(struct day));
     d -> day = day;
@@ -31,7 +33,7 @@ void add_answer_day(Day d, Answer a){
     (d->n_answer)++;
 }
 
-//Getters
+/* Gets (Obter valor das variaveis da estrutura) */
 int get_n_quest(Day d){
     return d->n_quest;
 }
@@ -52,7 +54,7 @@ void print_aux(gpointer key,gpointer value,gpointer data){
     print_quest(q);
 }
     
-//Imprimir o conteudo da data.
+/* Imprimir o conteúdo de uma data. */
 void print_day(Day day){
     if(day != NULL) {
         print_date(day->day);

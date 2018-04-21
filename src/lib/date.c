@@ -5,12 +5,14 @@
 #include "quest.h"
 #include "answer.h"
 
+/* Definição da estrutura de datas (date). */
 struct date {
-  int day;
-  int month;
-  int year;
+  int day; /* Dia de uma data. */
+  int month; /* Mês de uma data. */
+  int year; /* Ano de uma data. */
 };
 
+/* Função reponsável pela criação de uma data. */
 Date createDate(int day, int month, int year) {
     Date d = malloc(sizeof(struct date));
     d->day = day;
@@ -19,6 +21,7 @@ Date createDate(int day, int month, int year) {
     return d;
 }
 
+/* Gets (Obter valor das variaveis da estrutura) */
 int get_day(Date d) {
     return d->day; 
 }
@@ -31,12 +34,13 @@ int get_year(Date d) {
     return d->year;
 }
 
-//auxiliar struct
+/* Definição da estrutura de date_id (estrutura auxiliar). */
 struct date_id{
-    Date fst;
-    long scd;
+    Date fst; /* Data. */
+    long scd; /* long do date_id. */
 }; 
 
+/* Função reponsável pela criação de um date_pair. */
 DatePair creat_date_pair(Date d,long id){
     DatePair n = malloc(sizeof(struct date_id));
     n->fst = d;
@@ -44,6 +48,7 @@ DatePair creat_date_pair(Date d,long id){
     return n;
 }
 
+/* Gets (Obter valor das variaveis da estrutura) */
 Date get_fst(DatePair dp){
     return dp->fst; 
 }
@@ -52,11 +57,12 @@ long get_scd(DatePair dp){
     return dp->scd;
 }
 
+/* Imprimir o conteudo da data. */
 void print_date(Date d){
     printf("%dd-%dm-%da\n",d->day,d->month,d->year);
 }
 
-//retorna -1 se d1 é mais antigo, 0 se iguais, 1 se d1 é mais recente
+//Retorna -1 se d1 é mais antigo, 0 se iguais, 1 se d1 é mais recente
 int date_pair_compare(gconstpointer p1, gconstpointer p2){
     DatePair dp1 = (DatePair)GPOINTER_TO_SIZE(p1);
     DatePair dp2 = (DatePair)GPOINTER_TO_SIZE(p2);
@@ -91,6 +97,7 @@ int date_pair_compare(gconstpointer p1, gconstpointer p2){
     return -2;
 }
 
+//Retorna -1 se d1 é mais antigo, 0 se iguais, 1 se d1 é mais recente
 int date_compare(gconstpointer t1, gconstpointer t2){
     Date d1 = (Date)GPOINTER_TO_SIZE(t1);
     Date d2 = (Date)GPOINTER_TO_SIZE(t2);
@@ -138,6 +145,7 @@ Date date_from_string(char* date){
     return a;
 }
 
+/* Apaga a data dando free na memoria alocada. */
 void free_date(Date d) {
     free(d);
 }
