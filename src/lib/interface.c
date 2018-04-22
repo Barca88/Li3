@@ -478,20 +478,29 @@ typedef struct aux9{
     TAD_community com;
     GSList* l;
 }* query9;
+//adiciona o id da quest na hash
 static void iter_quest9(gpointer data, gpointer user_data){
-    GHashTable* h = (GHashTable*)GPOINTER_TO_SIZE(user_data);
-    Quest q = (Quest)GPOINTER_TO_SIZE(data);
-    g_hash_table_add(h,GSIZE_TO_POINTER(get_id_quest(q)));
+    if(data != NULL){
+        GHashTable* h = (GHashTable*)GPOINTER_TO_SIZE(user_data);
+        Quest q = (Quest)GPOINTER_TO_SIZE(data);
+        g_hash_table_add(h,GSIZE_TO_POINTER(get_id_quest(q)));
+    }
 }
+//adiciona o id da quest a qual a answer em causa responde
 static void iter_answer9(gpointer data,gpointer user_data){
-    GHashTable* h = (GHashTable*)GPOINTER_TO_SIZE(user_data);
-    Answer a = (Answer)GPOINTER_TO_SIZE(data);
-    g_hash_table_add(h,GSIZE_TO_POINTER(get_parent_id_answer(a)));
+    if(data != NULL){
+        GHashTable* h = (GHashTable*)GPOINTER_TO_SIZE(user_data);
+        Answer a = (Answer)GPOINTER_TO_SIZE(data);
+        g_hash_table_add(h,GSIZE_TO_POINTER(get_parent_id_answer(a)));
+    }
 }
-//Função responsável por iterar a hash e retirar os elementos que não estão presentes em ambas hashs.
-static gboolean iter_hash9(gpointer data, gpointer user_data){
-    GHashTable* b = (GHashTable*)GPOINTER_TO_SIZE(user_data);
-    if(g_hash_table_contains(b,data)) return FALSE;
+//Função responsável por iterar a hash e retirar os elementos que não 
+//estão presentes em ambas hashs. 
+static gboolean iter_hash9(gpointer key, gpointer value, gpointer data){
+    if(data != NULL){
+        GHashTable* a = (GHashTable*)GPOINTER_TO_SIZE(data);
+        if(g_hash_table_contains(a,key)) return FALSE;
+    }
     return TRUE;
 }
 //povoa a lista da estrutura aux com quests
@@ -504,31 +513,22 @@ static void iter_id_to_quest(gpointer data,gpointer user_data){
 }
 /** QUERY 9 */
 LONG_list both_participated(TAD_community com, long id1, long id2, int N){
-
     //Carregar a hash de users
     GHashTable* users = get_hash_users(com);
 
-    //Carregar o user da hash table
-    User a = (User) g_hash_table_lookup(users, GSIZE_TO_POINTER(id1));
-    User b = (User) g_hash_table_lookup(users, GSIZE_TO_POINTER(id2));
-    printf("\t\t Hashs on!! \n");
-
-    print_user(a);
-    //Carregar as hashs de quests e as answers do user
-    GSList* questsa  = get_quests_user(a);
-    printf("quest a");
-    GSList* questsb  = get_quests_user(b);
-    printf("quest b");
-    GSList* answersa = get_answers_user(a);
-    printf("answer a");
-    GSList* answersb = get_answers_user(b);
-    printf("answer b");
-    printf("\t\t carregar hash de quests e ansewer");
+    //Carregar os users da hash table
+    User a = (User) GPOINTER_TO_SIZE(g_hash_table_lookup(users, GSIZE_TO_POINTER(id1)));
+    User b = (User) GPOINTER_TO_SIZE(g_hash_table_lookup(users, GSIZE_TO_POINTER(id2)));
     
     //Criar Hashtables temporarias para ids de quests
     GHashTable* ha = g_hash_table_new(g_direct_hash, g_direct_equal); 
     GHashTable* hb = g_hash_table_new(g_direct_hash, g_direct_equal); 
-    printf("\t\t hashs temporarias ids de quests");
+
+    //Cria listas de quests e answer de cada user(serve para simplificar)
+    GSList* questsa  = get_quests_user(a);
+    GSList* questsb  = get_quests_user(b);
+    GSList* answersa = get_answers_user(a);
+    GSList* answersb = get_answers_user(b);
 
     //Carrgar as hash com longs (ids de quests).
     g_slist_foreach(questsa ,iter_quest9 ,GSIZE_TO_POINTER(ha));
@@ -536,18 +536,19 @@ LONG_list both_participated(TAD_community com, long id1, long id2, int N){
     g_slist_foreach(answersa,iter_answer9,GSIZE_TO_POINTER(ha));
     g_slist_foreach(answersb,iter_answer9,GSIZE_TO_POINTER(hb));
 
-    //HashTable carregada só com os ids das quests em que 2 utilizadores participaram.
-    g_hash_table_foreach_steal(ha,(GHRFunc)iter_hash9,GSIZE_TO_POINTER(hb));
-    printf("\t\tmeio\n");
+    //HashTable remove os ids que não estão presentes nas participaçoes 
+    //de ambos users 
+    g_hash_table_foreach_remove(ha,(GHRFunc)iter_hash9,GSIZE_TO_POINTER(hb));
    
     //Cria a estrutura aux e inicializa a mesma.
     query9 aux = (query9)malloc(sizeof(struct aux9));
     aux->com = com;
     aux->l = NULL;
 
-    //Criação de uma lista de quests.
+    //Transforma hash de ids em lista de quests.
     g_hash_table_foreach(ha, (GHFunc)iter_id_to_quest,
             GSIZE_TO_POINTER(aux));
+
     //Ordena a lista de quests.
     GSList* list = g_slist_sort(aux->l, quest_compare);
 
