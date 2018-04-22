@@ -22,14 +22,12 @@ Day init_day(Date day){
 
 //Métodos
 void add_quest_day(Day d, Quest q){
-    GHashTable* hq = d->hash_quest;
-    g_hash_table_insert(hq,GSIZE_TO_POINTER(get_id_quest(q)),q);
+    g_hash_table_insert(d->hash_quest,GSIZE_TO_POINTER(get_id_quest(q)),q);
     (d->n_quest)++;
    // print_quest(q);
 }
 void add_answer_day(Day d, Answer a){
-    GHashTable* ha = d->hash_answer;
-    g_hash_table_insert(ha,GSIZE_TO_POINTER(get_id_answer(a)),a);
+    g_hash_table_insert(d->hash_answer,GSIZE_TO_POINTER(get_id_answer(a)),a);
     (d->n_answer)++;
 }
 

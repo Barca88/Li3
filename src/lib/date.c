@@ -59,7 +59,8 @@ long get_scd(DatePair dp){
 
 /* Imprimir o conteudo da data. */
 void print_date(Date d){
-    printf("%dd-%dm-%da\n",d->day,d->month,d->year);
+    if(d)
+        printf("%dd-%dm-%da\n",d->day,d->month,d->year);
 }
 
 //Retorna -1 se d1 é mais antigo, 0 se iguais, 1 se d1 é mais recente

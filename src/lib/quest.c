@@ -71,14 +71,15 @@ void set_answer_list_quest(Quest q,GSList* l){
         q->answerList = l;
 }
 
-/* Imprimir o conteudo da pergunta. */
-void print_quest(Quest post){
-    if(post != NULL)
-    print_date(post->creationDate);
-    printf("Quest:\n\n\tId: %ld\n\tScore: %d\n\tOwnerUserID: %ld\n\tTitle: %s\n\t Tags: %s\n\t Answer_c: %d\n\tComment_c: %d\n\tFavorite_c: %d\n\t",
-            post->id,post->score,
-            post->ownerUserId,post->title,post->tags,post->answer_c,post->comment_c,post->favorite_c); 
+//Imprimir o conteudo da pergunta.
+void print_quest(Quest q){
+    if(q != NULL){
+    print_date(q->creationDate);
+    printf("Quest:\n\n\t Id: %ld\n\tScore: %d\n\tOwnerUserID: %ld\n\tTitle: %s\n\tI Tags: %s\n\t Answer_c: %d\n\tComment_c: %d\n\tFavorite_c: %d\n\t",
+            q->id,q->score,
+            q->ownerUserId,q->title,q->tags,q->answer_c,q->comment_c,q->favorite_c); 
     printf("\n\n");
+    }
 }
 
 /* Função resposável por adicionar as answers às quests. */

@@ -113,7 +113,6 @@ static void processPost(TAD_community com,xmlTextReaderPtr node) {
                  fc = atoi((char*)xmlTextReaderValue(node));
          else;
     }
-
     if(ouid!=-2){
     //Resposável por criar uma nova quest ou answer
     Day d = g_tree_lookup(td,cd);
@@ -148,14 +147,13 @@ static void processPost(TAD_community com,xmlTextReaderPtr node) {
             add_answer_day(d,a);
             g_tree_insert(td,GSIZE_TO_POINTER(cd),d);
         }
-        //TODO - Resposável por ligar as perguntas às respostas.
+        //Ligar as perguntas as respostas.
         set_answer_list_quest((Quest)g_hash_table_lookup(hq,GSIZE_TO_POINTER(pid)),
                               g_slist_prepend(get_answer_list_quest(
                               (Quest)g_hash_table_lookup(hq,
                                                     GSIZE_TO_POINTER(pid))),a));
     }
-    
-    //Incrementar o número de posts do respetivo user.
+    //Incrementar o numero de posts do respetivo user.
     User nu = (User)g_hash_table_lookup(hu,GSIZE_TO_POINTER(ouid));
     inc_nr_posts(nu);
     }

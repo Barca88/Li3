@@ -40,6 +40,7 @@ static gint comp_nr_posts(gconstpointer a,gconstpointer b){
 TAD_community load(TAD_community com, char* dump_path){
     streamTags(get_hash_tags(com),dump_path);
     streamUsers(get_hash_users(com),dump_path);
+//print_quest((Quest)g_hash_table_lookup(get_hash_quest_tcd(com),GSIZE_TO_POINTER(60103)));
     streamPosts(com,dump_path);
     
     //load lista ligada de utilizadores organizada por nº de posts.
@@ -48,7 +49,6 @@ TAD_community load(TAD_community com, char* dump_path){
     //Ordenar lista de utilizadores pelos nr_posts. 
     set_rank_n_posts(com,
                      g_slist_sort(get_rank_n_posts(com), comp_nr_posts));
-
     return com;
 }  
 
@@ -280,11 +280,14 @@ USER get_user_info(TAD_community com, long id){
 
              dq = get_date_quest(q);
              da = get_date_answer(a);
-             if(date_compare(dq,da) <= 0){
+                 print_quest(q);
+             if(date_compare(dq,da) > 0){
                  l[i] = get_id_quest(q);
+                 //print_quest(q);
                  quests = quests->next;
              }else {
                  l[i] = get_id_answer(a);
+                 print_answer(a);
                  answers = answers->next;
              }
         }
@@ -574,6 +577,8 @@ LONG_list both_participated(TAD_community com, long id1, long id2, int N){
     return l;
 }
 
+//----------------------------------------------------------------------------------
+
 static void average_answer(Answer a,GHashTable* users){
     set_average_answer(a,(get_score_answer(a)*0.45)+(get_comment_count_answer(a)*0.1)
               +(get_score_answer(a)*0.2)+(get_reputation_user(g_hash_table_lookup(users,GSIZE_TO_POINTER(get_owner_user_id_answer(a))))));
@@ -604,7 +609,28 @@ long better_answer(TAD_community com, long id){
 }
 
 /** QUERY 11 */
-LONG_list most_used_best_rep(TAD_community com, int N, Date begin, Date end);
+//----------------------------------------------------------------------------------
+static int comp_reput(gconstpointer a,gconstpointer b){
+    int r1 = get_reputation_user((User)a);
+    int r2 = get_reputation_user((User)b);
+    if(r1<r2) return -1;
+    else if(r1>r2) return 1;
+    else return 0;
+}
+
+static void create_list11(gpointer key,gpointer value,gpointer data){
+   data =  g_slist_prepend((GSList*)data,value);
+}
+
+// query 11
+LONG_list most_used_best_rep(TAD_community com, int N, Date begin, Date end){
+    GHashTable* hu = get_hash_users(com);
+    GSList* list = NULL;
+    g_hash_table_foreach(hu,create_list11,list);
+    list = g_slist_sort(list,comp_reput);
+
+    return NULL;
+}
 
 /** Função clean. */
 TAD_community clean(TAD_community com);
