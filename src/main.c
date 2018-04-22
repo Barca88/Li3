@@ -20,7 +20,7 @@ int main(int argc,char** argv){
     get_user_info(new,10);
     most_voted_answers(new,11,a,b);
     most_answered_questions(new,12,a,b);
-    contains_word(new,"rooting",10);
+    contains_word(new,"Nexus",10);
     //both_participated(new,19,1234,10);
     better_answer(new,1);
     //most_used_best_rep(new,a,b);
