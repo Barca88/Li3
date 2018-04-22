@@ -555,16 +555,16 @@ LONG_list both_participated(TAD_community com, long id1, long id2, int N){
     LONG_list l = create_list(N);
     Quest q;
     int i;
+    printf("Query 9 id1 = %ld, id2 = %ld e com %d elementos: \n\n",id1,id2,N);
     if(list){
         for(i=0;i<N;i++){
             q = (Quest)GPOINTER_TO_SIZE(list->data);
             set_list(l,i,get_id_quest(q));
             list = list->next;
         }
-        printf("Query 9 id1 = %ld, id2 = %ld e com %d elementos: \n\n",id1,id2,N);
         for(i=0;i<N;i++)
             printf("\tId do nº %d: %ld\n",i+1,get_list(l,i));
-    }else printf("Lista query9 vazia.\n");
+    }else printf("Ups lista query 9 vazia.\n");
     printf("\n\n");
     free(aux);
     return l;
