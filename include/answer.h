@@ -24,7 +24,7 @@ typedef struct answer* Answer;
  *  @param ptid parentId (tipo de post).
  *  @param cd creationDate.
  *  @param s score.
- *  @param ouid ownerUserId .
+ *  @param ouid ownerUserId.
  *  @param cc commentCount.
  *  @param fc favoriteCount.
  *  @return Answer.
@@ -69,7 +69,7 @@ long get_owner_user_id_answer(Answer a);
  *  @return Nº de comentários de uma answer.
  */
 int get_comment_count_answer(Answer a);
-/** @brief Retorna pergunta com mais pontuação.
+/** @brief Retorna a resposta com mais pontuação.
  *
  *  @param a Answer.
  *  @return Answer com mais pontuação.
@@ -82,7 +82,7 @@ int get_favorite_count_answer(Answer a);
  */
 float get_average_answer(Answer a);
 
-/** @brief altera o total de revisãoes de uma Heap 
+/** @brief Média das answers. 
  *
  *  @param a Answer.
  *  @param f.
@@ -93,7 +93,7 @@ void set_average_answer(Answer a,float f);
 /* Imprime o conteudo do post */
 void print_answer(Answer post);
 
-/** @brief Liberta o espaço pela answer
+/** @brief Liberta o espaço ocupado pela answer.
  *
  *  @param a Answer.
  *  @return Void.

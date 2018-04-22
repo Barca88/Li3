@@ -1,3 +1,11 @@
+/** @file quest.h
+ *  @brief Protótipos das funções que trabalham com as Quest.
+ *
+ *  O ficheiro contem os prototipos das funçoes da estrutura Quest.
+ *
+ *  @author Grupo 19
+ */
+
 #ifndef __QUEST_H__
 #define __QUEST_H__
 
@@ -6,26 +14,100 @@
 #include <glib.h>
 #include <stdlib.h>
 
+/**
+ * @brief Declaração do tipo Quest, um tipo abstrato. 
+ */
 typedef struct quest* Quest;
 
-//Metodo de Criação
+/** @brief Inicializa a estrutura Quest, alocando espaço para a mesma. 
+ *  @param id id da quest.
+ *  @param cd creationDate.
+ *  @param s score.
+ *  @param ouid ownerUserId .
+ *  @param ti título.
+ *  @param ta tags.
+ *  @param ac answerCount .
+ *  @param cc commentCount.
+ *  @param fc favoriteCount.
+ *  @return Quest.
+ */
 Quest init_quest(long id, Date cd, int s,long ouid, char* ti, char* ta, int ac, 
         int cc, int fc);
 
+//Getters
+
+/** @brief Retorna o id da quest.
+ *
+ *  @param q Quest.
+ *  @return Id da pergunta.
+ */
 long get_id_quest(Quest q);
+/** @brief Retorna a data da criação da quest.
+ *
+ *  @param q Quest.
+ *  @return date quest.
+ */
 Date get_date_quest(Quest q);
+/** @brief Retorna o score de uma quest.
+ *
+ *  @param q Quest.
+ *  @return score da quest.
+ */
 int get_score_quest(Quest q);
+/** @brief Retorna o ownerUserId do utilizador que fez a quest.
+ *
+ *  @param q Quest.
+ *  @return ownerUserId.
+ */
 long get_owner_id_quest(Quest q);
+/** @brief Retorna o título de uma quest.
+ *
+ *  @param q Quest.
+ *  @return title.
+ */
 char* get_title_quest(Quest q);
+/** @brief Retorna a tag de uma quest.
+ *
+ *  @param q Quest.
+ *  @return tag.
+ */
 char* get_tags_quest(Quest q);
+/** @brief Retorna answerCount de uma quest.
+ *
+ *  @param q Quest.
+ *  @return Nº de respostas a uma quest.
+ */
 int get_answer_c_quest(Quest q);
+/** @brief Retorna commentCount de uma quest.
+ *
+ *  @param q Quest.
+ *  @return Nº de comentários de uma quest.
+ */
 int get_comment_c_quest(Quest q);
+/** @brief Retorna a pergunta com mais pontuação.
+ *
+ *  @param q Quest.
+ *  @return Quest com mais pontuação.
+ */
 int get_favorite_c_quest(Quest q);
+/** @brief Retorna lista com as answers e quest.
+ *
+ *  @param q Quest.
+ *  @return lista.
+ */
 GSList* get_answer_list_quest(Quest q);
+
+/** @brief Associa as perguntas às respostas. 
+ *
+ *  @param q Quest.
+ *  @param l lista.
+ *  @return Void.
+ */
 void set_answer_list_quest(Quest q,GSList* l);
 
-//Print
+/* Imprime o conteudo do post */
 void print_quest(Quest post);
 
+/* Função resposável por adicionar as answers às quests. */
 void add_answer_quest(Quest q, Answer a);
 #endif

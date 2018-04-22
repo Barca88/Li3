@@ -3,12 +3,13 @@
 #include <common.h>
 #include "pair.h"
 
-// STR_pair definitions
+/* Definição da estrutura das str_pair. */
 struct str_pair {
-  char* fst;
-  char* snd;
+  char* fst; /* . */
+  char* snd; /* . */
 };
 
+/* Função reponsável pela criação da str_pair. */
 STR_pair create_str_pair(char* fst, char* snd) {
   STR_pair p = malloc(sizeof(struct str_pair));
   p->fst = mystrdup(fst);
@@ -16,6 +17,7 @@ STR_pair create_str_pair(char* fst, char* snd) {
   return p;
 }
 
+/* Gets (Obter valor das variaveis da estrutura) */
 void set_fst_str(STR_pair pair, char* str) {
   free(pair->fst);
   pair->fst = mystrdup(str);
@@ -34,6 +36,7 @@ char* get_snd_str(STR_pair pair) {
   return pair? mystrdup(pair->snd) : NULL;
 }
 
+/* Apaga a str_pair dando free na memoria alocada. */
 void free_str_pair(STR_pair pair) {
   if(pair) {
     free(pair->fst);
@@ -42,12 +45,13 @@ void free_str_pair(STR_pair pair) {
   }
 }
 
-// LONG_pair definitions
+/* Definição da estrutura dos long_pair. */
 struct long_pair {
-  long fst;
-  long snd;
+  long fst; /* . */
+  long snd; /* . */
 };
 
+/* Função reponsável pela criação do long_pair. */
 LONG_pair create_long_pair(long fst, long snd) {
   LONG_pair p = malloc(sizeof(struct long_pair));
   p->fst = fst; 
@@ -55,6 +59,7 @@ LONG_pair create_long_pair(long fst, long snd) {
   return p;
 }
 
+/* Gets (Obter valor das variaveis da estrutura) */
 void set_fst_long(LONG_pair pair, long l) {
   pair->fst = l;
 }
@@ -71,6 +76,7 @@ long get_snd_long(LONG_pair pair) {
   return pair->snd;
 }
 
+/* Apaga o long_pair dando free na memoria alocada. */
 void free_long_pair(LONG_pair pair) {
     free(pair);
 }

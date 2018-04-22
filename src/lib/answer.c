@@ -12,7 +12,7 @@ struct answer{
     float average; /* Média. */
 };
 
-/* Função que inicia a estrutura dados */
+/* Função que inicia a estrutura answer. */
 Answer init_answer(long id,int pid,Date cd,int s,long ouid,int cc,int fc){
     Answer a = malloc(sizeof(struct answer));
     a->id = id;

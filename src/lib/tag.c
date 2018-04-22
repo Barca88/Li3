@@ -1,11 +1,13 @@
 #include "tag.h"
 
+/* Definição da estrutura das tag. */
 struct tag {
-	long id;
-	char* tag;
-	int n_used;
+	long id; /* Id da tag. */
+	char* tag; /* Tag pretendida. */
+	int n_used; /* Nº de vezes que uma determinada tag foi usada. */
 };
 
+/* Função reponsável pela criação de uma tag. */
 Tag create_tag(long id,char* s,int n){
     Tag t = malloc(sizeof(struct tag));
     t->id = id;
@@ -14,6 +16,7 @@ Tag create_tag(long id,char* s,int n){
     return t;
 }
 
+/* Gets (Obter valor das variaveis da estrutura) */
 long get_id_tag (Tag t) {
 	return t->id;
 }
@@ -44,6 +47,7 @@ int equal_tag(Tag t,char* s){
     return strcmp(t->tag,s);
 }
 
+/* Apaga a tag dando free na memoria alocada. */
 void free_tag(Tag t){
     free(t->tag);
     free(t);
