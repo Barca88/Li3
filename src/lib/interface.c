@@ -517,8 +517,10 @@ LONG_list both_participated(TAD_community com, long id1, long id2, int N){
     GHashTable* users = get_hash_users(com);
 
     //Carregar os users da hash table
-    User a = (User) GPOINTER_TO_SIZE(g_hash_table_lookup(users, GSIZE_TO_POINTER(id1)));
-    User b = (User) GPOINTER_TO_SIZE(g_hash_table_lookup(users, GSIZE_TO_POINTER(id2)));
+    User a = (User) GPOINTER_TO_SIZE(g_hash_table_lookup(users,
+                GSIZE_TO_POINTER(id1)));
+    User b = (User) GPOINTER_TO_SIZE(g_hash_table_lookup(users,
+                GSIZE_TO_POINTER(id2)));
     
     //Criar Hashtables temporarias para ids de quests
     GHashTable* ha = g_hash_table_new(g_direct_hash, g_direct_equal); 
@@ -564,9 +566,11 @@ LONG_list both_participated(TAD_community com, long id1, long id2, int N){
         }
         for(i=0;i<N;i++)
             printf("\tId do nº %d: %ld\n",i+1,get_list(l,i));
-    }else printf("Ups lista query 9 vazia.\n");
+    }else printf("\tUps lista query 9 vazia.\n");
     printf("\n\n");
     free(aux);
+    g_hash_table_destroy(ha);
+    g_hash_table_destroy(hb);
     return l;
 }
 
