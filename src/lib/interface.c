@@ -509,12 +509,13 @@ static gboolean iter_hash9(gpointer key, gpointer value, gpointer data){
     return TRUE;
 }
 //povoa a lista da estrutura aux com quests
-static void iter_id_to_quest(gpointer data,gpointer user_data){
-    query9 aux = (query9)GPOINTER_TO_SIZE(user_data);
-    long id = (long)GPOINTER_TO_SIZE(data);
-    GHashTable* q = get_hash_quest_tcd(aux->com);
-    aux->l = g_slist_prepend(aux->l,
-            g_hash_table_lookup(q,GSIZE_TO_POINTER(id))); 
+static void iter_id_to_quest(gpointer key,gpointer value,gpointer user_data){
+    printf("\titer_id_to_quest\n");
+    if(key != NULL){
+        query9 aux = (query9)GPOINTER_TO_SIZE(user_data);
+        GHashTable* q = get_hash_quest_tcd(aux->com);
+        aux->l = g_slist_prepend(aux->l, g_hash_table_lookup(q,key)); 
+    }
 }
 /** QUERY 9 */
 LONG_list both_participated(TAD_community com, long id1, long id2, int N){
@@ -556,9 +557,11 @@ LONG_list both_participated(TAD_community com, long id1, long id2, int N){
     g_hash_table_foreach(ha, (GHFunc)iter_id_to_quest,
             GSIZE_TO_POINTER(aux));
 
+    printf("meio\n");
     //Ordena a lista de quests.
-    GSList* list = g_slist_sort(aux->l, quest_compare);
+    GSList* list = g_slist_sort(aux->l,(GCompareFunc)quest_compare);
 
+    printf("\tflor\n");
     LONG_list l = create_list(N);
     Quest q;
     int i;
