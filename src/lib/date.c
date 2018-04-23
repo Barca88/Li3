@@ -23,7 +23,7 @@ Date createDate(int day, int month, int year) {
 
 /* Gets (Obter valor das variaveis da estrutura) */
 int get_day(Date d) {
-    return d->day; 
+    return d->day;
 }
 
 int get_month(Date d) {
@@ -38,7 +38,7 @@ int get_year(Date d) {
 struct date_id{
     Date fst; /* Data. */
     long scd; /* long do date_id. */
-}; 
+};
 
 /* Função reponsável pela criação de um date_pair. */
 DatePair creat_date_pair(Date d,long id){
@@ -50,7 +50,7 @@ DatePair creat_date_pair(Date d,long id){
 
 /* Gets (Obter valor das variaveis da estrutura) */
 Date get_fst(DatePair dp){
-    return dp->fst; 
+    return dp->fst;
 }
 
 long get_scd(DatePair dp){
@@ -122,18 +122,19 @@ int date_compare(gconstpointer t1, gconstpointer t2){
 }
 
 int quest_compare(gconstpointer t1, gconstpointer t2){
-    Date d1 = get_date_quest((Quest)GPOINTER_TO_SIZE(t1));
-    Date d2 = get_date_quest((Quest)GPOINTER_TO_SIZE(t2));
-
-    return (-1)*date_compare(d1,d2); 
+        Date d1 = get_date_quest((Quest)GPOINTER_TO_SIZE(t1));
+        Date d2 = get_date_quest((Quest)GPOINTER_TO_SIZE(t2));
+        
+        return (-1)*date_compare(d1,d2);
 }
 
 int answer_compare(gconstpointer t1, gconstpointer t2){
     Date d1 = get_date_answer((Answer)GPOINTER_TO_SIZE(t1));
     Date d2 = get_date_answer((Answer)GPOINTER_TO_SIZE(t2));
-   
+
     return (-1)*date_compare(d1,d2);
 }
+
 Date date_from_string(char* date){
     *(date + 10) = '\0';
     char* day = date+8;
@@ -141,7 +142,7 @@ Date date_from_string(char* date){
     char* month = date+5;
     *(date + 4) = '\0';
     char* year = date;
-    
+
     Date a = createDate(atoi(day),atoi(month),atoi(year));
     return a;
 }
@@ -150,4 +151,3 @@ Date date_from_string(char* date){
 void free_date(Date d) {
     free(d);
 }
-
