@@ -9,7 +9,7 @@ struct answer{
     long ownerUserId; /* Id do user que elaborou a answer. */
     int commentCount; /* Nº de comentários que a answer obteve. */
     int favoriteCount; /* Nº de answes com mais votos. */
-    float average; /* Média. */
+    float average; /* Indica a melhor answer. */
 };
 
 /* Função que inicia a estrutura answer. */

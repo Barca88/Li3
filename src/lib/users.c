@@ -11,7 +11,7 @@ struct node{
     char* AboutMe; /* Short bio de um user. */
     long  Reputation; /* Reputação de um user. */
     int nr_posts; /* Nº de posts de um user. */
-    GSList* quests; /* Id da answer. */
+    GSList* quests; /* Lista das quest que um user fez. */
     GSList* answers; /* Lista das answer que um user fez. */
 };
 

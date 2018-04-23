@@ -75,7 +75,7 @@ int get_comment_count_answer(Answer a);
  *  @return Answer com mais pontuação.
  */
 int get_favorite_count_answer(Answer a);
-/** @brief Retorna a média de respostas.
+/** @brief Retorna a melhor respostas.
  *
  *  @param a Answer.
  *  @return average answer.
