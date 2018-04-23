@@ -22,7 +22,7 @@ int main(int argc,char** argv){
     most_answered_questions(new,12,a,b);
     contains_word(new,"Nexus",10);
     both_participated(new,16575,1465,10000);
-    better_answer(new,1);
+    better_answer(new,154309);
     most_used_best_rep(new,6,a,b);
 
     tpf =clock() - tpf;
