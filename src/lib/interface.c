@@ -559,7 +559,7 @@ LONG_list both_participated(TAD_community com, long id1, long id2, int N){
     GSList* list = g_slist_sort(aux->l,(GCompareFunc)quest_compare);
 
     int size;
-    if((int)g_slist_length(list)<N) size = (int)g_slist_length(list);
+    if(g_slist_length(list)<N) size = g_slist_length(list);
     else size = N;
 
     LONG_list l = create_list(size);
