@@ -511,7 +511,7 @@ static void iter_id_to_quest(gpointer key,gpointer value,gpointer user_data){
     if(key != NULL){
         query9 aux = (query9)GPOINTER_TO_SIZE(user_data);
         GHashTable* q = get_hash_quest_tcd(aux->com);
-        if(g_hash_table_contains(q,key))
+        if(g_hash_table_contains(q,key)) //evita a inserção de null na gslist se as quests não existirem na hash de streamUsers
             aux->l = g_slist_prepend(aux->l, g_hash_table_lookup(q,key));
     }
 }
@@ -558,6 +558,7 @@ LONG_list both_participated(TAD_community com, long id1, long id2, int N){
     //Ordena a lista de quests.
     GSList* list = g_slist_sort(aux->l,(GCompareFunc)quest_compare);
 
+    //verifica o size das resposta
     int size;
     if(g_slist_length(list)<N) size = g_slist_length(list);
     else size = N;
@@ -586,16 +587,17 @@ LONG_list both_participated(TAD_community com, long id1, long id2, int N){
 //----------------------------------------------------------------------------------
 
 static void average_answer(Answer a,GHashTable* users){
-    set_average_answer(a,(get_score_answer(a)*0.45)+(get_comment_count_answer(a)*0.1)
-              +(get_score_answer(a)*0.2)+(get_reputation_user(g_hash_table_lookup(users,GSIZE_TO_POINTER(get_owner_user_id_answer(a))))));
+    set_average_answer(a,(get_score_answer(a)*0.65)+
+    (get_comment_count_answer(a)*0.1)+
+    (get_reputation_user(g_hash_table_lookup(users,GSIZE_TO_POINTER(get_owner_user_id_answer(a))))*0.25));
 }
 
 static gint compare_average(gconstpointer a,gconstpointer b){
-        float a1 = get_average_answer((Answer)a);
-        float a2 = get_average_answer((Answer)b);
-        if(a1<a2) return -1;
-        else if(a1>a2) return 1;
-        else return 0;
+    float a1 = get_average_answer((Answer)a);
+    float a2 = get_average_answer((Answer)b);
+    if(a1<a2) return -1;
+    else if(a1>a2) return 1;
+    return 0;
 }
 
 /** QUERY 10 */
