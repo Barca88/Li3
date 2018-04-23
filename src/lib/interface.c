@@ -510,7 +510,7 @@ static gboolean iter_hash9(gpointer key, gpointer value, gpointer data){
 }
 //povoa a lista da estrutura aux com quests
 static void iter_id_to_quest(gpointer key,gpointer value,gpointer user_data){
-    printf("\titer_id_to_quest\n");
+    printf("\titer_id_to_quest: %ld\n",(long)GSIZE_TO_POINTER(key));
     if(key != NULL){
         query9 aux = (query9)GPOINTER_TO_SIZE(user_data);
         GHashTable* q = get_hash_quest_tcd(aux->com);
