@@ -3,12 +3,12 @@
 /* Definição da estrutura das respostas (answer). */
 struct answer{
     long id; /* Id da answer. */
-    long parentId; /* Tipo de post (1 caso seja answer). */
+    long parentId; /* Id da quest à qual esta answer responde. */
     Date creationDate; /* Data de criação da answer. */
     int score; /* Pontuação da answer. */
     long ownerUserId; /* Id do user que elaborou a answer. */
     int commentCount; /* Nº de comentários que a answer obteve. */
-    int favoriteCount; /* Nº de answes com mais votos. */
+    int favoriteCount; /* Nº de votos favoritos */
     float average; /* Indica a melhor answer. */
 };
 

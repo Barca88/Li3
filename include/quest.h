@@ -84,7 +84,7 @@ int get_answer_c_quest(Quest q);
  *  @return Nº de comentários de uma quest.
  */
 int get_comment_c_quest(Quest q);
-/** @brief Retorna a pergunta com mais pontuação.
+/** @brief Retorna nº de votos de uma quest.
  *
  *  @param q Quest.
  *  @return Quest com mais pontuação.
