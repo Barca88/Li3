@@ -10,7 +10,7 @@ struct quest{
     char* tags; /* Tag da pergunta. */
     int answer_c; /* Nº de answer. */
     int comment_c; /* Nº de comentários que a quest obteve. */
-    int favorite_c; /* Nº de quest com mais votos. */
+    int favorite_c; /* Nº de votos favoritos. */
     GSList* answerList; /* Lista das answer de uma quest. */
 };
 
@@ -69,6 +69,11 @@ GSList* get_answer_list_quest(Quest q){
 void set_answer_list_quest(Quest q,GSList* l){
     if(q)
         q->answerList = l;
+}
+
+void set_tags_quest(Quest q,char* t){
+    if(q)
+        q->tags = t;
 }
 
 //Imprimir o conteudo da pergunta.

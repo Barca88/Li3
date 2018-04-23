@@ -23,7 +23,7 @@ int main(int argc,char** argv){
     contains_word(new,"Nexus",10);
     both_participated(new,16575,1465,10);
     better_answer(new,1);
-    //most_used_best_rep(new,a,b);
+    most_used_best_rep(new,6,a,b);
 
     tpf =clock() - tpf;
     printf("Demorou %f segundos a ler\n",((float)tpf)/CLOCKS_PER_SEC);

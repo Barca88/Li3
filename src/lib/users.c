@@ -11,7 +11,7 @@ struct node{
     char* AboutMe; /* Short bio de um user. */
     long  Reputation; /* Reputação de um user. */
     int nr_posts; /* Nº de posts de um user. */
-    GSList* quests; /* Id da answer. */
+    GSList* quests; /* Lista das quest que um user fez. */
     GSList* answers; /* Lista das answer que um user fez. */
 };
 
@@ -88,8 +88,8 @@ void print_a(gpointer data,gpointer n){
 
 /* Imprimir o conteúdo de um user. */
 void print_user(User user){
-    if(user != NULL)
-   printf("user:\n\nId: %ld\nName:  %s\nAbouteMe: %s\nReputation: %ld\nNr de Posts: %d\n",user->Id,user->DisplayName,user->AboutMe,user->Reputation,user->nr_posts); 
-    g_slist_foreach(user->quests,(GFunc)print_q,NULL);
-    g_slist_foreach(user->answers,(GFunc)print_a,NULL);
+    if(user)
+        printf("user:\n\nId: %ld\nName:  %s\nAbouteMe: %s\nReputation: %ld\nNr de Posts: %d\n",user->Id,user->DisplayName,user->AboutMe,user->Reputation,user->nr_posts); 
+ //   g_slist_foreach(user->quests,(GFunc)print_q,NULL);
+ //   g_slist_foreach(user->answers,(GFunc)print_a,NULL);
 }

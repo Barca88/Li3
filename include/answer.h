@@ -21,7 +21,7 @@ typedef struct answer* Answer;
 
 /** @brief Inicializa a estrutura Answer, alocando espaço para a mesma. 
  *  @param id id da answer.
- *  @param ptid parentId (tipo de post).
+ *  @param ptid parentId (id da quest à qual esta answer responde).
  *  @param cd creationDate.
  *  @param s score.
  *  @param ouid ownerUserId.
@@ -39,7 +39,7 @@ Answer init_answer(long id,int ptid,Date cd,int s,long ouid,int cc,int fc);
  *  @return Id da resposta.
  */
 long get_id_answer(Answer a);
-/** @brief Retorna tipo de post.
+/** @brief Retorna o id da quest à qual esta answer responde.
  *
  *  @param a Answer.
  *  @return parentId.
@@ -69,13 +69,13 @@ long get_owner_user_id_answer(Answer a);
  *  @return Nº de comentários de uma answer.
  */
 int get_comment_count_answer(Answer a);
-/** @brief Retorna a resposta com mais pontuação.
+/** @brief Retorna o nº de votos de uma answer.
  *
  *  @param a Answer.
  *  @return Answer com mais pontuação.
  */
 int get_favorite_count_answer(Answer a);
-/** @brief Retorna a média de respostas.
+/** @brief Retorna a melhor respostas.
  *
  *  @param a Answer.
  *  @return average answer.

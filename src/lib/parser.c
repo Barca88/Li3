@@ -153,6 +153,8 @@ static void processPost(TAD_community com,xmlTextReaderPtr node) {
                               (Quest)g_hash_table_lookup(hq,
                                                     GSIZE_TO_POINTER(pid))),a));
     }
+
+//print_quest((Quest)g_hash_table_lookup(get_hash_users(com),GSIZE_TO_POINTER(60103)));
     //Incrementar o numero de posts do respetivo user.
     User nu = (User)g_hash_table_lookup(hu,GSIZE_TO_POINTER(ouid));
     inc_nr_posts(nu);
