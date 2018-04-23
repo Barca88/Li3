@@ -120,8 +120,8 @@ static gboolean count_posts(gpointer key,gpointer value,gpointer data){
     Date e = ld->end;
 
 
-    if ((date_compare(get_date_day(value),b)>0 &&
-          date_compare(e,get_date_day(value))>0)){
+    if ((date_compare(get_date_day(value),b)>=0 && 
+          date_compare(e,get_date_day(value))>=0)){
             ld->nq += get_n_quest(value);
             ld->na += get_n_answer(value);
     }
@@ -133,8 +133,8 @@ static gboolean count_posts(gpointer key,gpointer value,gpointer data){
     Date b = ld->begin;
     Date e = ld->end;
 
-    if ((date_compare(get_fst(key),b)>0 &&
-          date_compare(e,get_fst(key))>0)){
+    if ((date_compare(get_fst(key),b)>=0 &&
+          date_compare(e,get_fst(key))>=0)){
          print_date(get_fst(key));
          ld->nq++;
          return -1;
@@ -191,8 +191,8 @@ static gboolean iter_day(gpointer key,gpointer value,gpointer data){
     Date e = ld->end;
     GHashTable* ht = get_hash_quest_day((Day)value);
 
-    if ((date_compare(get_date_day(value),b)>0 &&
-         date_compare(e,get_date_day(value))>0)){
+    if ((date_compare(get_date_day(value),b)>=0 &&
+         date_compare(e,get_date_day(value))>=0)){
          g_hash_table_foreach(ht,(GHFunc)comp_tags,data);
     }
     return FALSE;
@@ -318,8 +318,8 @@ static gboolean iter_day6(gpointer key,gpointer value,gpointer data){
     Date e = ld->end;
     GHashTable* ha = get_hash_answer_day((Day)value);
 
-    if ((date_compare(get_date_day(value),b)>0 &&
-         date_compare(e,get_date_day(value))>0)){
+    if ((date_compare(get_date_day(value),b)>=0 &&
+         date_compare(e,get_date_day(value))>=0)){
          g_hash_table_foreach(ha,(GHFunc)to_list,data);
     }
     return FALSE;
@@ -384,8 +384,8 @@ static gboolean iter_day7(gpointer key,gpointer value,gpointer data){
     Date e = ld->end;
     GHashTable* hq = get_hash_quest_day((Day)value);
 
-    if ((date_compare(get_date_day(value),b)>0 &&
-         date_compare(e,get_date_day(value))>0)){
+    if ((date_compare(get_date_day(value),b)>=0 &&
+         date_compare(e,get_date_day(value))>=0)){
          g_hash_table_foreach(hq,(GHFunc)to_list7,data);
     }
     return FALSE;
@@ -507,7 +507,6 @@ static gboolean iter_hash9(gpointer key, gpointer value, gpointer data){
 }
 //povoa a lista da estrutura aux com quests
 static void iter_id_to_quest(gpointer key,gpointer value,gpointer user_data){
-    printf("\titer_id_to_quest: %ld\n",(long)GSIZE_TO_POINTER(key));
     if(key != NULL){
         query9 aux = (query9)GPOINTER_TO_SIZE(user_data);
         GHashTable* q = get_hash_quest_tcd(aux->com);
@@ -630,8 +629,8 @@ void update_tlist(gpointer value,gpointer data){
     Date e = aux->end;
     char* auxt = NULL;
 
-    if ((date_compare(get_date_quest(value),b)>0 &&
-         date_compare(e,get_date_quest(value))>0)){
+    if ((date_compare(get_date_quest(value),b)>=0 &&
+         date_compare(e,get_date_quest(value))>=0)){
         auxt = get_tags_quest(value);
         auxt += 1;
         auxt[strlen(auxt)-1] = '\0';

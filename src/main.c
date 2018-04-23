@@ -10,12 +10,12 @@ int main(int argc,char** argv){
     new = load(new,argv[1]);
 
     Date a,b;
-    a = createDate(1,2,1900);
+    a = createDate(15,7,2011);
     b = createDate(3,10,2020);
 
     info_from_post(new,1);
     top_most_active(new,12);
-    total_posts(new,a,b);
+    total_posts(new,a,a);
     questions_with_tag(new,"handcent-sms",a,b);
     get_user_info(new,10);
     most_voted_answers(new,11,a,b);
