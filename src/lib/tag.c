@@ -7,7 +7,7 @@ struct tag {
 	int n_used; /* Nº de vezes que uma determinada tag foi usada. */
 };
 
-/* Função reponsável pela criação de uma tag. */
+/* Funcao reponsável pela alocacao de memoria e a inicializacao dos campos, da tag.*/
 Tag create_tag(long id,char* s,int n){
     Tag t = malloc(sizeof(struct tag));
     t->id = id;
@@ -45,6 +45,11 @@ void set_n_used (Tag t, int count_tag) {
 int equal_tag(Tag t,char* s){
     if(t == NULL || s[0] == '\0') return -1;
     return strcmp(t->tag,s);
+}
+
+void print_tag(Tag t){
+    if(t)
+        printf("Tag:\n\n\tId: %ld\n\tTag name: %s\n\tN used: %d\n\n",t->id,t->tag,t->n_used);
 }
 
 /* Apaga a tag dando free na memoria alocada. */

@@ -71,6 +71,11 @@ void set_answer_list_quest(Quest q,GSList* l){
         q->answerList = l;
 }
 
+void set_tags_quest(Quest q,char* t){
+    if(q)
+        q->tags = t;
+}
+
 //Imprimir o conteudo da pergunta.
 void print_quest(Quest q){
     if(q != NULL){

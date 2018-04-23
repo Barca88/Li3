@@ -11,6 +11,7 @@
 
 #include "common.h"
 #include <glib.h>
+#include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 
@@ -75,6 +76,7 @@ int get_n_used (Tag t);
 //Métodos
 int equal_tag(Tag t,char* s);
 
+void print_tag(Tag t);
 /** @brief Liberta o espaço ocupado pela tag.
  *
  *  @param Tag.

@@ -105,6 +105,7 @@ GSList* get_answer_list_quest(Quest q);
  */
 void set_answer_list_quest(Quest q,GSList* l);
 
+void set_tags_quest(Quest q,char* t);
 /* Imprime o conteudo do post */
 void print_quest(Quest post);
 

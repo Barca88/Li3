@@ -40,7 +40,6 @@ static gint comp_nr_posts(gconstpointer a,gconstpointer b){
 TAD_community load(TAD_community com, char* dump_path){
     streamTags(get_hash_tags(com),dump_path);
     streamUsers(get_hash_users(com),dump_path);
-//print_quest((Quest)g_hash_table_lookup(get_hash_quest_tcd(com),GSIZE_TO_POINTER(60103)));
     streamPosts(com,dump_path);
     
     //load lista ligada de utilizadores organizada por nº de posts.
@@ -280,14 +279,11 @@ USER get_user_info(TAD_community com, long id){
 
              dq = get_date_quest(q);
              da = get_date_answer(a);
-                 print_quest(q);
              if(date_compare(dq,da) > 0){
                  l[i] = get_id_quest(q);
-                 //print_quest(q);
                  quests = quests->next;
              }else {
                  l[i] = get_id_answer(a);
-                 print_answer(a);
                  answers = answers->next;
              }
         }
@@ -368,9 +364,9 @@ LONG_list most_voted_answers(TAD_community com, int N, Date begin, Date end){
     return l;
 }
 
-///----------------------------------------------------------------------
+//----------------------------------------------------------------------
 
-typedef struct aux7{
+typedef  struct aux7{
     Date begin;
     Date end;
     GSList* list;
@@ -483,6 +479,7 @@ typedef struct aux9{
     TAD_community com;
     GSList* l;
 }* query9;
+
 //adiciona o id da quest na hash
 static void iter_quest9(gpointer data, gpointer user_data){
     if(data != NULL){
@@ -615,24 +612,67 @@ long better_answer(TAD_community com, long id){
 
 /** QUERY 11 */
 //----------------------------------------------------------------------------------
+typedef struct aux11{
+    GSList* tlist;
+    Date begin;
+    Date end;
+}* query11;
+
+void update_tlist(gpointer value,gpointer data){
+    query11 aux = (query11)GPOINTER_TO_SIZE(data);
+    Date b = aux->begin;
+    Date e = aux->end;
+    char* auxt = NULL;
+
+    if ((date_compare(get_date_quest(value),b)>0 &&
+         date_compare(e,get_date_quest(value))>0)){
+        auxt = get_tags_quest(value);
+        auxt += 1;
+        auxt[strlen(auxt)-1] = '\0';
+        set_tags_quest(value,auxt);
+        char *p;
+        //printf ("String  \"%s\" is split into tokens:\n\n",auxt);
+        p = strtok (auxt,"><");
+        while (p!= NULL) {
+           // printf ("\t%s\n",p);
+            p = strtok (NULL, "><");
+        }
+        //TODO strtok para inserir na estrutura de tags
+    }
+
+}
+
 static int comp_reput(gconstpointer a,gconstpointer b){
     int r1 = get_reputation_user((User)a);
     int r2 = get_reputation_user((User)b);
-    if(r1<r2) return -1;
-    else if(r1>r2) return 1;
+    if(r1<r2) return 1;
+    else if(r1>r2) return -1;
     else return 0;
 }
 
 static void create_list11(gpointer key,gpointer value,gpointer data){
-   data =  g_slist_prepend((GSList*)data,value);
+    GSList** d = (GSList**)GPOINTER_TO_SIZE(data);
+    *d = g_slist_prepend(*d,value);
 }
 
 // query 11
 LONG_list most_used_best_rep(TAD_community com, int N, Date begin, Date end){
     GHashTable* hu = get_hash_users(com);
-    GSList* list = NULL;
+    GSList* llist = NULL;
+    GSList** list = &llist;
+
     g_hash_table_foreach(hu,create_list11,list);
-    list = g_slist_sort(list,comp_reput);
+    llist = g_slist_sort(llist,comp_reput);
+
+    query11 aux = malloc(sizeof(struct aux11));
+    aux->begin = begin;
+    aux->end = end;
+
+    for(;*list && N;*list = (llist)->next,N--){
+        g_slist_foreach(get_quests_user(llist->data),update_tlist,aux);
+        //printf("%d\n",N);
+        //print_user((llist)->data);
+    }
 
     return NULL;
 }
