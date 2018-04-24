@@ -51,15 +51,21 @@ void print_aux(gpointer key,gpointer value,gpointer data){
     Quest q = (Quest)GPOINTER_TO_SIZE(value);
     print_quest(q);
 }
-    
+
 /* Imprimir o conteúdo de uma data. */
 void print_day(Day day){
     if(day != NULL) {
         print_date(day->day);
         printf("Day:\n\n\n\tN_quest: %d\n\tN_answer: %d\n\t",
-                day->n_quest,day->n_answer); 
+                day->n_quest,day->n_answer);
         g_hash_table_foreach(day->hash_quest,(GHFunc)print_aux,NULL);
-        printf("\n\n"); 
+        printf("\n\n");
     }
 }
-
+/*liberta a memoria alocada para o Day d*/
+/*void free_day(Day d){
+    free_date(d->day);
+    g_hash_table_destroy(hash_quest);
+    g_hash_table_destroy(hash_answer);
+    free(d);
+}*/

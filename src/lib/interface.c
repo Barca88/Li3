@@ -120,8 +120,8 @@ static gboolean count_posts(gpointer key,gpointer value,gpointer data){
     Date e = ld->end;
 
 
-    if ((date_compare(get_date_day(value),b)>0 && 
-          date_compare(e,get_date_day(value))>0)){
+    if ((date_compare(get_date_day(value),b)>=0 && 
+          date_compare(e,get_date_day(value))>=0)){
             ld->nq += get_n_quest(value);
             ld->na += get_n_answer(value);
     }
@@ -133,8 +133,8 @@ static gboolean count_posts(gpointer key,gpointer value,gpointer data){
     Date b = ld->begin;
     Date e = ld->end;
 
-    if ((date_compare(get_fst(key),b)>0 && 
-          date_compare(e,get_fst(key))>0)){
+    if ((date_compare(get_fst(key),b)>=0 &&
+          date_compare(e,get_fst(key))>=0)){
          print_date(get_fst(key));
          ld->nq++;
          return -1;
@@ -191,8 +191,8 @@ static gboolean iter_day(gpointer key,gpointer value,gpointer data){
     Date e = ld->end;
     GHashTable* ht = get_hash_quest_day((Day)value);
 
-    if ((date_compare(get_date_day(value),b)>0 && 
-         date_compare(e,get_date_day(value))>0)){
+    if ((date_compare(get_date_day(value),b)>=0 &&
+         date_compare(e,get_date_day(value))>=0)){
          g_hash_table_foreach(ht,(GHFunc)comp_tags,data);
     }
     return FALSE;
@@ -216,8 +216,6 @@ LONG_list questions_with_tag(TAD_community com, char* tag, Date begin, Date end)
     g_tree_foreach(get_tree_days(com),(GTraverseFunc)iter_day,
                    GSIZE_TO_POINTER(ld));
     ld->list = g_slist_sort(ld->list,date_compare_aux);
-
-   // g_slist_foreach (ld->list,func_print,NULL);
 
     int i,N = g_slist_length(ld->list);
     Quest q;
@@ -318,8 +316,8 @@ static gboolean iter_day6(gpointer key,gpointer value,gpointer data){
     Date e = ld->end;
     GHashTable* ha = get_hash_answer_day((Day)value);
 
-    if ((date_compare(get_date_day(value),b)>0 && 
-         date_compare(e,get_date_day(value))>0)){
+    if ((date_compare(get_date_day(value),b)>=0 &&
+         date_compare(e,get_date_day(value))>=0)){
          g_hash_table_foreach(ha,(GHFunc)to_list,data);
     }
     return FALSE;
@@ -384,8 +382,8 @@ static gboolean iter_day7(gpointer key,gpointer value,gpointer data){
     Date e = ld->end;
     GHashTable* hq = get_hash_quest_day((Day)value);
 
-    if ((date_compare(get_date_day(value),b)>0 && 
-         date_compare(e,get_date_day(value))>0)){
+    if ((date_compare(get_date_day(value),b)>=0 &&
+         date_compare(e,get_date_day(value))>=0)){
          g_hash_table_foreach(hq,(GHFunc)to_list7,data);
     }
     return FALSE;
@@ -507,11 +505,11 @@ static gboolean iter_hash9(gpointer key, gpointer value, gpointer data){
 }
 //povoa a lista da estrutura aux com quests
 static void iter_id_to_quest(gpointer key,gpointer value,gpointer user_data){
-    printf("\titer_id_to_quest\n");
     if(key != NULL){
         query9 aux = (query9)GPOINTER_TO_SIZE(user_data);
         GHashTable* q = get_hash_quest_tcd(aux->com);
-        aux->l = g_slist_prepend(aux->l, g_hash_table_lookup(q,key)); 
+        if(g_hash_table_contains(q,key)) //evita a inserção de null na gslist se as quests não existirem na hash de Users
+            aux->l = g_slist_prepend(aux->l, g_hash_table_lookup(q,key));
     }
 }
 /** QUERY 9 */
@@ -558,8 +556,13 @@ LONG_list both_participated(TAD_community com, long id1, long id2, int N){
     //Ordena a lista de quests.
     GSList* list = g_slist_sort(aux->l,(GCompareFunc)quest_compare);
 
-    printf("\tflor\n");
-    LONG_list l = create_list(N);
+    //verifica o size das resposta
+    int size;
+    if(g_slist_length(list)<N) size = g_slist_length(list);
+    else size = N;
+
+    LONG_list l = create_list(size);
+
     Quest q;
     int i;
     printf("Query 9 id1 = %ld, id2 = %ld e com %d elementos: \n\n",id1,id2,N);
@@ -582,36 +585,40 @@ LONG_list both_participated(TAD_community com, long id1, long id2, int N){
 //----------------------------------------------------------------------------------
 
 static void average_answer(Answer a,GHashTable* users){
-    set_average_answer(a,(get_score_answer(a)*0.45)+(get_comment_count_answer(a)*0.1)
-              +(get_score_answer(a)*0.2)+(get_reputation_user(g_hash_table_lookup(users,GSIZE_TO_POINTER(get_owner_user_id_answer(a))))));
+    set_average_answer(a,(get_score_answer(a)*0.65)+
+    (get_comment_count_answer(a)*0.1)+
+    (get_reputation_user(g_hash_table_lookup(users,GSIZE_TO_POINTER(get_owner_user_id_answer(a))))*0.25));
 }
 
 static gint compare_average(gconstpointer a,gconstpointer b){
-        float a1 = get_average_answer((Answer)a);
-        float a2 = get_average_answer((Answer)b);
-        if(a1<a2) return -1;
-        else if(a1>a2) return 1;
-        else return 0;
+    float a1 = get_average_answer((Answer)a);
+    float a2 = get_average_answer((Answer)b);
+    if(a1<a2) return -1;
+    else if(a1>a2) return 1;
+    return 0;
 }
 
 /** QUERY 10 */
 long better_answer(TAD_community com, long id){
     GHashTable* hq = get_hash_quest_tcd(com);
     GSList *laux,*list = get_answer_list_quest((Quest)g_hash_table_lookup(hq,
-                                          GSIZE_TO_POINTER(id))); 
-   
-    for(laux = list;laux->next;laux=laux->next)
-        average_answer((Answer)laux->data,get_hash_users(com));
-    list = g_slist_sort(list,compare_average);
+                                          GSIZE_TO_POINTER(id)));
 
-    printf("Query 10 melhor resposta a pergunta %ld: \n\n\tMelhor resposta = %ld\n\n",id,get_id_answer(list->data));
-
-    return get_id_answer(list->data);
-
+    if(list){
+        for(laux = list;laux->next;laux=laux->next)
+            average_answer((Answer)laux->data,get_hash_users(com));
+        list = g_slist_sort(list,compare_average);
+        printf("Query 10 melhor resposta a pergunta %ld: \n\n\tMelhor resposta = %ld\n\n",id,get_id_answer(list->data));
+        return get_id_answer(list->data);
+    }else{
+        printf("Query 10 sem respostas.\n\n");
+        return -2;
+    }
 }
 
+
 /** QUERY 11 */
-//----------------------------------------------------------------------------------
+ //----------------------------------------------------------------------------------
 typedef struct aux11{
     GSList* tlist;
     Date begin;
@@ -624,8 +631,8 @@ void update_tlist(gpointer value,gpointer data){
     Date e = aux->end;
     char* auxt = NULL;
 
-    if ((date_compare(get_date_quest(value),b)>0 &&
-         date_compare(e,get_date_quest(value))>0)){
+    if ((date_compare(get_date_quest(value),b)>=0 &&
+         date_compare(e,get_date_quest(value))>=0)){
         auxt = get_tags_quest(value);
         auxt += 1;
         auxt[strlen(auxt)-1] = '\0';
@@ -643,8 +650,10 @@ void update_tlist(gpointer value,gpointer data){
 }
 
 static int comp_reput(gconstpointer a,gconstpointer b){
-    int r1 = get_reputation_user((User)a);
-    int r2 = get_reputation_user((User)b);
+     int r1 = get_reputation_user((User)a);
+     int r2 = get_reputation_user((User)b);
+    if(r1<r2) return -1;
+    else if(r1>r2) return 1;
     if(r1<r2) return 1;
     else if(r1>r2) return -1;
     else return 0;
@@ -652,6 +661,7 @@ static int comp_reput(gconstpointer a,gconstpointer b){
 
 static void create_list11(gpointer key,gpointer value,gpointer data){
     GSList** d = (GSList**)GPOINTER_TO_SIZE(data);
+    *d =  g_slist_prepend((GSList*)(*d),value);
     *d = g_slist_prepend(*d,value);
 }
 
@@ -661,21 +671,23 @@ LONG_list most_used_best_rep(TAD_community com, int N, Date begin, Date end){
     GSList* llist = NULL;
     GSList** list = &llist;
 
+    //Inserir e ordenar numa lista ligada os user por reputacao.
     g_hash_table_foreach(hu,create_list11,list);
     llist = g_slist_sort(llist,comp_reput);
 
     query11 aux = malloc(sizeof(struct aux11));
+    aux->tlist = NULL;
     aux->begin = begin;
     aux->end = end;
 
     for(;*list && N;*list = (llist)->next,N--){
         g_slist_foreach(get_quests_user(llist->data),update_tlist,aux);
-        //printf("%d\n",N);
-        //print_user((llist)->data);
+    //    printf("%d\n",N);
+    //    print_user((llist)->data);
     }
-
-    return NULL;
-}
+ 
+     return NULL;
+ }
 
 /** Função clean. */
 TAD_community clean(TAD_community com);
