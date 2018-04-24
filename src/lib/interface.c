@@ -198,13 +198,6 @@ static gboolean iter_day(gpointer key,gpointer value,gpointer data){
     return FALSE;
 }
 
-static gint date_compare_aux(gconstpointer a,gconstpointer b){
-    return date_compare(GSIZE_TO_POINTER(get_date_quest((Quest)a)),GSIZE_TO_POINTER(get_date_quest((Quest)b))); 
-}
-
-/*static void func_print(gpointer data,gpointer user){
-    print_quest(data);
-}*/
 /** QUERY 4 */
 LONG_list questions_with_tag(TAD_community com, char* tag, Date begin, Date end){
     query4 ld = malloc(sizeof(struct aux4));
@@ -215,7 +208,7 @@ LONG_list questions_with_tag(TAD_community com, char* tag, Date begin, Date end)
 
     g_tree_foreach(get_tree_days(com),(GTraverseFunc)iter_day,
                    GSIZE_TO_POINTER(ld));
-    ld->list = g_slist_sort(ld->list,date_compare_aux);
+    ld->list = g_slist_sort(ld->list,quest_compare);
 
     int i,N = g_slist_length(ld->list);
     Quest q;
@@ -517,69 +510,74 @@ LONG_list both_participated(TAD_community com, long id1, long id2, int N){
     //Carregar a hash de users
     GHashTable* users = get_hash_users(com);
 
-    //Carregar os users da hash table
-    User a = (User) GPOINTER_TO_SIZE(g_hash_table_lookup(users,
+    if(g_hash_table_contains(users,GSIZE_TO_POINTER(id1)) &&
+            g_hash_table_contains(users,GSIZE_TO_POINTER(id2))){
+        //Carregar os users da hash table
+        User a = (User) GPOINTER_TO_SIZE(g_hash_table_lookup(users,
                 GSIZE_TO_POINTER(id1)));
-    User b = (User) GPOINTER_TO_SIZE(g_hash_table_lookup(users,
+        User b = (User) GPOINTER_TO_SIZE(g_hash_table_lookup(users,
                 GSIZE_TO_POINTER(id2)));
-    
-    //Criar Hashtables temporarias para ids de quests
-    GHashTable* ha = g_hash_table_new(g_direct_hash, g_direct_equal); 
-    GHashTable* hb = g_hash_table_new(g_direct_hash, g_direct_equal); 
 
-    //Cria listas de quests e answer de cada user(serve para simplificar)
-    GSList* questsa  = get_quests_user(a);
-    GSList* questsb  = get_quests_user(b);
-    GSList* answersa = get_answers_user(a);
-    GSList* answersb = get_answers_user(b);
+        //Criar Hashtables temporarias para ids de quests
+        GHashTable* ha = g_hash_table_new(g_direct_hash, g_direct_equal);
+        GHashTable* hb = g_hash_table_new(g_direct_hash, g_direct_equal);
 
-    //Carrgar as hash com longs (ids de quests).
-    g_slist_foreach(questsa ,iter_quest9 ,GSIZE_TO_POINTER(ha));
-    g_slist_foreach(questsb ,iter_quest9 ,GSIZE_TO_POINTER(hb));
-    g_slist_foreach(answersa,iter_answer9,GSIZE_TO_POINTER(ha));
-    g_slist_foreach(answersb,iter_answer9,GSIZE_TO_POINTER(hb));
+        //Cria listas de quests e answer de cada user(serve para simplificar)
+        GSList* questsa  = get_quests_user(a);
+        GSList* questsb  = get_quests_user(b);
+        GSList* answersa = get_answers_user(a);
+        GSList* answersb = get_answers_user(b);
 
-    //HashTable remove os ids que não estão presentes nas participaçoes 
-    //de ambos users 
-    g_hash_table_foreach_remove(ha,(GHRFunc)iter_hash9,GSIZE_TO_POINTER(hb));
-   
-    //Cria a estrutura aux e inicializa a mesma.
-    query9 aux = (query9)malloc(sizeof(struct aux9));
-    aux->com = com;
-    aux->l = NULL;
+        //Carrgar as hash com longs (ids de quests).
+        g_slist_foreach(questsa ,iter_quest9 ,GSIZE_TO_POINTER(ha));
+        g_slist_foreach(questsb ,iter_quest9 ,GSIZE_TO_POINTER(hb));
+        g_slist_foreach(answersa,iter_answer9,GSIZE_TO_POINTER(ha));
+        g_slist_foreach(answersb,iter_answer9,GSIZE_TO_POINTER(hb));
 
-    //Transforma hash de ids em lista de quests.
-    g_hash_table_foreach(ha, (GHFunc)iter_id_to_quest,
-            GSIZE_TO_POINTER(aux));
+        //HashTable remove os ids que não estão presentes nas participaçoes
+        //de ambos users
+        g_hash_table_foreach_remove(ha,
+                (GHRFunc)iter_hash9,GSIZE_TO_POINTER(hb));
 
-    printf("meio\n");
-    //Ordena a lista de quests.
-    GSList* list = g_slist_sort(aux->l,(GCompareFunc)quest_compare);
+        //Cria a estrutura aux e inicializa a mesma.
+        query9 aux = (query9)malloc(sizeof(struct aux9));
+        aux->com = com;
+        aux->l = NULL;
 
-    //verifica o size das resposta
-    int size;
-    if(g_slist_length(list)<N) size = g_slist_length(list);
-    else size = N;
+        //Transforma hash de ids em lista de quests.
+        g_hash_table_foreach(ha, (GHFunc)iter_id_to_quest,
+                GSIZE_TO_POINTER(aux));
 
-    LONG_list l = create_list(size);
+        //Ordena a lista de quests.
+        GSList* list = g_slist_sort(aux->l,(GCompareFunc)quest_compare);
 
-    Quest q;
-    int i;
-    printf("Query 9 id1 = %ld, id2 = %ld e com %d elementos: \n\n",id1,id2,N);
-    if(list){
-        for(i=0;i<N;i++){
-            q = (Quest)GPOINTER_TO_SIZE(list->data);
-            set_list(l,i,get_id_quest(q));
-            list = list->next;
-        }
-        for(i=0;i<N;i++)
-            printf("\tId do nº %d: %ld\n",i+1,get_list(l,i));
-    }else printf("\tUps lista query 9 vazia.\n");
-    printf("\n\n");
-    free(aux);
-    g_hash_table_destroy(ha);
-    g_hash_table_destroy(hb);
-    return l;
+        //verifica o size das resposta
+        int size;
+        if(g_slist_length(list)<N) size = g_slist_length(list);
+        else size = N;
+
+        LONG_list l = create_list(size);
+
+        Quest q;
+        int i;
+        printf("Query 9 id1 = %ld, id2 = %ld e com %d elementos: \n\n",id1,id2,size);
+        if(list){
+            for(i=0;i<size && list->data !=NULL;i++){
+                q = (Quest)GPOINTER_TO_SIZE(list->data);
+                set_list(l,i,get_id_quest(q));
+                list = list->next;
+            }
+            for(i=0;i<size;i++)
+                printf("\tId do nº %d: %ld\n",i+1,get_list(l,i));
+        }else printf("\tUps lista query 9 vazia.\n");
+        printf("\n\n");
+        free(aux);
+        g_hash_table_destroy(ha);
+        g_hash_table_destroy(hb);
+        return l;
+    }
+    printf("\nQuerie 9 users com estes ids não existem em simultaneo\n\tid1: %ld\n\tid2: %ld\n\n",id1, id2);
+    return create_list(0);
 }
 
 //----------------------------------------------------------------------------------
