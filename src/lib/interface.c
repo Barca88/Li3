@@ -22,18 +22,18 @@ TAD_community init()
     return init_tcd();
 }
 
-static gboolean load_rank_gslist(gpointer key,gpointer value,gpointer data){ 
+static gboolean load_rank_gslist(gpointer key,gpointer value,gpointer data){
     TAD_community com = (TAD_community)GPOINTER_TO_SIZE(data);
     set_rank_n_posts(com, g_slist_prepend(get_rank_n_posts(com),value));
     return FALSE;
 }
 
 static gint comp_nr_posts(gconstpointer a,gconstpointer b){
-    if(get_nr_posts_user((User)a)>get_nr_posts_user((User)b)) 
+    if(get_nr_posts_user((User)a)>get_nr_posts_user((User)b))
         return -1;
     else if(get_nr_posts_user((User)a)<get_nr_posts_user((User)b))
         return 1;
-    else 
+    else
         return 0;
 }
 
@@ -42,25 +42,25 @@ TAD_community load(TAD_community com, char* dump_path){
     streamTags(get_hash_tags(com),dump_path);
     streamUsers(get_hash_users(com),dump_path);
     streamPosts(com,dump_path);
-    
+
     //load lista ligada de utilizadores organizada por nº de posts.
     g_hash_table_foreach(get_hash_users(com),(GHFunc)load_rank_gslist,
                          GSIZE_TO_POINTER(com));
-    //Ordenar lista de utilizadores pelos nr_posts. 
+    //Ordenar lista de utilizadores pelos nr_posts.
     set_rank_n_posts(com,
                      g_slist_sort(get_rank_n_posts(com), comp_nr_posts));
     return com;
-}  
+}
 
 /** QUERY 1 */
 STR_pair info_from_post(TAD_community com, long id){
-    STR_pair sp = NULL; 
+    STR_pair sp = NULL;
     char* title = NULL;
     char* name = NULL;
     User u;
     Answer a;
     Quest q = (Quest)g_hash_table_lookup(get_hash_quest_tcd(com), GSIZE_TO_POINTER(id));
-    
+
     if(q){
         u = (User)g_hash_table_lookup(get_hash_users(com),
                 GSIZE_TO_POINTER(get_owner_id_quest(q)));
@@ -68,8 +68,8 @@ STR_pair info_from_post(TAD_community com, long id){
         name = get_displayname_user(u);
     }else{
         a = (Answer)g_hash_table_lookup(get_hash_answer_tcd(com),
-             GSIZE_TO_POINTER(id)); 
-        q = (Quest)g_hash_table_lookup(get_hash_quest_tcd(com), 
+             GSIZE_TO_POINTER(id));
+        q = (Quest)g_hash_table_lookup(get_hash_quest_tcd(com),
                 GSIZE_TO_POINTER(get_parent_id_answer(a)));
         u = (User)g_hash_table_lookup(get_hash_users(com),
                 GSIZE_TO_POINTER(get_owner_user_id_answer(a)));
@@ -90,19 +90,19 @@ LONG_list top_most_active(TAD_community com, int N){
     int i;
     User u;
     GSList *list = get_rank_n_posts(com);
-    
+
     for(i=0;i<N;i++){
         u =(User) GPOINTER_TO_SIZE(list->data);
         set_list(l,i,get_id_user(u));
         list = list->next;
     }
-    
+
     printf("Query 2 com %d elementos: \n\n",N);
     for(i=0;i<N;i++){
         printf("\tId do nº %d: %ld\n",i+1,get_list(l,i));
     }
     printf("\n\n");
-    
+
     return l;
 }
 
@@ -121,7 +121,7 @@ static gboolean count_posts(gpointer key,gpointer value,gpointer data){
     Date e = ld->end;
 
 
-    if ((date_compare(get_date_day(value),b)>=0 && 
+    if ((date_compare(get_date_day(value),b)>=0 &&
           date_compare(e,get_date_day(value))>=0)){
             ld->nq += get_n_quest(value);
             ld->na += get_n_answer(value);
@@ -129,7 +129,7 @@ static gboolean count_posts(gpointer key,gpointer value,gpointer data){
     return FALSE;
 }
 
-/*static gint func_print(gpointer key, gpointer data){ 
+/*static gint func_print(gpointer key, gpointer data){
     query3 ld = (query3)GPOINTER_TO_SIZE(data);
     Date b = ld->begin;
     Date e = ld->end;
@@ -139,7 +139,7 @@ static gboolean count_posts(gpointer key,gpointer value,gpointer data){
          print_date(get_fst(key));
          ld->nq++;
          return -1;
-    }else 
+    }else
         return 0;
 }*/
 
@@ -181,9 +181,9 @@ static void comp_tags(gpointer key,gpointer value,gpointer data){
     char* t = ld->tag;
     GSList* l = ld->list;
     if (strstr(get_tags_quest(value),t)){
-        ld->list = g_slist_prepend(l,value);    
+        ld->list = g_slist_prepend(l,value);
     }
-    
+
 }
 
 static gboolean iter_day(gpointer key,gpointer value,gpointer data){
@@ -220,13 +220,13 @@ LONG_list questions_with_tag(TAD_community com, char* tag, Date begin, Date end)
         set_list(l,i,get_id_quest(q));
         list = list->next;
     }
-    
+
     printf("Query 4 com %d elementos: \n\n",N);
     for(i=0;i<N;i++)
         printf("\tId do nº %d: %ld\n",i+1,get_list(l,i));
     printf("\n\n");
 
-    return l; 
+    return l;
 }
 
 /** QUERY 5 */
@@ -246,8 +246,8 @@ USER get_user_info(TAD_community com, long id){
     set_answers_user(u,answers);
 
     long l[10];
-    char* am = get_aboutme_user(u);   
-    
+    char* am = get_aboutme_user(u);
+
     int i;
     Date dq,da;
     Quest q;
@@ -300,7 +300,7 @@ typedef struct aux6{
 //Quest para a lista ligada.
 static void to_list(gpointer key,gpointer value,gpointer data){
     query6 ld = (query6)GPOINTER_TO_SIZE(data);
-    ld->list = g_slist_prepend(ld->list,value);    
+    ld->list = g_slist_prepend(ld->list,value);
 }
 
 //Função resposável pelo que fazer por cada dia.
@@ -366,10 +366,10 @@ typedef  struct aux7{
 
 static void to_list7(gpointer key,gpointer value,gpointer data){
     query7 ld = (query7)GPOINTER_TO_SIZE(data);
-    ld->list = g_slist_prepend(ld->list,value);    
+    ld->list = g_slist_prepend(ld->list,value);
 }
 
-//Função resposável pelo que fazer por cada dia. 
+//Função resposável pelo que fazer por cada dia.
 static gboolean iter_day7(gpointer key,gpointer value,gpointer data){
     query7 ld = (query7)GPOINTER_TO_SIZE(data);
     Date b = ld->begin;
@@ -488,8 +488,8 @@ static void iter_answer9(gpointer data,gpointer user_data){
         g_hash_table_add(h,GSIZE_TO_POINTER(get_parent_id_answer(a)));
     }
 }
-//Função responsável por iterar a hash e retirar os elementos que não 
-//estão presentes em ambas hashs. 
+//Função responsável por iterar a hash e retirar os elementos que não
+//estão presentes em ambas hashs.
 static gboolean iter_hash9(gpointer key, gpointer value, gpointer data){
     if(data != NULL){
         GHashTable* a = (GHashTable*)GPOINTER_TO_SIZE(data);
@@ -678,6 +678,7 @@ LONG_list most_used_best_rep(TAD_community com, int N, Date begin, Date end){
     GSList* llist = NULL;
     GSList** list = &llist;
 
+
     //Inserir e ordenar numa lista ligada os user por reputacao.
     g_hash_table_foreach(hu,create_list11,list);
     llist = g_slist_sort(llist,comp_reput);
@@ -687,7 +688,7 @@ LONG_list most_used_best_rep(TAD_community com, int N, Date begin, Date end){
     aux->begin = begin;
     aux->end = end;
     int c = N;
-    
+
     //Incrementar o numero de vezes que a tag foi usada
     for(;llist && c;llist = (llist)->next,c--){
         g_slist_foreach(get_quests_user(llist->data),load_n_used,aux);
@@ -698,15 +699,47 @@ LONG_list most_used_best_rep(TAD_community com, int N, Date begin, Date end){
     GSList** tlist = &tllist;
     g_hash_table_foreach(aux->ht,tag_list11,tlist);
     tllist = g_slist_sort(tllist,comp_n_used);
-    
 
-    for(;tllist && N;tllist = (tllist)->next,N--){
-       // printf("%d\n",N);
-        print_tag((tllist)->data);
-    }
+    int size,i;
+    if(g_slist_length(tllist)<N) size = g_slist_length(tllist);
+    else size = N;
 
+    LONG_list l = create_list(size);
+    Tag t;
+    printf("Query 11\n");
+    if(tllist){
+        for(i=0;i<size && tllist->data != NULL;i++){
+             t = (Tag)GPOINTER_TO_SIZE(tllist->data);
+            set_list(l,i,get_id_tag(t));
+            tllist = tllist->next;
+        }
+        for(i=0;i<size;i++)
+            printf("\tId da tag nº %d: %ld\n",i+1,get_list(l,i));
+    }else printf("\tUps lista query 11 vazia.\n");
+    return l;
+}/*
+    //verifica o size das respostas
+
+
+    Quest q;
+    int i;
+    printf("Query 9 id1 = %ld, id2 = %ld e com %d elementos: \n\n",id1,id2,size);
+    if(list){
+        for(i=0;i<size && list->data !=NULL;i++){
+            q = (Quest)GPOINTER_TO_SIZE(list->data);
+            set_list(l,i,get_id_quest(q));
+            list = list->next;
+        }
+        for(i=0;i<size;i++)
+            printf("\tId do nº %d: %ld\n",i+1,get_list(l,i));
+    }else printf("\tUps lista query 9 vazia.\n");
+    printf("\n\n");
+    free(aux);
+    g_hash_table_destroy(ha);
+    g_hash_table_destroy(hb);
     return NULL;
- }
+    */
+ 
 
 /** Função clean. */
 TAD_community clean(TAD_community com);

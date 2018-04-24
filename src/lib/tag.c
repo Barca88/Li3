@@ -50,7 +50,7 @@ int equal_tag(Tag t,char* s){
 
 void print_tag(Tag t){
     if(t)
-        printf("Tag:\n\n\tId: %ld\n\tTag name: %s\n\tN used: %d\n\n",t->id,t->tag,t->n_used);
+        printf("Tag:\n\tId: %ld\n\tTag name: %s\n\tN used: %d\n",t->id,t->tag,t->n_used);
 }
 
 /* Apaga a tag dando free na memoria alocada. */
