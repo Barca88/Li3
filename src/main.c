@@ -15,7 +15,7 @@ int main(int argc,char** argv){
 
     info_from_post(new,1);
     top_most_active(new,12);
-    total_posts(new,a,a);
+    total_posts(new,b,b);
     questions_with_tag(new,"battery-life",a,b);
     get_user_info(new,10);
     most_voted_answers(new,11,a,b);
@@ -23,7 +23,7 @@ int main(int argc,char** argv){
     contains_word(new,"Nexus",10);
     both_participated(new,1465,16575,10000);
     better_answer(new,154309);
-    most_used_best_rep(new,6,a,b);
+    most_used_best_rep(new,510758,a,b);
 
     tpf =clock() - tpf;
     printf("Demorou %f segundos a ler\n",((float)tpf)/CLOCKS_PER_SEC);
