@@ -7,6 +7,7 @@
 #include "date.h"
 #include "tcd.h"
 #include "day.h"
+#include "tag.h"
 #include "answer.h"
 #include "quest.h"
 #include <limits.h>
@@ -618,12 +619,12 @@ long better_answer(TAD_community com, long id){
 /** QUERY 11 */
  //----------------------------------------------------------------------------------
 typedef struct aux11{
-    GSList* tlist;
+    GHashTable* ht;
     Date begin;
     Date end;
 }* query11;
 
-void update_tlist(gpointer value,gpointer data){
+static void load_n_used(gpointer value,gpointer data){
     query11 aux = (query11)GPOINTER_TO_SIZE(data);
     Date b = aux->begin;
     Date e = aux->end;
@@ -638,26 +639,36 @@ void update_tlist(gpointer value,gpointer data){
         char *p;
         //printf ("String  \"%s\" is split into tokens:\n\n",auxt);
         p = strtok (auxt,"><");
-        while (p!= NULL) {
-           // printf ("\t%s\n",p);
+        while (p) {
             p = strtok (NULL, "><");
+            inc_n_used(g_hash_table_lookup(aux->ht,GSIZE_TO_POINTER(p)));
         }
-        //TODO strtok para inserir na estrutura de tags
     }
-
 }
 
 static int comp_reput(gconstpointer a,gconstpointer b){
      int r1 = get_reputation_user((User)a);
      int r2 = get_reputation_user((User)b);
-    if(r1<r2) return -1;
-    else if(r1>r2) return 1;
+    if(r1<r2) return 1;
+    else if(r1>r2) return -1;
+    else return 0;
+}
+
+static int comp_n_used(gconstpointer a,gconstpointer b){
+     int r1 = get_n_used((Tag)a);
+     int r2 = get_n_used((Tag)b);
     if(r1<r2) return 1;
     else if(r1>r2) return -1;
     else return 0;
 }
 
 static void create_list11(gpointer key,gpointer value,gpointer data){
+    GSList** d = (GSList**)GPOINTER_TO_SIZE(data);
+    *d =  g_slist_prepend((GSList*)(*d),value);
+    *d = g_slist_prepend(*d,value);
+}
+
+static void tag_list11(gpointer key,gpointer value,gpointer data){
     GSList** d = (GSList**)GPOINTER_TO_SIZE(data);
     *d =  g_slist_prepend((GSList*)(*d),value);
     *d = g_slist_prepend(*d,value);
@@ -674,17 +685,28 @@ LONG_list most_used_best_rep(TAD_community com, int N, Date begin, Date end){
     llist = g_slist_sort(llist,comp_reput);
 
     query11 aux = malloc(sizeof(struct aux11));
-    aux->tlist = NULL;
+    aux->ht = get_hash_tags(com);
     aux->begin = begin;
     aux->end = end;
+    int c = N;
 
-    for(;*list && N;*list = (llist)->next,N--){
-        g_slist_foreach(get_quests_user(llist->data),update_tlist,aux);
+    for(;llist && c;llist = (llist)->next,c--){
+        g_slist_foreach(get_quests_user(llist->data),load_n_used,aux);
     //    printf("%d\n",N);
     //    print_user((llist)->data);
     }
- 
-     return NULL;
+
+    GSList* tllist = NULL;
+    GSList** tlist = &tllist;
+    g_hash_table_foreach(aux->ht,tag_list11,tlist);
+    tllist = g_slist_sort(tllist,comp_n_used);
+    
+    for(;tllist && N;tllist = (tllist)->next,N--){
+        printf("%d\n",N);
+    //    print_user((llist)->data);
+    }
+
+    return NULL;
  }
 
 /** Função clean. */

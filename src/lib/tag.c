@@ -8,11 +8,11 @@ struct tag {
 };
 
 /* Funcao reponsável pela alocacao de memoria e a inicializacao dos campos, da tag.*/
-Tag create_tag(long id,char* s,int n){
+Tag create_tag(long id,char* s){
     Tag t = malloc(sizeof(struct tag));
     t->id = id;
     t->tag =  mystrdup(s);
-    t->n_used = n;
+    t->n_used = 0;
     return t;
 }
 
@@ -38,8 +38,9 @@ void set_tag (Tag t, char* l) {
 	t->tag = mystrdup(l);
 }
 
-void set_n_used (Tag t, int count_tag) {
-	t->n_used = count_tag;
+void inc_n_used (Tag t) {
+    if(t)
+	    (t->n_used)++;
 }
 
 int equal_tag(Tag t,char* s){

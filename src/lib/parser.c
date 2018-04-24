@@ -14,7 +14,6 @@ static void processTag(GHashTable* ht ,xmlTextReaderPtr node) {
 
     long id = -2;
     char* tag = NULL;
-    int n = -2;
     char *attributename = NULL;
 
     while(xmlTextReaderMoveToNextAttribute(node)){
@@ -23,12 +22,10 @@ static void processTag(GHashTable* ht ,xmlTextReaderPtr node) {
                  id = atol((char*)xmlTextReaderValue(node));
              else if(strcmp(attributename,"TagName") == 0)
                  tag = (char*)xmlTextReaderValue(node);
-             else if (strcmp(attributename,"Count") == 0)
-                 n = atoi((char*)xmlTextReaderValue(node));
              else;
     }
     
-    Tag t = create_tag(id,tag,n);
+    Tag t = create_tag(id,tag);
     g_hash_table_insert(ht,GSIZE_TO_POINTER(id),t);
 }
 
