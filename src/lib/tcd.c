@@ -1,24 +1,29 @@
 #include "tcd.h"
+#include "tag.h"
+#include "users.h"
+#include "quest.h"
+#include "answer.h"
+#include "day.h"
 
 /* Definição da estrutura dos tcd (TCD_community). */
 struct TCD_community{
-    GHashTable* hashTags; /* Hash das tags. */
-    GHashTable* hashUsers; /* Hash dos users. */
-    GHashTable* hashQuests; /* Hash das quest. */
-    GHashTable* hashAnswers; /* Hash das answers. */
-    GTree* treeDays; /* Tree dos days. */
-    GSList* rankNPosts; /* Lista com N posts. */
+    GHashTable* hashTags;    /* Hash das tags.     */
+    GHashTable* hashUsers;   /* Hash dos users.    */
+    GHashTable* hashQuests;  /* Hash das quest.    */
+    GHashTable* hashAnswers; /* Hash das answers.  */
+    GTree* treeDays;         /* Tree dos days.     */
+    GSList* rankNPosts;      /* Lista com N posts. */
 }; 
 
 /* Função que inicia a estrutura tcd. */
 TAD_community init_tcd(){
     TAD_community n = malloc(sizeof(struct TCD_community));
 
-    n->hashTags = g_hash_table_new(g_direct_hash, g_direct_equal);
-    n->hashUsers = g_hash_table_new(g_direct_hash, g_direct_equal);
-    n->hashQuests = g_hash_table_new(g_direct_hash, g_direct_equal);
-    n->hashAnswers = g_hash_table_new(g_direct_hash, g_direct_equal);
-    n->treeDays = g_tree_new((GCompareFunc)date_compare); 
+    n->hashTags = g_hash_table_new_full(g_direct_hash, g_direct_equal,void,free_tag);
+    n->hashUsers = g_hash_table_new_full(g_direct_hash, g_direct_equal,void,free_user);
+    n->hashQuests = g_hash_table_new_full(g_direct_hash, g_direct_equal,void,free_quest);
+    n->hashAnswers = g_hash_table_new_full(g_direct_hash, g_direct_equal,void,free_answer);
+    n->treeDays = g_tree_new_full((GCompareFunc)date_compare,NULL,void,free_day); 
     n->rankNPosts = NULL;
     return n;
 }
@@ -48,4 +53,11 @@ void set_rank_n_posts(TAD_community root, GSList *new){
 }
 
 /* Apaga a tcd dando free na memoria alocada. */
-void free_tcd(TAD_community root); //TODO
+void free_tcd(TAD_community root){
+    g_hash_table_destroy(root->hashTags);
+    g_hash_table_destroy(root->hashUsers);
+    g_hash_table_destroy(root->hashQuests);
+    g_hash_table_destroy(root->hashAnswerrs);
+    g_tree_destroy(root->treeDays);
+    g_slist_free(root->rankNPosts);
+
