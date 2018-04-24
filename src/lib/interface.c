@@ -605,18 +605,21 @@ long better_answer(TAD_community com, long id){
     GSList *laux,*list = get_answer_list_quest((Quest)g_hash_table_lookup(hq,
                                           GSIZE_TO_POINTER(id)));
 
-    for(laux = list;laux->next;laux=laux->next)
-        average_answer((Answer)laux->data,get_hash_users(com));
-    list = g_slist_sort(list,compare_average);
-
-    printf("Query 10 melhor resposta a pergunta %ld: \n\n\tMelhor resposta = %ld\n\n",id,get_id_answer(list->data));
-
-    return get_id_answer(list->data);
-
+    if(list){
+        for(laux = list;laux->next;laux=laux->next)
+            average_answer((Answer)laux->data,get_hash_users(com));
+        list = g_slist_sort(list,compare_average);
+        printf("Query 10 melhor resposta a pergunta %ld: \n\n\tMelhor resposta = %ld\n\n",id,get_id_answer(list->data));
+        return get_id_answer(list->data);
+    }else{
+        printf("Query 10 sem respostas.\n\n");
+        return -2;
+    }
 }
 
+
 /** QUERY 11 */
-//----------------------------------------------------------------------------------
+ //----------------------------------------------------------------------------------
 typedef struct aux11{
     GSList* tlist;
     Date begin;
@@ -648,8 +651,10 @@ void update_tlist(gpointer value,gpointer data){
 }
 
 static int comp_reput(gconstpointer a,gconstpointer b){
-    int r1 = get_reputation_user((User)a);
-    int r2 = get_reputation_user((User)b);
+     int r1 = get_reputation_user((User)a);
+     int r2 = get_reputation_user((User)b);
+    if(r1<r2) return -1;
+    else if(r1>r2) return 1;
     if(r1<r2) return 1;
     else if(r1>r2) return -1;
     else return 0;
@@ -657,6 +662,7 @@ static int comp_reput(gconstpointer a,gconstpointer b){
 
 static void create_list11(gpointer key,gpointer value,gpointer data){
     GSList** d = (GSList**)GPOINTER_TO_SIZE(data);
+    *d =  g_slist_prepend((GSList*)(*d),value);
     *d = g_slist_prepend(*d,value);
 }
 
@@ -666,21 +672,23 @@ LONG_list most_used_best_rep(TAD_community com, int N, Date begin, Date end){
     GSList* llist = NULL;
     GSList** list = &llist;
 
+    //Inserir e ordenar numa lista ligada os user por reputacao.
     g_hash_table_foreach(hu,create_list11,list);
     llist = g_slist_sort(llist,comp_reput);
 
     query11 aux = malloc(sizeof(struct aux11));
+    aux->tlist = NULL;
     aux->begin = begin;
     aux->end = end;
 
     for(;*list && N;*list = (llist)->next,N--){
         g_slist_foreach(get_quests_user(llist->data),update_tlist,aux);
-        //printf("%d\n",N);
-        //print_user((llist)->data);
+    //    printf("%d\n",N);
+    //    print_user((llist)->data);
     }
-
-    return NULL;
-}
+ 
+     return NULL;
+ }
 
 /** Função clean. */
 TAD_community clean(TAD_community com);
