@@ -637,11 +637,10 @@ static void load_n_used(gpointer value,gpointer data){
         auxt[strlen(auxt)-1] = '\0';
         set_tags_quest(value,auxt);
         char *p;
-        //printf ("String  \"%s\" is split into tokens:\n\n",auxt);
         p = strtok (auxt,"><");
         while (p) {
+            inc_n_used(g_hash_table_lookup(aux->ht,p));
             p = strtok (NULL, "><");
-            inc_n_used(g_hash_table_lookup(aux->ht,GSIZE_TO_POINTER(p)));
         }
     }
 }
@@ -664,14 +663,13 @@ static int comp_n_used(gconstpointer a,gconstpointer b){
 
 static void create_list11(gpointer key,gpointer value,gpointer data){
     GSList** d = (GSList**)GPOINTER_TO_SIZE(data);
-    *d =  g_slist_prepend((GSList*)(*d),value);
     *d = g_slist_prepend(*d,value);
 }
 
 static void tag_list11(gpointer key,gpointer value,gpointer data){
     GSList** d = (GSList**)GPOINTER_TO_SIZE(data);
-    *d =  g_slist_prepend((GSList*)(*d),value);
-    *d = g_slist_prepend(*d,value);
+    if (get_n_used(value)>0)
+        *d = g_slist_prepend(*d,value);
 }
 
 // query 11
@@ -689,21 +687,22 @@ LONG_list most_used_best_rep(TAD_community com, int N, Date begin, Date end){
     aux->begin = begin;
     aux->end = end;
     int c = N;
-
+    
+    //Incrementar o numero de vezes que a tag foi usada
     for(;llist && c;llist = (llist)->next,c--){
         g_slist_foreach(get_quests_user(llist->data),load_n_used,aux);
-    //    printf("%d\n",N);
-    //    print_user((llist)->data);
     }
 
+    //Criar lista ligada ordenada por n_used.
     GSList* tllist = NULL;
     GSList** tlist = &tllist;
     g_hash_table_foreach(aux->ht,tag_list11,tlist);
     tllist = g_slist_sort(tllist,comp_n_used);
     
+
     for(;tllist && N;tllist = (tllist)->next,N--){
-        printf("%d\n",N);
-    //    print_user((llist)->data);
+       // printf("%d\n",N);
+        print_tag((tllist)->data);
     }
 
     return NULL;

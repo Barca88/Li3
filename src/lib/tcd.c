@@ -14,7 +14,7 @@ struct TCD_community{
 TAD_community init_tcd(){
     TAD_community n = malloc(sizeof(struct TCD_community));
 
-    n->hashTags = g_hash_table_new(g_direct_hash, g_direct_equal);
+    n->hashTags = g_hash_table_new(g_str_hash, g_str_equal);
     n->hashUsers = g_hash_table_new(g_direct_hash, g_direct_equal);
     n->hashQuests = g_hash_table_new(g_direct_hash, g_direct_equal);
     n->hashAnswers = g_hash_table_new(g_direct_hash, g_direct_equal);

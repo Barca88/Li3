@@ -26,7 +26,7 @@ static void processTag(GHashTable* ht ,xmlTextReaderPtr node) {
     }
     
     Tag t = create_tag(id,tag);
-    g_hash_table_insert(ht,GSIZE_TO_POINTER(id),t);
+    g_hash_table_insert(ht,tag,t);
 }
 
 //Cria um novo user e insere-o na estrutura dos users. 
