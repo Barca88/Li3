@@ -717,29 +717,7 @@ LONG_list most_used_best_rep(TAD_community com, int N, Date begin, Date end){
             printf("\tId da tag nº %d: %ld\n",i+1,get_list(l,i));
     }else printf("\tUps lista query 11 vazia.\n");
     return l;
-}/*
-    //verifica o size das respostas
-
-
-    Quest q;
-    int i;
-    printf("Query 9 id1 = %ld, id2 = %ld e com %d elementos: \n\n",id1,id2,size);
-    if(list){
-        for(i=0;i<size && list->data !=NULL;i++){
-            q = (Quest)GPOINTER_TO_SIZE(list->data);
-            set_list(l,i,get_id_quest(q));
-            list = list->next;
-        }
-        for(i=0;i<size;i++)
-            printf("\tId do nº %d: %ld\n",i+1,get_list(l,i));
-    }else printf("\tUps lista query 9 vazia.\n");
-    printf("\n\n");
-    free(aux);
-    g_hash_table_destroy(ha);
-    g_hash_table_destroy(hb);
-    return NULL;
-    */
- 
+}
 
 /** Função clean. */
 TAD_community clean(TAD_community com);
