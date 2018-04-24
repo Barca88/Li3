@@ -63,9 +63,9 @@ void print_day(Day day){
     }
 }
 /*liberta a memoria alocada para o Day d*/
-void free_day(Day d){
+/*void free_day(Day d){
     free_date(d->day);
     g_hash_table_destroy(hash_quest);
     g_hash_table_destroy(hash_answer);
     free(d);
-}
+}*/
