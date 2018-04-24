@@ -197,11 +197,6 @@ static gboolean iter_day(gpointer key,gpointer value,gpointer data){
     }
     return FALSE;
 }
-
-static gint date_compare_aux(gconstpointer a,gconstpointer b){
-    return date_compare(GSIZE_TO_POINTER(get_date_quest((Quest)a)),GSIZE_TO_POINTER(get_date_quest((Quest)b)));
-}
-
 /*static void func_print(gpointer data,gpointer user){
     print_quest(data);
 }*/
@@ -215,9 +210,7 @@ LONG_list questions_with_tag(TAD_community com, char* tag, Date begin, Date end)
 
     g_tree_foreach(get_tree_days(com),(GTraverseFunc)iter_day,
                    GSIZE_TO_POINTER(ld));
-    ld->list = g_slist_sort(ld->list,date_compare_aux);
-
-   // g_slist_foreach (ld->list,func_print,NULL);
+    ld->list = g_slist_sort(ld->list,quest_compare);
 
     int i,N = g_slist_length(ld->list);
     Quest q;
