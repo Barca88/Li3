@@ -120,7 +120,7 @@ static gboolean count_posts(gpointer key,gpointer value,gpointer data){
     Date e = ld->end;
 
 
-    if ((date_compare(get_date_day(value),b)>=0 && 
+    if ((date_compare(get_date_day(value),b)>=0 &&
           date_compare(e,get_date_day(value))>=0)){
             ld->nq += get_n_quest(value);
             ld->na += get_n_answer(value);
@@ -681,4 +681,7 @@ LONG_list most_used_best_rep(TAD_community com, int N, Date begin, Date end){
 }
 
 /** Função clean. */
-TAD_community clean(TAD_community com);
+TAD_community clean(TAD_community com){
+    free_tcd(com);
+    return com;
+}

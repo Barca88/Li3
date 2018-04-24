@@ -14,19 +14,19 @@
 #include "quest.h"
 
 /**
- * @brief Declaração do tipo User, um tipo abstrato. 
+ * @brief Declaração do tipo User, um tipo abstrato.
  */
 typedef struct node* User;
 
-/** 
- * @brief Inicializa a estrutura User, alocando espaço para a mesma. 
+/**
+ * @brief Inicializa a estrutura User, alocando espaço para a mesma.
  */
 User init_user();
 
 void set_id_user(User user, gint64 id);
 void set_displayname_user(User user, char* dn);
 void set_aboutme_user(User user, char* am);
-void set_reputation_user(User user, long r); 
+void set_reputation_user(User user, long r);
 void set_quests_user(User user,GSList* q);
 void set_answers_user(User user,GSList* a);
 
@@ -73,21 +73,21 @@ GSList* get_quests_user(User user);
  */
 GSList* get_answers_user(User user);
 
-/** @brief Nº de posts de um user. 
+/** @brief Nº de posts de um user.
  *
  *  @param user User.
  *  @return Void.
  */
 void inc_nr_posts(User user);
 
-/** @brief Imprime o conteúdo de uma quest. 
+/** @brief Imprime o conteúdo de uma quest.
  *
  *  @param data apontador para uma data.
  *  @param n apontador para um quest.
  *  @return Void.
  */
 void print_q(gpointer data, gpointer n);
-/** @brief Imprime o conteúdo de uma answers. 
+/** @brief Imprime o conteúdo de uma answers.
  *
  *  @param data apontador para uma data.
  *  @param n apontador para uma answer.
@@ -96,5 +96,6 @@ void print_q(gpointer data, gpointer n);
 void print_a(gpointer data, gpointer n);
 /* Imprime o conteúdo de um user */
 void print_user(User user);
-
+/*Liberta a memoria alocada para guardar o user*/
+void free_users(User u);
 #endif

@@ -17,7 +17,7 @@
 #include "interface.h"
 
 /**
- * @brief Declaração do tipo TCD_community, um tipo abstrato. 
+ * @brief Declaração do tipo TCD_community, um tipo abstrato.
  */
 typedef struct TCD_community TCD_community;
 
@@ -26,43 +26,46 @@ typedef struct TCD_community TCD_community;
  */
 TAD_community init_tcd();
 
-/** @brief Retorna a hash das tags. 
+/** @brief Retorna a hash das tags.
  *  @param TAD_community Estrutura.
  *  @return hash.
  */
 GHashTable* get_hash_tags(TAD_community root);
-/** @brief Retorna a hash dos users. 
+/** @brief Retorna a hash dos users.
  *  @param TAD_community Estrutura.
  *  @return hash.
  */
 GHashTable* get_hash_users(TAD_community root);
-/** @brief Retorna a hash das quest. 
+/** @brief Retorna a hash das quest.
  *  @param TAD_community Estrutura.
  *  @return hash.
  */
 GHashTable* get_hash_quest_tcd(TAD_community root);
-/** @brief Retorna a hash das answer. 
+/** @brief Retorna a hash das answer.
  *  @param TAD_community Estrutura.
  *  @return hash.
  */
 GHashTable* get_hash_answer_tcd(TAD_community root);
-/** @brief Retorna a tree dos dias. 
+/** @brief Retorna a tree dos dias.
  *  @param TAD_community Estrutura.
  *  @return tree dos days.
  */
 GTree* get_tree_days(TAD_community root);
-/** @brief Retorna n posts. 
+/** @brief Retorna n posts.
  *  @param TAD_community Estrutura.
  *  @return rank_n_posts.
  */
 GSList* get_rank_n_posts(TAD_community root);
 
-/** @brief Rank n_posts. 
+/** @brief Rank n_posts.
  *
  *  @param TAD_community Estrutura.
  *  @param *new apontador para uma nova lista.
  *  @return Void.
  */
 void set_rank_n_posts(TAD_community root,GSList *new);
+
+/*Liberta a memoria alocada para as estruturas de dados*/
+void free_tcd(TAD_community com);
 
 #endif

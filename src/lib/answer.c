@@ -63,11 +63,12 @@ void print_answer(Answer post){
     print_date(post->creationDate);
     printf("Answer:\n\n\tId: %ld\n\tParentId: %ld\n\tScore: %d\n\tOwnerUserID: %ld\n\tCommentCount: %d\nFavoriteCount: %d\n",
             post->id,post->parentId,post->score,
-            post->ownerUserId,post->commentCount,post->favoriteCount); 
+            post->ownerUserId,post->commentCount,post->favoriteCount);
     printf("\n\n");
 }
 
 /* Apaga a resposta dando free na memoria alocada. */
 void free_answer(Answer a){
+    free_date(a->creationDate);
     free(a);
 }
