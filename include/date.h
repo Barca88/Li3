@@ -108,4 +108,5 @@ int answer_compare(gconstpointer p1, gconstpointer p2);
  *  @return Void.
  */
 void free_date(Date d);
+void free_g_date(gpointer g);
 #endif

@@ -114,5 +114,5 @@ void add_answer_quest(Quest q, Answer a);
 
 /*Liberta a memoria alocada para a quest */
 void free_quest(Quest q);
-
+void free_g_quest(gpointer g);
 #endif

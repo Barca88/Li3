@@ -72,3 +72,7 @@ void free_answer(Answer a){
     free_date(a->creationDate);
     free(a);
 }
+void free_g_answer(gpointer g){
+    Answer a = (Answer)GPOINTER_TO_SIZE(g);
+    free_answer(a);
+}

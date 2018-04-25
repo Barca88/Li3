@@ -95,7 +95,8 @@ void print_q(gpointer data, gpointer n);
  */
 void print_a(gpointer data, gpointer n);
 /* Imprime o conteúdo de um user */
-void print_user(User user);
+void print_user(User u);
 /*Liberta a memoria alocada para guardar o user*/
 void free_users(User u);
+void free_g_users(gpointer g);
 #endif

@@ -100,3 +100,7 @@ void free_users(User u){
     g_slist_free(u->answers);
     free(u);
 }
+void free_g_users(gpointer g){
+    User u = (User)GPOINTER_TO_SIZE(g);
+    free_users(u);
+}

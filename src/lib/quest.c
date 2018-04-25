@@ -100,3 +100,7 @@ void free_quest(Quest q){
     g_slist_free(q->answerList);
     free(q);
 }
+void free_g_quest(gpointer g){
+    Quest q = (Quest)GPOINTER_TO_SIZE(g);
+    free_quest(q);
+}

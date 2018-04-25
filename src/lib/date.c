@@ -151,3 +151,8 @@ Date date_from_string(char* date){
 void free_date(Date d) {
     free(d);
 }
+//free utilizado pela g_tree_new_full
+void free_g_date(gpointer g){
+    Date d = (Date)GPOINTER_TO_SIZE(g);
+    free_date(d);
+}
