@@ -7,6 +7,7 @@
 #include "date.h"
 #include "tcd.h"
 #include "day.h"
+#include "tag.h"
 #include "answer.h"
 #include "quest.h"
 #include <limits.h>
@@ -208,9 +209,7 @@ LONG_list questions_with_tag(TAD_community com, char* tag, Date begin, Date end)
 
     g_tree_foreach(get_tree_days(com),(GTraverseFunc)iter_day,
                    GSIZE_TO_POINTER(ld));
-    ld->list = g_slist_sort(ld->list,date_compare);
-
-   // g_slist_foreach (ld->list,func_print,NULL);
+    ld->list = g_slist_sort(ld->list,quest_compare);
 
     int i,N = g_slist_length(ld->list);
     Quest q;
@@ -503,7 +502,7 @@ static void iter_id_to_quest(gpointer key,gpointer value,gpointer user_data){
     if(key != NULL){
         query9 aux = (query9)GPOINTER_TO_SIZE(user_data);
         GHashTable* q = get_hash_quest_tcd(aux->com);
-        if(g_hash_table_contains(q,key)) //evita a inserção de null na gslist se as quests não existirem na hash de streamUsers
+        if(g_hash_table_contains(q,key)) //evita a inserção de null na gslist se as quests não existirem na hash de Users
             aux->l = g_slist_prepend(aux->l, g_hash_table_lookup(q,key));
     }
 }
@@ -538,8 +537,8 @@ LONG_list both_participated(TAD_community com, long id1, long id2, int N){
 
         //HashTable remove os ids que não estão presentes nas participaçoes
         //de ambos users
-        g_hash_table_foreach_remove(ha,(GHRFunc)iter_hash9,
-                GSIZE_TO_POINTER(hb));
+        g_hash_table_foreach_remove(ha,
+                (GHRFunc)iter_hash9,GSIZE_TO_POINTER(hb));
 
         //Cria a estrutura aux e inicializa a mesma.
         query9 aux = (query9)malloc(sizeof(struct aux9));
@@ -578,6 +577,7 @@ LONG_list both_participated(TAD_community com, long id1, long id2, int N){
         g_hash_table_destroy(hb);
         return l;
     }
+    printf("\nQuerie 9 users com estes ids não existem em simultaneo\n\tid1: %ld\n\tid2: %ld\n\n",id1, id2);
     return create_list(0);
 }
 
@@ -603,25 +603,28 @@ long better_answer(TAD_community com, long id){
     GSList *laux,*list = get_answer_list_quest((Quest)g_hash_table_lookup(hq,
                                           GSIZE_TO_POINTER(id)));
 
-    for(laux = list;laux->next;laux=laux->next)
-        average_answer((Answer)laux->data,get_hash_users(com));
-    list = g_slist_sort(list,compare_average);
-
-    printf("Query 10 melhor resposta a pergunta %ld: \n\n\tMelhor resposta = %ld\n\n",id,get_id_answer(list->data));
-
-    return get_id_answer(list->data);
-
+    if(list){
+        for(laux = list;laux->next;laux=laux->next)
+            average_answer((Answer)laux->data,get_hash_users(com));
+        list = g_slist_sort(list,compare_average);
+        printf("Query 10 melhor resposta a pergunta %ld: \n\n\tMelhor resposta = %ld\n\n",id,get_id_answer(list->data));
+        return get_id_answer(list->data);
+    }else{
+        printf("Query 10 sem respostas.\n\n");
+        return -2;
+    }
 }
 
+
 /** QUERY 11 */
-//----------------------------------------------------------------------------------
+ //----------------------------------------------------------------------------------
 typedef struct aux11{
-    GSList* tlist;
+    GHashTable* ht;
     Date begin;
     Date end;
 }* query11;
 
-void update_tlist(gpointer value,gpointer data){
+static void load_n_used(gpointer value,gpointer data){
     query11 aux = (query11)GPOINTER_TO_SIZE(data);
     Date b = aux->begin;
     Date e = aux->end;
@@ -634,20 +637,25 @@ void update_tlist(gpointer value,gpointer data){
         auxt[strlen(auxt)-1] = '\0';
         set_tags_quest(value,auxt);
         char *p;
-        //printf ("String  \"%s\" is split into tokens:\n\n",auxt);
         p = strtok (auxt,"><");
-        while (p!= NULL) {
-           // printf ("\t%s\n",p);
+        while (p) {
+            inc_n_used(g_hash_table_lookup(aux->ht,p));
             p = strtok (NULL, "><");
         }
-        //TODO strtok para inserir na estrutura de tags
     }
-
 }
 
 static int comp_reput(gconstpointer a,gconstpointer b){
-    int r1 = get_reputation_user((User)a);
-    int r2 = get_reputation_user((User)b);
+     int r1 = get_reputation_user((User)a);
+     int r2 = get_reputation_user((User)b);
+    if(r1<r2) return 1;
+    else if(r1>r2) return -1;
+    else return 0;
+}
+
+static int comp_n_used(gconstpointer a,gconstpointer b){
+     int r1 = get_n_used((Tag)a);
+     int r2 = get_n_used((Tag)b);
     if(r1<r2) return 1;
     else if(r1>r2) return -1;
     else return 0;
@@ -658,26 +666,57 @@ static void create_list11(gpointer key,gpointer value,gpointer data){
     *d = g_slist_prepend(*d,value);
 }
 
+static void tag_list11(gpointer key,gpointer value,gpointer data){
+    GSList** d = (GSList**)GPOINTER_TO_SIZE(data);
+    if (get_n_used(value)>0)
+        *d = g_slist_prepend(*d,value);
+}
+
 // query 11
 LONG_list most_used_best_rep(TAD_community com, int N, Date begin, Date end){
     GHashTable* hu = get_hash_users(com);
     GSList* llist = NULL;
     GSList** list = &llist;
 
+
+    //Inserir e ordenar numa lista ligada os user por reputacao.
     g_hash_table_foreach(hu,create_list11,list);
     llist = g_slist_sort(llist,comp_reput);
 
     query11 aux = malloc(sizeof(struct aux11));
+    aux->ht = get_hash_tags(com);
     aux->begin = begin;
     aux->end = end;
+    int c = N;
 
-    for(;*list && N;*list = (llist)->next,N--){
-        g_slist_foreach(get_quests_user(llist->data),update_tlist,aux);
-        //printf("%d\n",N);
-        //print_user((llist)->data);
+    //Incrementar o numero de vezes que a tag foi usada
+    for(;llist && c;llist = (llist)->next,c--){
+        g_slist_foreach(get_quests_user(llist->data),load_n_used,aux);
     }
 
-    return NULL;
+    //Criar lista ligada ordenada por n_used.
+    GSList* tllist = NULL;
+    GSList** tlist = &tllist;
+    g_hash_table_foreach(aux->ht,tag_list11,tlist);
+    tllist = g_slist_sort(tllist,comp_n_used);
+
+    int size,i;
+    if(g_slist_length(tllist)<N) size = g_slist_length(tllist);
+    else size = N;
+
+    LONG_list l = create_list(size);
+    Tag t;
+    printf("Query 11\n");
+    if(tllist){
+        for(i=0;i<size && tllist->data != NULL;i++){
+             t = (Tag)GPOINTER_TO_SIZE(tllist->data);
+            set_list(l,i,get_id_tag(t));
+            tllist = tllist->next;
+        }
+        for(i=0;i<size;i++)
+            printf("\tId da tag nº %d: %ld\n",i+1,get_list(l,i));
+    }else printf("\tUps lista query 11 vazia.\n");
+    return l;
 }
 
 /** Função clean. */

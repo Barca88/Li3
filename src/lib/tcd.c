@@ -20,12 +20,17 @@ struct TCD_community{
 TAD_community init_tcd(){
     TAD_community n = malloc(sizeof(struct TCD_community));
 
-    n->hashTags = g_hash_table_new_full(g_direct_hash, g_direct_equal,NULL,free_g_tag);
-    n->hashUsers = g_hash_table_new_full(g_direct_hash, g_direct_equal,NULL,free_g_users);
-    n->hashQuests = g_hash_table_new_full(g_direct_hash, g_direct_equal,NULL,free_g_quest);
-    n->hashAnswers = g_hash_table_new_full(g_direct_hash, g_direct_equal,NULL,free_g_answer);
-    n->treeDays = g_tree_new_full((GCompareDataFunc)date_compare,NULL,free_g_date,free_g_day); 
-    n->rankNPosts = NULL;
+    n->hashTags    = g_hash_table_new_full(g_direct_hash, g_direct_equal,NULL,
+        free_g_tag);
+    n->hashUsers   = g_hash_table_new_full(g_direct_hash, g_direct_equal,NULL,
+        free_g_users);
+    n->hashQuests  = g_hash_table_new_full(g_direct_hash, g_direct_equal,NULL,
+        free_g_quest);
+    n->hashAnswers = g_hash_table_new_full(g_direct_hash, g_direct_equal,NULL,
+        free_g_answer);
+    n->treeDays    = g_tree_new_full((GCompareDataFunc)date_compare,NULL,
+        free_g_date,free_g_day); 
+    n->rankNPosts  = NULL;
     return n;
 }
 

@@ -26,7 +26,7 @@ typedef struct tag* Tag;
  *  @param t_ctag count tag.
  *  @return Tag.
  */
-Tag create_tag(long id,char* tag, int t_ctag);
+Tag create_tag(long id,char* tag);
 
 //Setters
 
@@ -50,7 +50,7 @@ void set_tag (Tag t, char* g_tag);
  *  @param count_tag nº de vezes que uma tag é usada.
  *  @return Void.
  */
-void set_n_used (Tag t, int count_tag);
+void inc_n_used (Tag t);
 
 //Getters
 
