@@ -69,12 +69,14 @@ STR_pair info_from_post(TAD_community com, long id){
     }else{
         a = (Answer)g_hash_table_lookup(get_hash_answer_tcd(com),
              GSIZE_TO_POINTER(id));
-        q = (Quest)g_hash_table_lookup(get_hash_quest_tcd(com),
+        if(a){
+            q = (Quest)g_hash_table_lookup(get_hash_quest_tcd(com),
                 GSIZE_TO_POINTER(get_parent_id_answer(a)));
-        u = (User)g_hash_table_lookup(get_hash_users(com),
+            u = (User)g_hash_table_lookup(get_hash_users(com),
                 GSIZE_TO_POINTER(get_owner_user_id_answer(a)));
-        title = get_title_quest(q);
-        name = get_displayname_user(u);
+            title = get_title_quest(q);
+            name = get_displayname_user(u);
+        }
     }
 
     printf("Query 1 com id %ld: \n\n",id);

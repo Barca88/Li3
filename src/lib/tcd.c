@@ -29,7 +29,7 @@ TAD_community init_tcd(){
     n->hashAnswers = g_hash_table_new_full(g_direct_hash, g_direct_equal,NULL,
         free_g_answer);
     n->treeDays    = g_tree_new_full((GCompareDataFunc)date_compare,NULL,
-        free_g_date,free_g_day); 
+        free_g_date,free_g_day);
     n->rankNPosts  = NULL;
     return n;
 }
