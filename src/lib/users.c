@@ -75,6 +75,16 @@ GSList* get_answers_user(User user){
 void inc_nr_posts(User user){
     (user->nr_posts)++;
 }
+
+gint comp_nr_posts_user(gconstpointer a,gconstpointer b){
+    if(((User)a)->nr_posts > ((User)b)->nr_posts)
+        return -1;
+    else if(((User)a)->nr_posts < ((User)b)->nr_posts)
+        return 1;
+    else
+        return 0;
+}
+
 /* Imprimir o conteúdo de uma quest. */
 void print_q(gpointer data,gpointer n){
     Quest q = (Quest)GPOINTER_TO_SIZE(data);

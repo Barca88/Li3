@@ -54,9 +54,10 @@ static void processUser(GHashTable* hu ,xmlTextReaderPtr node) {
                  r  = atol((char*)xmlTextReaderValue(node));
              else;
     }
-    
-    User newUser = init_user(id,dn,am,r);
-    g_hash_table_insert(hu,GSIZE_TO_POINTER(id),newUser);
+    if(id!=-1 && id!=-2){
+        User newUser = init_user(id,dn,am,r);
+        g_hash_table_insert(hu,GSIZE_TO_POINTER(id),newUser);
+    }
 }
 
 //Cria um novo post e insere-o na estrutura dos posts. 
@@ -110,7 +111,7 @@ static void processPost(TAD_community com,xmlTextReaderPtr node) {
                  fc = atoi((char*)xmlTextReaderValue(node));
          else;
     }
-    if(ouid!=-2){
+    if(ouid!=-2 && ouid!=-1){
     //Resposável por criar uma nova quest ou answer
     Day d = g_tree_lookup(td,cd);
     if(ptid == 1){

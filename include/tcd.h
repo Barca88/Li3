@@ -65,4 +65,6 @@ GSList* get_rank_n_posts(TAD_community root);
  */
 void set_rank_n_posts(TAD_community root,GSList *new);
 
+gboolean load_rank_gslist_tcd(gpointer key,gpointer value,gpointer data);
+
 #endif
