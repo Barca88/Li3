@@ -183,7 +183,7 @@ LONG_list questions_with_tag(TAD_community com, char* tag, Date begin, Date end)
 
     g_tree_foreach(get_tree_days(com),(GTraverseFunc)iter_day,
                    GSIZE_TO_POINTER(ld));
-    ld->list = g_slist_sort(ld->list,quest_compare);
+    ld->list = g_slist_sort(ld->list,compare_quest);
 
     int i,N = g_slist_length(ld->list);
     Quest q;
@@ -213,8 +213,8 @@ USER get_user_info(TAD_community com, long id){
     GSList* quests = get_quests_user(u);
     GSList* answers = get_answers_user(u);
     //Ordenar as listas por data.
-    quests = g_slist_sort(quests,quest_compare);
-    answers = g_slist_sort(answers,answer_compare);
+    quests = g_slist_sort(quests,compare_quest);
+    answers = g_slist_sort(answers,compare_answer);
     //Atualizar o utilizador com as listas ordenadas.
     set_quests_user(u,quests);
     set_answers_user(u,answers);
@@ -417,7 +417,7 @@ LONG_list contains_word(TAD_community com, char* w, int N){
     aux->list = NULL;
 
     g_hash_table_foreach(get_hash_quest_tcd(com),(GHFunc)iter_quest8,aux);
-    aux->list = g_slist_sort(aux->list,quest_compare);
+    aux->list = g_slist_sort(aux->list,compare_quest);
 
     LONG_list l = create_list(N);
     Quest q;
@@ -524,7 +524,7 @@ LONG_list both_participated(TAD_community com, long id1, long id2, int N){
                 GSIZE_TO_POINTER(aux));
 
         //Ordena a lista de quests.
-        GSList* list = g_slist_sort(aux->l,(GCompareFunc)quest_compare);
+        GSList* list = g_slist_sort(aux->l,(GCompareFunc)compare_quest);
 
         //verifica o size das resposta
         int size;

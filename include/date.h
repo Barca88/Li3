@@ -93,14 +93,14 @@ int date_compare(gconstpointer p1, gconstpointer p2);
  *  @param p2 Apontador para uma data2. 
  *  @return quest compare.
  */
-int quest_compare(gconstpointer p1, gconstpointer p2);
+int compare_quest(gconstpointer p1, gconstpointer p2);
 /** @brief Compara a data de uma answer.
  *
  *  @param p1 Apontador para uma data1.
  *  @param p2 Apontador para uma data2. 
  *  @return answer compare.
  */
-int answer_compare(gconstpointer p1, gconstpointer p2);
+int compare_answer(gconstpointer p1, gconstpointer p2);
 
 /** @brief Liberta o espaço ocupado pela data.
  *

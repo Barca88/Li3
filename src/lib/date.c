@@ -63,20 +63,6 @@ int date_compare(gconstpointer t1, gconstpointer t2){
     return -2;
 }
 
-int quest_compare(gconstpointer t1, gconstpointer t2){
-        Date d1 = get_date_quest((Quest)GPOINTER_TO_SIZE(t1));
-        Date d2 = get_date_quest((Quest)GPOINTER_TO_SIZE(t2));
-        
-        return (-1)*date_compare(d1,d2);
-}
-
-int answer_compare(gconstpointer t1, gconstpointer t2){
-    Date d1 = get_date_answer((Answer)GPOINTER_TO_SIZE(t1));
-    Date d2 = get_date_answer((Answer)GPOINTER_TO_SIZE(t2));
-
-    return (-1)*date_compare(d1,d2);
-}
-
 //Cria uma data a partir de uma string.  
 Date date_from_string(char* date){
     *(date + 10) = '\0';
