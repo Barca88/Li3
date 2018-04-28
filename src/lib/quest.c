@@ -78,9 +78,9 @@ void set_tags_quest(Quest q,char* t){
 
 static int id_compare_quest(long a,long b){
     if(a<b)
-        return -1;
-    else
         return 1;
+    else
+        return -1;
     return 0;
 }
 

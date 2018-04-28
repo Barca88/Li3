@@ -50,6 +50,7 @@ STR_pair info_from_post(TAD_community com, long id){
     Quest q = (Quest)g_hash_table_lookup(get_hash_quest_tcd(com), 
                                          GSIZE_TO_POINTER(id));
 
+    //Se quest processa, se answer processa a quest associada. 
     if(q){
         u = (User)g_hash_table_lookup(get_hash_users(com),
                 GSIZE_TO_POINTER(get_owner_id_quest(q)));
@@ -82,6 +83,7 @@ LONG_list top_most_active(TAD_community com, int N){
     User u;
     GSList *list = get_rank_n_posts(com);
 
+    //Inserir N users da linked list na long list. 
     for(i=0;i<N;i++){
         u =(User) GPOINTER_TO_SIZE(list->data);
         set_list(l,i,get_id_user(u));
