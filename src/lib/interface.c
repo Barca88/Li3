@@ -1,4 +1,5 @@
 #include "interface.h"
+#include "queriesdata.h"
 #include "common.h"
 #include "parser.h"
 #include "users.h"
@@ -96,48 +97,20 @@ LONG_list top_most_active(TAD_community com, int N){
     return l;
 }
 
-//----------------------------------------------------------------------
-
-typedef struct aux3{
-    Date begin;
-    Date end;
-    int nq;
-    int na;
-}* query3;
-
-static gboolean count_posts(gpointer key,gpointer value,gpointer data){
-    query3 ld = (query3)GPOINTER_TO_SIZE(data);
-    Date b = ld->begin;
-    Date e = ld->end;
-
-
-    if ((date_compare(get_date_day(value),b)>=0 &&
-          date_compare(e,get_date_day(value))>=0)){
-            ld->nq += get_n_quest(value);
-            ld->na += get_n_answer(value);
-    }
-    return FALSE;
-}
-
 /** QUERY 3 */
 LONG_pair total_posts(TAD_community com, Date begin, Date end){
-    query3 ld = malloc(sizeof(struct aux3));
-    ld->begin = begin;
-    ld->end = end;
-    ld->nq = 0;
-    ld->na = 0;
-
-    g_tree_foreach(get_tree_days(com),(GTraverseFunc)count_posts,
+    query3 ld = init_query3(begin,end);
+    g_tree_foreach(get_tree_days(com),(GTraverseFunc)count_posts_day,
             GSIZE_TO_POINTER(ld));
 
     printf("Query 3: \n\n");
     printf("\tNumero de users: %d\n",g_hash_table_size(get_hash_users(com)));
-    printf("\tNumero de respostas: %d\n",ld->na);
-    printf("\tNumero de perguntas: %d\n",ld->nq);
-    printf("\tNumero de posts: %d\n",ld->na+ld->nq);
+    printf("\tNumero de respostas: %d\n",get_na_3(ld));
+    printf("\tNumero de perguntas: %d\n",get_nq_3(ld));
+    printf("\tNumero de posts: %d\n",get_na_3(ld)+get_nq_3(ld));
     printf("\n\n");
 
-    LONG_pair lp = create_long_pair(ld->nq,ld->na);
+    LONG_pair lp = create_long_pair(get_nq_3(ld),get_na_3(ld));
     return lp;
 }
 

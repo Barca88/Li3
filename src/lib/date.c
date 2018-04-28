@@ -63,6 +63,14 @@ int date_compare(gconstpointer t1, gconstpointer t2){
     return -2;
 }
 
+gboolean between_dates(Date b,Date e, Date tocomp){
+    if ((date_compare(tocomp,b)>=0 &&
+          date_compare(e,tocomp)>=0)){
+            return TRUE;
+    }
+    return FALSE;
+}
+
 //Cria uma data a partir de uma string.  
 Date date_from_string(char* date){
     *(date + 10) = '\0';
