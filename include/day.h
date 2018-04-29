@@ -9,11 +9,7 @@
 #ifndef __DAY_H__
 #define __DAY_H__
 
-<<<<<<< HEAD
-=======
 #include "queriesdata.h"
-#include "post.h"
->>>>>>> 44cd44a4884a82e91f1f8389b16638cb08569bac
 #include "date.h"
 #include "answer.h"
 #include "quest.h"
