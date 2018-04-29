@@ -100,6 +100,16 @@ void print_a(gpointer data,gpointer n){
 void print_user(User user){
     if(user)
         printf("user:\n\n\tId: %ld\n\tName:  %s\n\tAbouteMe: %s\n\tReputation: %ld\n\tNr de Posts: %d\n\n",user->Id,user->DisplayName,user->AboutMe,user->Reputation,user->nr_posts); 
- //   g_slist_foreach(user->quests,(GFunc)print_q,NULL);
- //   g_slist_foreach(user->answers,(GFunc)print_a,NULL);
+}
+void free_users(User u){
+    free(u->DisplayName);
+    free(u->AboutMe);
+    g_slist_free(u->quests);
+    g_slist_free(u->answers);
+    free(u);
+}
+void free_g_users(gpointer g){
+    User u = (User)GPOINTER_TO_SIZE(g);
+    free_users(u);
+    g_free(g);
 }

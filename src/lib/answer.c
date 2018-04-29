@@ -64,17 +64,32 @@ int compare_answer(gconstpointer t1, gconstpointer t2){
     return (-1)*date_compare(d1,d2);
 }
 
+//Função de comparação de score para ordenar uma lista ligada.
+gint score_compare_answer(gconstpointer a,gconstpointer b){
+     int f = get_score_answer((Answer)a);
+     int s = get_score_answer((Answer)b);
+     if(f<s) return 1;
+     else if(f>s) return -1;
+     else return 0;
+}
+
 /* Imprimir o conteudo da resposta. */
 void print_answer(Answer post){
     if(post != NULL)
     print_date(post->creationDate);
     printf("Answer:\n\n\tId: %ld\n\tParentId: %ld\n\tScore: %d\n\tOwnerUserID: %ld\n\tCommentCount: %d\nFavoriteCount: %d\n",
             post->id,post->parentId,post->score,
-            post->ownerUserId,post->commentCount,post->favoriteCount); 
+            post->ownerUserId,post->commentCount,post->favoriteCount);
     printf("\n\n");
 }
 
 /* Apaga a resposta dando free na memoria alocada. */
 void free_answer(Answer a){
+    free_date(a->creationDate);
     free(a);
+}
+void free_g_answer(gpointer g){
+    Answer a = (Answer)GPOINTER_TO_SIZE(g);
+    free_answer(a);
+    g_free(g);
 }

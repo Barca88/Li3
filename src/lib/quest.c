@@ -1,5 +1,5 @@
 #include "quest.h"
-
+#include <string.h>
 /* Definição da estrutura das perguntas (quest). */
 struct quest{
     long id; /* Id da quest. */
@@ -96,13 +96,24 @@ int compare_quest(gconstpointer t1, gconstpointer t2){
         return c;
 }
 
+void comp_tags_quest(gpointer key,gpointer value,gpointer data){
+    query4 ld = (query4)GPOINTER_TO_SIZE(data);
+    char* t = get_tag_4(ld);
+    GSList* l = get_list_4(ld);
+
+    if (strstr(get_tags_quest(value),t)){
+        set_list_4(ld,g_slist_prepend(l,value));
+    }
+
+}
+
 //Imprimir o conteudo da pergunta.
 void print_quest(Quest q){
     if(q != NULL){
     print_date(q->creationDate);
     printf("Quest:\n\n\t Id: %ld\n\tScore: %d\n\tOwnerUserID: %ld\n\tTitle: %s\n\tI Tags: %s\n\t Answer_c: %d\n\tComment_c: %d\n\tFavorite_c: %d\n\t",
             q->id,q->score,
-            q->ownerUserId,q->title,q->tags,q->answer_c,q->comment_c,q->favorite_c); 
+            q->ownerUserId,q->title,q->tags,q->answer_c,q->comment_c,q->favorite_c);
     printf("\n\n");
     }
 }
@@ -111,4 +122,17 @@ void print_quest(Quest q){
 void add_answer_quest(Quest q, Answer a){
     GSList* l = q->answerList;
     q->answerList = g_slist_prepend(l,a);
+}
+
+void free_quest(Quest q){
+    free_date(q->creationDate);
+    free(q->title);
+    free(q->tags);
+    g_slist_free(q->answerList);
+    free(q);
+}
+void free_g_quest(gpointer g){
+    Quest q = (Quest)GPOINTER_TO_SIZE(g);
+    free_quest(q);
+    g_free(g);
 }

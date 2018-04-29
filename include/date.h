@@ -67,4 +67,5 @@ int date_compare(gconstpointer p1, gconstpointer p2);
  */
 gboolean between_dates(Date b,Date e, Date tocomp);
 void free_date(Date d);
+void free_g_date(gpointer g);
 #endif

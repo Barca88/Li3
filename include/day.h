@@ -10,7 +10,6 @@
 #define __DAY_H__
 
 #include "queriesdata.h"
-#include "post.h"
 #include "date.h"
 #include "answer.h"
 #include "quest.h"
@@ -80,9 +79,12 @@ Date get_date_day(Day d);
 
 gboolean count_posts_day(gpointer key,gpointer value,gpointer data);
 
+gboolean iter_tag_day(gpointer key,gpointer value,gpointer data);
+
 //Print
 void print_aux(gpointer key,gpointer value,gpointer data);
 /* Imprime o conteudo de um dia */
-void print_day(Day day);
-
+void print_day(Day d);
+void free_day(Day d);
+void free_g_day(gpointer g);
 #endif

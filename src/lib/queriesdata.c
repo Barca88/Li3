@@ -1,5 +1,5 @@
 #include "queriesdata.h"
-
+#include <stdlib.h>
 struct aux3{
     Date begin;
     Date end;
@@ -38,4 +38,41 @@ void inc_nq_3(query3 q,int v){
 
 void inc_na_3(query3 q,int v){
     q->na += v;
+}
+//------------------------------------------------------
+struct aux4{
+    Date begin;
+    Date end;
+    char* tag;
+    GSList* list;
+};
+
+
+query4 init_query4(Date b,Date e,char* tag){
+    query4 ld = malloc(sizeof(struct aux4));
+    ld->begin = b;
+    ld->end = e;
+    ld->tag = tag;
+    ld->list = NULL;
+    return ld;
+}    
+
+Date get_begin_4(query4 q){
+    return q->begin;
+}
+
+Date get_end_4(query4 q){
+    return q->end;
+}
+
+char* get_tag_4(query4 q){
+    return q->tag;
+}
+
+GSList* get_list_4(query4 q){
+    return q->list;
+}
+
+void set_list_4(query4 q,GSList* l){
+    q->list = l;
 }

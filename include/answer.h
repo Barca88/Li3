@@ -15,11 +15,11 @@
 #include <stdlib.h>
 
 /**
- * @brief Declaração do tipo Answer, um tipo abstrato. 
+ * @brief Declaração do tipo Answer, um tipo abstrato.
  */
 typedef struct answer* Answer;
 
-/** @brief Inicializa a estrutura Answer, alocando espaço para a mesma. 
+/** @brief Inicializa a estrutura Answer, alocando espaço para a mesma.
  *  @param id id da answer.
  *  @param ptid parentId (id da quest à qual esta answer responde).
  *  @param cd creationDate.
@@ -82,7 +82,7 @@ int get_favorite_count_answer(Answer a);
  */
 float get_average_answer(Answer a);
 
-/** @brief Média das answers. 
+/** @brief Média das answers.
  *
  *  @param a Answer.
  *  @param f.
@@ -97,6 +97,8 @@ void set_average_answer(Answer a,float f);
  */
 int compare_answer(gconstpointer p1, gconstpointer p2);
 
+gint score_compare_answer(gconstpointer a,gconstpointer b);
+
 /* Imprime o conteudo do post */
 void print_answer(Answer post);
 
@@ -106,5 +108,6 @@ void print_answer(Answer post);
  *  @return Void.
  */
 void free_answer(Answer a);
+void free_g_answer(gpointer g);
 
 #endif
