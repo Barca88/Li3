@@ -99,9 +99,7 @@ void print_a(gpointer data,gpointer n){
 /* Imprimir o conteúdo de um user. */
 void print_user(User user){
     if(user)
-        printf("user:\n\nId: %ld\nName:  %s\nAbouteMe: %s\nReputation: %ld\nNr de Posts: %d\n",user->Id,user->DisplayName,user->AboutMe,user->Reputation,user->nr_posts);
- //   g_slist_foreach(user->quests,(GFunc)print_q,NULL);
- //   g_slist_foreach(user->answers,(GFunc)print_a,NULL);
+        printf("user:\n\n\tId: %ld\n\tName:  %s\n\tAbouteMe: %s\n\tReputation: %ld\n\tNr de Posts: %d\n\n",user->Id,user->DisplayName,user->AboutMe,user->Reputation,user->nr_posts); 
 }
 void free_users(User u){
     free(u->DisplayName);

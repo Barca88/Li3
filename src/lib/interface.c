@@ -1,4 +1,5 @@
 #include "interface.h"
+#include "queriesdata.h"
 #include "common.h"
 #include "parser.h"
 #include "users.h"
@@ -49,6 +50,7 @@ STR_pair info_from_post(TAD_community com, long id){
     Quest q = (Quest)g_hash_table_lookup(get_hash_quest_tcd(com), 
                                          GSIZE_TO_POINTER(id));
 
+    //Se quest processa, se answer processa a quest associada. 
     if(q){
         u = (User)g_hash_table_lookup(get_hash_users(com),
                 GSIZE_TO_POINTER(get_owner_id_quest(q)));
@@ -81,6 +83,7 @@ LONG_list top_most_active(TAD_community com, int N){
     User u;
     GSList *list = get_rank_n_posts(com);
 
+    //Inserir N users da linked list na long list. 
     for(i=0;i<N;i++){
         u =(User) GPOINTER_TO_SIZE(list->data);
         set_list(l,i,get_id_user(u));
@@ -96,99 +99,39 @@ LONG_list top_most_active(TAD_community com, int N){
     return l;
 }
 
-//----------------------------------------------------------------------
-
-typedef struct aux3{
-    Date begin;
-    Date end;
-    int nq;
-    int na;
-}* query3;
-
-static gboolean count_posts(gpointer key,gpointer value,gpointer data){
-    query3 ld = (query3)GPOINTER_TO_SIZE(data);
-    Date b = ld->begin;
-    Date e = ld->end;
-
-
-    if ((date_compare(get_date_day(value),b)>=0 &&
-          date_compare(e,get_date_day(value))>=0)){
-            ld->nq += get_n_quest(value);
-            ld->na += get_n_answer(value);
-    }
-    return FALSE;
-}
-
 /** QUERY 3 */
 LONG_pair total_posts(TAD_community com, Date begin, Date end){
-    query3 ld = malloc(sizeof(struct aux3));
-    ld->begin = begin;
-    ld->end = end;
-    ld->nq = 0;
-    ld->na = 0;
-
-    g_tree_foreach(get_tree_days(com),(GTraverseFunc)count_posts,
+    query3 ld = init_query3(begin,end);
+    
+    g_tree_foreach(get_tree_days(com),(GTraverseFunc)count_posts_day,
             GSIZE_TO_POINTER(ld));
 
     printf("Query 3: \n\n");
     printf("\tNumero de users: %d\n",g_hash_table_size(get_hash_users(com)));
-    printf("\tNumero de respostas: %d\n",ld->na);
-    printf("\tNumero de perguntas: %d\n",ld->nq);
-    printf("\tNumero de posts: %d\n",ld->na+ld->nq);
+    printf("\tNumero de respostas: %d\n",get_na_3(ld));
+    printf("\tNumero de perguntas: %d\n",get_nq_3(ld));
+    printf("\tNumero de posts: %d\n",get_na_3(ld)+get_nq_3(ld));
     printf("\n\n");
 
-    LONG_pair lp = create_long_pair(ld->nq,ld->na);
+    LONG_pair lp = create_long_pair(get_nq_3(ld),get_na_3(ld));
     return lp;
-}
-
-//----------------------------------------------------------------------
-
-typedef struct aux4{
-    Date begin;
-    Date end;
-    char* tag;
-    GSList* list;
-}* query4;
-
-static void comp_tags(gpointer key,gpointer value,gpointer data){
-    query4 ld = (query4)GPOINTER_TO_SIZE(data);
-    char* t = ld->tag;
-    GSList* l = ld->list;
-    if (strstr(get_tags_quest(value),t)){
-        ld->list = g_slist_prepend(l,value);
-    }
-
-}
-
-static gboolean iter_day(gpointer key,gpointer value,gpointer data){
-    query4 ld = (query4)GPOINTER_TO_SIZE(data);
-    Date b = ld->begin;
-    Date e = ld->end;
-    GHashTable* ht = get_hash_quest_day((Day)value);
-
-    if ((date_compare(get_date_day(value),b)>=0 &&
-         date_compare(e,get_date_day(value))>=0)){
-         g_hash_table_foreach(ht,(GHFunc)comp_tags,data);
-    }
-    return FALSE;
 }
 
 /** QUERY 4 */
 LONG_list questions_with_tag(TAD_community com, char* tag, Date begin, Date end){
-    query4 ld = malloc(sizeof(struct aux4));
-    ld->begin = begin;
-    ld->end = end;
-    ld->tag = tag;
-    ld->list = NULL;
+    query4 ld = init_query4(begin,end,tag);    
 
-    g_tree_foreach(get_tree_days(com),(GTraverseFunc)iter_day,
+    //Criar uma lista com todas a quets encontradas em cada dia.
+    g_tree_foreach(get_tree_days(com),(GTraverseFunc)iter_tag_day,
                    GSIZE_TO_POINTER(ld));
-    ld->list = g_slist_sort(ld->list,compare_quest);
+    //Organizar a lista de quests com a tag.
+    set_list_4(ld,g_slist_sort(get_list_4(ld),compare_quest));
 
-    int i,N = g_slist_length(ld->list);
+    //Colocar o id das quests na long list.
+    int i,N = g_slist_length(get_list_4(ld));
     Quest q;
     LONG_list l = create_list(N);
-    GSList* list = ld->list;
+    GSList* list = get_list_4(ld);
     for(i=0;i<N;i++){
         q = (Quest)GPOINTER_TO_SIZE(list->data);
         set_list(l,i,get_id_quest(q));
@@ -291,15 +234,6 @@ static gboolean iter_day6(gpointer key,gpointer value,gpointer data){
     return FALSE;
 }
 
-//Função de comparação de score para ordenar uma lista ligada.
-static gint score_compare(gconstpointer a,gconstpointer b){
-     int f = get_score_answer((Answer)a);
-     int s = get_score_answer((Answer)b);
-     if(f<s) return 1;
-     else if(f>s) return -1;
-     else return 0;
-}
-
 /** QUERY 6 */
 LONG_list most_voted_answers(TAD_community com, int N, Date begin, Date end){
     query6 ld = malloc(sizeof(struct aux6));
@@ -309,7 +243,7 @@ LONG_list most_voted_answers(TAD_community com, int N, Date begin, Date end){
 
     g_tree_foreach(get_tree_days(com),(GTraverseFunc)iter_day6,
                    GSIZE_TO_POINTER(ld));
-    ld->list = g_slist_sort(ld->list,score_compare);
+    ld->list = g_slist_sort(ld->list,score_compare_answer);
 
     int i;
     Answer a;

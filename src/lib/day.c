@@ -47,6 +47,31 @@ GHashTable* get_hash_answer_day(Day d){
 Date get_date_day(Day d){
     return createDate(get_day(d->day),get_month(d->day),get_year(d->day));
 }
+
+gboolean count_posts_day(gpointer key,gpointer value,gpointer data){
+    query3 ld = (query3)GPOINTER_TO_SIZE(data);
+    Date b = get_begin_3(ld);
+    Date e = get_end_3(ld);
+
+    if (between_dates(b,e,get_date_day(value))){
+            inc_nq_3(ld,get_n_quest(value));
+            inc_na_3(ld,get_n_answer(value));
+    }
+    return FALSE;
+}
+
+gboolean iter_tag_day(gpointer key,gpointer value,gpointer data){
+    query4 ld = (query4)GPOINTER_TO_SIZE(data);
+    Date b = get_begin_4(ld);
+    Date e = get_end_4(ld);
+    GHashTable* ht = get_hash_quest_day((Day)value);
+
+    if (between_dates(b,e,get_date_day(value))){
+         g_hash_table_foreach(ht,(GHFunc)comp_tags_quest,data);
+    }
+    return FALSE;
+}
+
 void print_aux(gpointer key,gpointer value,gpointer data){
     Quest q = (Quest)GPOINTER_TO_SIZE(value);
     print_quest(q);

@@ -9,6 +9,7 @@
 #ifndef __QUEST_H__
 #define __QUEST_H__
 
+#include "queriesdata.h"
 #include "answer.h"
 #include "date.h"
 #include <glib.h>
@@ -113,6 +114,9 @@ void set_tags_quest(Quest q,char* t);
  *  @return quest compare.
  */
 int compare_quest(gconstpointer p1, gconstpointer p2);
+
+void comp_tags_quest(gpointer key,gpointer value,gpointer data);
+
 /* Imprime o conteudo do post */
 void print_quest(Quest post);
 

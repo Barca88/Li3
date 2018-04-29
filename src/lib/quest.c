@@ -1,5 +1,5 @@
 #include "quest.h"
-
+#include <string.h>
 /* Definição da estrutura das perguntas (quest). */
 struct quest{
     long id; /* Id da quest. */
@@ -76,11 +76,35 @@ void set_tags_quest(Quest q,char* t){
         q->tags = t;
 }
 
+static int id_compare_quest(long a,long b){
+    if(a<b)
+        return 1;
+    else
+        return -1;
+    return 0;
+}
+
 int compare_quest(gconstpointer t1, gconstpointer t2){
         Date d1 = get_date_quest((Quest)GPOINTER_TO_SIZE(t1));
         Date d2 = get_date_quest((Quest)GPOINTER_TO_SIZE(t2));
-        
-        return (-1)*date_compare(d1,d2);
+        long id1 = get_id_quest((Quest)GPOINTER_TO_SIZE(t1)); 
+        long id2 = get_id_quest((Quest)GPOINTER_TO_SIZE(t2)); 
+        int c = 0; 
+        c = (-1)*date_compare(d1,d2);
+        if(!c)
+           c = id_compare_quest(id1,id2);
+        return c;
+}
+
+void comp_tags_quest(gpointer key,gpointer value,gpointer data){
+    query4 ld = (query4)GPOINTER_TO_SIZE(data);
+    char* t = get_tag_4(ld);
+    GSList* l = get_list_4(ld);
+
+    if (strstr(get_tags_quest(value),t)){
+        set_list_4(ld,g_slist_prepend(l,value));
+    }
+
 }
 
 //Imprimir o conteudo da pergunta.

@@ -18,7 +18,6 @@
 #include "interface.h"
 #include "users.h"
 #include "date.h"
-#include "post.h"
 
 /** @brief Resposável por fazer o parsing das tags.
  *
