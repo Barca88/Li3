@@ -97,6 +97,8 @@ void set_average_answer(Answer a,float f);
  */
 int compare_answer(gconstpointer p1, gconstpointer p2);
 
+gint score_compare_answer(gconstpointer a,gconstpointer b);
+
 /* Imprime o conteudo do post */
 void print_answer(Answer post);
 

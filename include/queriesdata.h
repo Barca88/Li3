@@ -19,4 +19,18 @@ void inc_nq_3(query3 q,int v);
 
 void inc_na_3(query3 q,int v);
 
+typedef struct aux4* query4;
+
+query4 init_query4(Date b,Date e,char* tag);
+
+Date get_begin_4(query4 q);
+
+Date get_end_4(query4 q);
+
+char* get_tag_4(query4 q);
+
+GSList* get_list_4(query4 q);
+
+void set_list_4(query4 q,GSList* l);
+
 #endif

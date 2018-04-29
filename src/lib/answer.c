@@ -64,6 +64,15 @@ int compare_answer(gconstpointer t1, gconstpointer t2){
     return (-1)*date_compare(d1,d2);
 }
 
+//Função de comparação de score para ordenar uma lista ligada.
+gint score_compare_answer(gconstpointer a,gconstpointer b){
+     int f = get_score_answer((Answer)a);
+     int s = get_score_answer((Answer)b);
+     if(f<s) return 1;
+     else if(f>s) return -1;
+     else return 0;
+}
+
 /* Imprimir o conteudo da resposta. */
 void print_answer(Answer post){
     if(post != NULL)

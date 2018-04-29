@@ -79,6 +79,8 @@ Date get_date_day(Day d);
 
 gboolean count_posts_day(gpointer key,gpointer value,gpointer data);
 
+gboolean iter_tag_day(gpointer key,gpointer value,gpointer data);
+
 //Print
 void print_aux(gpointer key,gpointer value,gpointer data);
 /* Imprime o conteudo de um dia */

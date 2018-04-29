@@ -96,6 +96,17 @@ int compare_quest(gconstpointer t1, gconstpointer t2){
         return c;
 }
 
+void comp_tags_quest(gpointer key,gpointer value,gpointer data){
+    query4 ld = (query4)GPOINTER_TO_SIZE(data);
+    char* t = get_tag_4(ld);
+    GSList* l = get_list_4(ld);
+
+    if (strstr(get_tags_quest(value),t)){
+        set_list_4(ld,g_slist_prepend(l,value));
+    }
+
+}
+
 //Imprimir o conteudo da pergunta.
 void print_quest(Quest q){
     if(q != NULL){
