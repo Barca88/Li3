@@ -9,7 +9,6 @@
 #ifndef __DAY_H__
 #define __DAY_H__
 
-#include "post.h"
 #include "date.h"
 #include "answer.h"
 #include "quest.h"
