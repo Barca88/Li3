@@ -206,52 +206,22 @@ USER get_user_info(TAD_community com, long id){
     return r;
 }
 
-//----------------------------------------------------------------------
-
-typedef struct aux6{
-    Date begin;
-    Date end;
-    GSList* list;
-}* query6;
-
-//Quest para a lista ligada.
-static void to_list(gpointer key,gpointer value,gpointer data){
-    query6 ld = (query6)GPOINTER_TO_SIZE(data);
-    ld->list = g_slist_prepend(ld->list,value);
-}
-
-//Função resposável pelo que fazer por cada dia.
-static gboolean iter_day6(gpointer key,gpointer value,gpointer data){
-    query6 ld = (query6)GPOINTER_TO_SIZE(data);
-    Date b = ld->begin;
-    Date e = ld->end;
-    GHashTable* ha = get_hash_answer_day((Day)value);
-
-    if ((date_compare(get_date_day(value),b)>=0 &&
-         date_compare(e,get_date_day(value))>=0)){
-         g_hash_table_foreach(ha,(GHFunc)to_list,data);
-    }
-    return FALSE;
-}
-
 /** QUERY 6 */
 LONG_list most_voted_answers(TAD_community com, int N, Date begin, Date end){
-    query6 ld = malloc(sizeof(struct aux6));
-    ld->begin = begin;
-    ld->end = end;
-    ld->list = NULL;
+    query6 ld = init_query6(begin,end);
 
-    g_tree_foreach(get_tree_days(com),(GTraverseFunc)iter_day6,
+    g_tree_foreach(get_tree_days(com),(GTraverseFunc)iter_vote_a_day,
                    GSIZE_TO_POINTER(ld));
-    ld->list = g_slist_sort(ld->list,score_compare_answer);
+    set_list_6(ld, g_slist_sort(get_list_6(ld),score_compare_answer));
 
     int i;
     Answer a;
     LONG_list l = create_list(N);
-    GSList* list = ld->list;
+    GSList* list = get_list_6(ld);
     if(list){
         for(i=0;i<N;i++){
             a = (Answer)GPOINTER_TO_SIZE(list->data);
+            print_answer(a);
             set_list(l,i,get_id_answer(a));
             list = list->next;
         }

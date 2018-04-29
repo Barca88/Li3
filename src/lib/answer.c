@@ -57,11 +57,24 @@ void set_average_answer(Answer a,float average){
     a->average = average;
 }
 
+static int id_compare_answer(long a,long b){
+    if(a<b)
+        return -1;
+    else
+        return 1;
+    return 0;
+}
+
 int compare_answer(gconstpointer t1, gconstpointer t2){
     Date d1 = get_date_answer((Answer)GPOINTER_TO_SIZE(t1));
     Date d2 = get_date_answer((Answer)GPOINTER_TO_SIZE(t2));
-
-    return (-1)*date_compare(d1,d2);
+    long id1 = get_id_answer((Answer)GPOINTER_TO_SIZE(t1)); 
+    long id2 = get_id_answer((Answer)GPOINTER_TO_SIZE(t2)); 
+    int c = 0; 
+    c = (-1)*date_compare(d1,d2);
+    if(!c)
+        c = id_compare_answer(id1,id2);
+    return c;
 }
 
 //Função de comparação de score para ordenar uma lista ligada.
@@ -70,7 +83,13 @@ gint score_compare_answer(gconstpointer a,gconstpointer b){
      int s = get_score_answer((Answer)b);
      if(f<s) return 1;
      else if(f>s) return -1;
-     else return 0;
+     else return -1*compare_answer(a,b);
+}
+
+/* Quest para a lista ligada. */
+void to_list_answer(gpointer key,gpointer value,gpointer data){
+    query6 ld = (query6)GPOINTER_TO_SIZE(data);
+    set_list_6(ld,g_slist_prepend(get_list_6(ld),value));
 }
 
 /* Imprimir o conteudo da resposta. */

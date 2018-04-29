@@ -76,3 +76,34 @@ GSList* get_list_4(query4 q){
 void set_list_4(query4 q,GSList* l){
     q->list = l;
 }
+
+//-----------------------------------------------------
+struct aux6{
+    Date begin;
+    Date end;
+    GSList* list;
+};
+
+query6 init_query6(Date b,Date e){
+    query6 ld = malloc(sizeof(struct aux6));
+    ld->begin = b;
+    ld->end = e;
+    ld->list = NULL;
+    return ld;
+}    
+
+Date get_begin_6(query6 q){
+    return q->begin;
+}
+
+Date get_end_6(query6 q){
+    return q->end;
+}
+
+GSList* get_list_6(query6 q){
+    return q->list;
+}
+
+void set_list_6(query6 q,GSList* l){
+    q->list = l;
+}

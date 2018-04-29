@@ -72,6 +72,20 @@ gboolean iter_tag_day(gpointer key,gpointer value,gpointer data){
     return FALSE;
 }
 
+//Função resposável pelo que fazer por cada dia.
+ gboolean iter_vote_a_day(gpointer key,gpointer value,gpointer data){
+    query6 ld = (query6)GPOINTER_TO_SIZE(data);
+    Date b = get_begin_6(ld);
+    Date e = get_end_6(ld);
+    GHashTable* ha = get_hash_answer_day((Day)value);
+
+    if ((date_compare(get_date_day(value),b)>=0 &&
+    date_compare(e,get_date_day(value))>=0)){
+    g_hash_table_foreach(ha,(GHFunc)to_list_answer,data);
+    }
+   return FALSE;
+}
+
 void print_aux(gpointer key,gpointer value,gpointer data){
     Quest q = (Quest)GPOINTER_TO_SIZE(value);
     print_quest(q);

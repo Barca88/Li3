@@ -11,6 +11,7 @@
 
 #include "date.h"
 #include "common.h"
+#include "queriesdata.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -81,6 +82,8 @@ int get_favorite_count_answer(Answer a);
  *  @return average answer.
  */
 float get_average_answer(Answer a);
+
+void to_list_answer(gpointer key,gpointer value,gpointer data);
 
 /** @brief Média das answers. 
  *
