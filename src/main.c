@@ -26,6 +26,7 @@ int main(int argc,char** argv){
     total_posts(new,c,d);
     questions_with_tag(new,"package-management",e,f);
     questions_with_tag(new,"nautilus",c,g);
+    printf("\t\t\t\tCHECK!!\n\n\n\n");
     get_user_info(new,15811);
     get_user_info(new,449);
     most_voted_answers(new,11,a,b);
