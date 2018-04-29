@@ -113,4 +113,5 @@ void free_users(User u){
 void free_g_users(gpointer g){
     User u = (User)GPOINTER_TO_SIZE(g);
     free_users(u);
+    g_free(g);
 }

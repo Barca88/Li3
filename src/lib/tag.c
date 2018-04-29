@@ -61,4 +61,5 @@ void free_tag(Tag t){
 void free_g_tag(gpointer g){
 	Tag t = (Tag)GPOINTER_TO_SIZE(g);
 	free_tag(t);
+    g_free(g);
 }

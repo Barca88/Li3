@@ -51,11 +51,11 @@ GTree* get_tree_days(TAD_community root){
     return root->treeDays;
 }
 GSList* get_rank_n_posts(TAD_community root){
-    return root->rankNrPosts;
+    return root->rankNPosts;
 }
 
 void set_rank_n_posts(TAD_community root, GSList *new){
-    root->rankNrPosts = new;
+    root->rankNPosts = new;
 }
 
 gboolean load_rank_gslist_tcd(gpointer key,gpointer value,gpointer data){
