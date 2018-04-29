@@ -16,7 +16,7 @@
 #include <stdlib.h>
 
 /**
- * @brief Declaração do tipo Tag, um tipo abstrato. 
+ * @brief Declaração do tipo Tag, um tipo abstrato.
  */
 typedef struct tag* Tag;
 
@@ -30,21 +30,21 @@ Tag create_tag(long id,char* tag);
 
 //Setters
 
-/** @brief Id da Tag. 
+/** @brief Id da Tag.
  *
  *  @param t Tag.
  *  @param id_out id tag.
  *  @return Void.
  */
 void set_id_tag (Tag t, long id_out);
-/** @brief Tag. 
+/** @brief Tag.
  *
  *  @param t Tag.
  *  @param g_tag tag dada.
  *  @return Void.
  */
 void set_tag (Tag t, char* g_tag);
-/** @brief Nº de vezes que a tag foi usada. 
+/** @brief Nº de vezes que a tag foi usada.
  *
  *  @param t Tag.
  *  @param count_tag nº de vezes que uma tag é usada.
@@ -82,6 +82,6 @@ void print_tag(Tag t);
  *  @param Tag.
  *  @return Void.
  */
-void free_tag(Tag);
-
+void free_tag(Tag t);
+void free_g_tag(gpointer g);
 #endif

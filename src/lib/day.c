@@ -102,9 +102,14 @@ void print_day(Day day){
     }
 }
 /*liberta a memoria alocada para o Day d*/
-/*void free_day(Day d){
+void free_day(Day d){
     free_date(d->day);
-    g_hash_table_destroy(hash_quest);
-    g_hash_table_destroy(hash_answer);
+    g_hash_table_destroy(d->hash_quest);
+    g_hash_table_destroy(d->hash_answer);
     free(d);
-}*/
+}
+void free_g_day(gpointer g){
+    Day d = (Day)GPOINTER_TO_SIZE(g);
+    free_day(d);
+    g_free(g);
+}

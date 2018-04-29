@@ -1,5 +1,5 @@
 #include "queriesdata.h"
-
+#include <stdlib.h>
 struct aux3{
     Date begin;
     Date end;

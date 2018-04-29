@@ -61,9 +61,9 @@ STR_pair info_from_post(TAD_community com, long id){
              GSIZE_TO_POINTER(id));
         if(a){
             q = (Quest)g_hash_table_lookup(get_hash_quest_tcd(com),
-                    GSIZE_TO_POINTER(get_parent_id_answer(a)));
+                GSIZE_TO_POINTER(get_parent_id_answer(a)));
             u = (User)g_hash_table_lookup(get_hash_users(com),
-                    GSIZE_TO_POINTER(get_owner_user_id_answer(a)));
+                GSIZE_TO_POINTER(get_owner_user_id_answer(a)));
             title = get_title_quest(q);
             name = get_displayname_user(u);
         }
@@ -598,4 +598,7 @@ LONG_list most_used_best_rep(TAD_community com, int N, Date begin, Date end){
 }
 
 /** Função clean. */
-TAD_community clean(TAD_community com);
+TAD_community clean(TAD_community com){
+    free_tcd(com);
+    return com;
+}

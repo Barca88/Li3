@@ -16,11 +16,11 @@
 #include <stdlib.h>
 
 /**
- * @brief Declaração do tipo Quest, um tipo abstrato. 
+ * @brief Declaração do tipo Quest, um tipo abstrato.
  */
 typedef struct quest* Quest;
 
-/** @brief Inicializa a estrutura Quest, alocando espaço para a mesma. 
+/** @brief Inicializa a estrutura Quest, alocando espaço para a mesma.
  *  @param id id da quest.
  *  @param cd creationDate.
  *  @param s score.
@@ -32,7 +32,7 @@ typedef struct quest* Quest;
  *  @param fc favoriteCount.
  *  @return Quest.
  */
-Quest init_quest(long id, Date cd, int s,long ouid, char* ti, char* ta, int ac, 
+Quest init_quest(long id, Date cd, int s,long ouid, char* ti, char* ta, int ac,
         int cc, int fc);
 
 //Getters
@@ -98,7 +98,7 @@ int get_favorite_c_quest(Quest q);
  */
 GSList* get_answer_list_quest(Quest q);
 
-/** @brief Associa as perguntas às respostas. 
+/** @brief Associa as perguntas às respostas.
  *
  *  @param q Quest.
  *  @param l lista.
@@ -122,4 +122,8 @@ void print_quest(Quest post);
 
 /* Função resposável por adicionar as answers às quests. */
 void add_answer_quest(Quest q, Answer a);
+
+/*Liberta a memoria alocada para a quest */
+void free_quest(Quest q);
+void free_g_quest(gpointer g);
 #endif
