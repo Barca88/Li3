@@ -82,6 +82,11 @@ void inc_nr_posts(User user);
 
 /** @brief Imprime o conteúdo de uma quest.
  *
+ */
+gint comp_nr_posts_user(gconstpointer a,gconstpointer b);
+
+/** @brief Imprime o conteúdo de uma quest. 
+ *
  *  @param data apontador para uma data.
  *  @param n apontador para um quest.
  *  @return Void.
@@ -98,5 +103,6 @@ void print_a(gpointer data, gpointer n);
 void print_user(User u);
 /*Liberta a memoria alocada para guardar o user*/
 void free_users(User u);
+/*Liberta um gpointer que é um User*/
 void free_g_users(gpointer g);
 #endif

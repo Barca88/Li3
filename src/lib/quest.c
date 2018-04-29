@@ -76,6 +76,13 @@ void set_tags_quest(Quest q,char* t){
         q->tags = t;
 }
 
+int compare_quest(gconstpointer t1, gconstpointer t2){
+        Date d1 = get_date_quest((Quest)GPOINTER_TO_SIZE(t1));
+        Date d2 = get_date_quest((Quest)GPOINTER_TO_SIZE(t2));
+        
+        return (-1)*date_compare(d1,d2);
+}
+
 //Imprimir o conteudo da pergunta.
 void print_quest(Quest q){
     if(q != NULL){

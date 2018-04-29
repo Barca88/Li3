@@ -68,4 +68,6 @@ void set_rank_n_posts(TAD_community root,GSList *new);
 /*Liberta a memoria alocada para as estruturas de dados*/
 void free_tcd(TAD_community com);
 
+gboolean load_rank_gslist_tcd(gpointer key,gpointer value,gpointer data);
+
 #endif

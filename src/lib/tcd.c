@@ -20,15 +20,15 @@ struct TCD_community{
 TAD_community init_tcd(){
     TAD_community n = malloc(sizeof(struct TCD_community));
 
-    n->hashTags    = g_hash_table_new_full(g_direct_hash, g_direct_equal,NULL,
+    n->hashTags    = g_hash_table_new_full(g_direct_hash, g_direct_equal,g_free,
         free_g_tag);
-    n->hashUsers   = g_hash_table_new_full(g_direct_hash, g_direct_equal,NULL,
+    n->hashUsers   = g_hash_table_new_full(g_direct_hash, g_direct_equal,g_free,
         free_g_users);
-    n->hashQuests  = g_hash_table_new_full(g_direct_hash, g_direct_equal,NULL,
+    n->hashQuests  = g_hash_table_new_full(g_direct_hash, g_direct_equal,g_free,
         free_g_quest);
-    n->hashAnswers = g_hash_table_new_full(g_direct_hash, g_direct_equal,NULL,
+    n->hashAnswers = g_hash_table_new_full(g_direct_hash, g_direct_equal,g_free,
         free_g_answer);
-    n->treeDays    = g_tree_new_full((GCompareDataFunc)date_compare,NULL,
+    n->treeDays    = g_tree_new_full((GCompareDataFunc)date_compare,g_free,
         free_g_date,free_g_day);
     n->rankNPosts  = NULL;
     return n;
@@ -51,11 +51,17 @@ GTree* get_tree_days(TAD_community root){
     return root->treeDays;
 }
 GSList* get_rank_n_posts(TAD_community root){
-    return root->rankNPosts;
+    return root->rankNrPosts;
 }
 
 void set_rank_n_posts(TAD_community root, GSList *new){
-    root->rankNPosts = new;
+    root->rankNrPosts = new;
+}
+
+gboolean load_rank_gslist_tcd(gpointer key,gpointer value,gpointer data){
+    TAD_community com = (TAD_community)GPOINTER_TO_SIZE(data);
+    set_rank_n_posts(com, g_slist_prepend(get_rank_n_posts(com),value));
+    return FALSE;
 }
 
 /* Apaga a tcd dando free na memoria alocada. */

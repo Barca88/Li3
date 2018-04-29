@@ -89,6 +89,13 @@ float get_average_answer(Answer a);
  *  @return Void.
  */
 void set_average_answer(Answer a,float f);
+/** @brief Compara a data de uma answer.
+ *
+ *  @param p1 Apontador para uma data1.
+ *  @param p2 Apontador para uma data2. 
+ *  @return answer compare.
+ */
+int compare_answer(gconstpointer p1, gconstpointer p2);
 
 /* Imprime o conteudo do post */
 void print_answer(Answer post);
