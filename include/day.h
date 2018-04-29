@@ -9,6 +9,11 @@
 #ifndef __DAY_H__
 #define __DAY_H__
 
+<<<<<<< HEAD
+=======
+#include "queriesdata.h"
+#include "post.h"
+>>>>>>> 44cd44a4884a82e91f1f8389b16638cb08569bac
 #include "date.h"
 #include "answer.h"
 #include "quest.h"
@@ -75,6 +80,8 @@ GHashTable* get_hash_answer_day(Day d);
  *  @return hash.
  */
 Date get_date_day(Day d);
+
+gboolean count_posts_day(gpointer key,gpointer value,gpointer data);
 
 //Print
 void print_aux(gpointer key,gpointer value,gpointer data);

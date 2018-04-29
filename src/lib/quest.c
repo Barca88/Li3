@@ -76,6 +76,26 @@ void set_tags_quest(Quest q,char* t){
         q->tags = t;
 }
 
+static int id_compare_quest(long a,long b){
+    if(a<b)
+        return 1;
+    else
+        return -1;
+    return 0;
+}
+
+int compare_quest(gconstpointer t1, gconstpointer t2){
+        Date d1 = get_date_quest((Quest)GPOINTER_TO_SIZE(t1));
+        Date d2 = get_date_quest((Quest)GPOINTER_TO_SIZE(t2));
+        long id1 = get_id_quest((Quest)GPOINTER_TO_SIZE(t1)); 
+        long id2 = get_id_quest((Quest)GPOINTER_TO_SIZE(t2)); 
+        int c = 0; 
+        c = (-1)*date_compare(d1,d2);
+        if(!c)
+           c = id_compare_quest(id1,id2);
+        return c;
+}
+
 //Imprimir o conteudo da pergunta.
 void print_quest(Quest q){
     if(q != NULL){

@@ -106,6 +106,13 @@ GSList* get_answer_list_quest(Quest q);
 void set_answer_list_quest(Quest q,GSList* l);
 
 void set_tags_quest(Quest q,char* t);
+/** @brief Compara a data de uma quest.
+ *
+ *  @param p1 Apontador para uma data1.
+ *  @param p2 Apontador para uma data2. 
+ *  @return quest compare.
+ */
+int compare_quest(gconstpointer p1, gconstpointer p2);
 /* Imprime o conteudo do post */
 void print_quest(Quest post);
 

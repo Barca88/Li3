@@ -75,6 +75,16 @@ GSList* get_answers_user(User user){
 void inc_nr_posts(User user){
     (user->nr_posts)++;
 }
+
+gint comp_nr_posts_user(gconstpointer a,gconstpointer b){
+    if(((User)a)->nr_posts > ((User)b)->nr_posts)
+        return -1;
+    else if(((User)a)->nr_posts < ((User)b)->nr_posts)
+        return 1;
+    else
+        return 0;
+}
+
 /* Imprimir o conteúdo de uma quest. */
 void print_q(gpointer data,gpointer n){
     Quest q = (Quest)GPOINTER_TO_SIZE(data);
@@ -89,7 +99,7 @@ void print_a(gpointer data,gpointer n){
 /* Imprimir o conteúdo de um user. */
 void print_user(User user){
     if(user)
-        printf("user:\n\nId: %ld\nName:  %s\nAbouteMe: %s\nReputation: %ld\nNr de Posts: %d\n",user->Id,user->DisplayName,user->AboutMe,user->Reputation,user->nr_posts); 
+        printf("user:\n\n\tId: %ld\n\tName:  %s\n\tAbouteMe: %s\n\tReputation: %ld\n\tNr de Posts: %d\n\n",user->Id,user->DisplayName,user->AboutMe,user->Reputation,user->nr_posts); 
  //   g_slist_foreach(user->quests,(GFunc)print_q,NULL);
  //   g_slist_foreach(user->answers,(GFunc)print_a,NULL);
 }

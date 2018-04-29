@@ -57,6 +57,13 @@ void set_average_answer(Answer a,float average){
     a->average = average;
 }
 
+int compare_answer(gconstpointer t1, gconstpointer t2){
+    Date d1 = get_date_answer((Answer)GPOINTER_TO_SIZE(t1));
+    Date d2 = get_date_answer((Answer)GPOINTER_TO_SIZE(t2));
+
+    return (-1)*date_compare(d1,d2);
+}
+
 /* Imprimir o conteudo da resposta. */
 void print_answer(Answer post){
     if(post != NULL)

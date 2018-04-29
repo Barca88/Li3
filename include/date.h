@@ -51,35 +51,8 @@ int get_year(Date d);
  *  @return Data.
  */
 Date date_from_string(char* date);
-
-/** @brief Estrutura responsável pela criação de um par de datas. 
- *  @param d Data.
- *  @param id do post.
- *  @return DatePair.
- */
-DatePair creat_date_pair(Date d,long id);
-/** @brief Retorna uma data.
- *
- *  @param dp Datepair.
- *  @return Data.
- */
-Date get_fst(DatePair dp);
-/** @brief Retorna uma data.
- *
- *  @param dp Datepair.
- *  @return Data.
- */
-long get_scd(DatePair dp);
 /* Imprime o conteudo da data */
 void print_date(Date d);
-
-/** @brief Compara um date pair.
- *
- *  @param p1 Apontador para uma data1.
- *  @param p2 Apontador para uma data2. 
- *  @return date_pair compare.
- */
-int date_pair_compare(gconstpointer p1, gconstpointer p2);
 /** @brief Compara uma data.
  *
  *  @param p1 Apontador para uma data1.
@@ -87,25 +60,11 @@ int date_pair_compare(gconstpointer p1, gconstpointer p2);
  *  @return date compare.
  */
 int date_compare(gconstpointer p1, gconstpointer p2);
-/** @brief Compara a data de uma quest.
- *
- *  @param p1 Apontador para uma data1.
- *  @param p2 Apontador para uma data2. 
- *  @return quest compare.
- */
-int quest_compare(gconstpointer p1, gconstpointer p2);
-/** @brief Compara a data de uma answer.
- *
- *  @param p1 Apontador para uma data1.
- *  @param p2 Apontador para uma data2. 
- *  @return answer compare.
- */
-int answer_compare(gconstpointer p1, gconstpointer p2);
-
 /** @brief Liberta o espaço ocupado pela data.
  *
  *  @param d Data.
  *  @return Void.
  */
+gboolean between_dates(Date b,Date e, Date tocomp);
 void free_date(Date d);
 #endif
