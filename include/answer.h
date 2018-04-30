@@ -83,7 +83,7 @@ int get_favorite_count_answer(Answer a);
  */
 float get_average_answer(Answer a);
 
-<<<<<<< HEAD
+
 void to_list_answer(gpointer key,gpointer value,gpointer data);
 
 /** @brief Média das answers. 

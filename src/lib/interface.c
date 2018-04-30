@@ -221,7 +221,6 @@ LONG_list most_voted_answers(TAD_community com, int N, Date begin, Date end){
     if(list){
         for(i=0;i<N;i++){
             a = (Answer)GPOINTER_TO_SIZE(list->data);
-            print_answer(a);
             set_list(l,i,get_id_answer(a));
             list = list->next;
         }

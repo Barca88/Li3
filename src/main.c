@@ -22,7 +22,6 @@ int main(int argc,char** argv){
     j = createDate(1,5,2013);
     k = createDate(6,5,2013);
 
-<<<<<<< HEAD
     info_from_post(new,801049);
     info_from_post(new,796430);
     top_most_active(new,10);
@@ -38,23 +37,6 @@ int main(int argc,char** argv){
     most_answered_questions(new,2,a,b);
     contains_word(new,"Nexus",10);
     both_participated(new,1465,16575,10000);
-=======
-
-    free_str_pair(info_from_post(new,801049));
-    free_str_pair(info_from_post(new,796430));
-    free_list(top_most_active(new,10));
-    free_list(top_most_active(new,100));
-    free_long_pair(total_posts(new,a,b));
-    free_long_pair(total_posts(new,c,d));
-    free_list(questions_with_tag(new,"package-management",e,f));
-    free_list(questions_with_tag(new,"nautilus",c,g));
-    free_user(get_user_info(new,15811));
-    free_user(get_user_info(new,449));
-    free_list(most_voted_answers(new,11,a,b));
-    free_list(most_answered_questions(new,2,a,b));
-    free_list(contains_word(new,"Nexus",10));
-    free_list(both_participated(new,1465,16575,10000));
->>>>>>> 198e8486339aefd5939587e565d1d02e6352d448
     better_answer(new,30334);
     free_list(most_used_best_rep(new,10,c,d));
 
