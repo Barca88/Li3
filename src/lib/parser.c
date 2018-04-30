@@ -40,8 +40,6 @@ static void processUser(GHashTable* hu ,xmlTextReaderPtr node) {
         name = xmlStrdup(BAD_CAST "--");
     }
 
-    xmlFree(name);
-
     long id = -2;
     char* dn = NULL;
     char* am = NULL;
@@ -64,9 +62,6 @@ static void processUser(GHashTable* hu ,xmlTextReaderPtr node) {
         User newUser = init_user(id,dn,am,r);
         g_hash_table_insert(hu,GSIZE_TO_POINTER(id),newUser);
     }
-    xmlFree(attributename);
-    xmlFree(dn);
-    xmlFree(am);
 }
 
 //Cria um novo post e insere-o na estrutura dos posts. 

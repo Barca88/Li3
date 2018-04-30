@@ -19,6 +19,8 @@ void inc_nq_3(query3 q,int v);
 
 void inc_na_3(query3 q,int v);
 
+void free_3(query3 q);
+
 typedef struct aux4* query4;
 
 query4 init_query4(Date b,Date e,char* tag);
@@ -45,21 +47,9 @@ Date get_begin_6(query6 q);
 
 Date get_end_6(query6 q);
 
-void set_list_6 (query6 q, GSList* l);
+void set_list_6 (query6 q, GSList* l); 
 
-typedef struct aux9* query9;
-
-query9 init_query9(GHashTable* com);
-
-GHashTable* get_hash_9(query9 q);
-
-GSList* get_slist_9(query9 q);
-
-void set_slist_9(query9 q,GSList* list);
-
-void set_hash_9(query9 q,GHashTable* hash);
-
-void free_9(query9 q);
+void free_6(query6 q);
 
 typedef struct aux8* query8;
 
@@ -72,5 +62,19 @@ GSList* get_list_8(query8 q);
 void set_list_8(query8 q,GSList* l);
 
 void free_8(query8 q);
+
+typedef struct aux9* query9;
+
+query9 init_query9(GHashTable* com);
+
+GHashTable* get_hash_9(query9 q);
+
+GSList* get_slist_9(query9 q);
+
+void set_slist_9(query9 q,GSList* lista);
+
+void set_hash_9(query9 q,GHashTable* hash);
+
+void free_9(query9 q);
 
 #endif

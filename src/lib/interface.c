@@ -114,6 +114,7 @@ LONG_pair total_posts(TAD_community com, Date begin, Date end){
     printf("\n\n");
 
     LONG_pair lp = create_long_pair(get_nq_3(ld),get_na_3(ld));
+    free_3(ld);
     return lp;
 }
 
