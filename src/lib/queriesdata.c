@@ -77,6 +77,11 @@ void set_list_4(query4 q,GSList* l){
     q->list = l;
 }
 
+void free_4(query4 q){
+    g_slist_free(q->list); 
+    free(q);
+}
+
 //-----------------------------------------------------
 struct aux6{
     Date begin;
