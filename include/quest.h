@@ -110,12 +110,18 @@ void set_tags_quest(Quest q,char* t);
 /** @brief Compara a data de uma quest.
  *
  *  @param p1 Apontador para uma data1.
- *  @param p2 Apontador para uma data2. 
+ *  @param p2 Apontador para uma data2.
  *  @return quest compare.
  */
 int compare_quest(gconstpointer p1, gconstpointer p2);
 
 void comp_tags_quest(gpointer key,gpointer value,gpointer data);
+
+/** @brief Quest to ID
+  * @param data Apontador para a quest
+  * @param user_Data Apontador para Hash de longs
+  */
+void iter_quest9(gpointer data, gpointer user_data);
 
 /* Imprime o conteudo do post */
 void print_quest(Quest post);

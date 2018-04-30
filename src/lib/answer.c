@@ -68,9 +68,9 @@ static int id_compare_answer(long a,long b){
 int compare_answer(gconstpointer t1, gconstpointer t2){
     Date d1 = get_date_answer((Answer)GPOINTER_TO_SIZE(t1));
     Date d2 = get_date_answer((Answer)GPOINTER_TO_SIZE(t2));
-    long id1 = get_id_answer((Answer)GPOINTER_TO_SIZE(t1)); 
-    long id2 = get_id_answer((Answer)GPOINTER_TO_SIZE(t2)); 
-    int c = 0; 
+    long id1 = get_id_answer((Answer)GPOINTER_TO_SIZE(t1));
+    long id2 = get_id_answer((Answer)GPOINTER_TO_SIZE(t2));
+    int c = 0;
     c = (-1)*date_compare(d1,d2);
     if(!c)
         c = id_compare_answer(id1,id2);
@@ -91,7 +91,14 @@ void to_list_answer(gpointer key,gpointer value,gpointer data){
     query6 ld = (query6)GPOINTER_TO_SIZE(data);
     set_list_6(ld,g_slist_prepend(get_list_6(ld),value));
 }
-
+/*adiciona o id da quest a qual a answer em causa responde*/
+void iter_answer9(gpointer data,gpointer user_data){
+    if(data != NULL){
+        GHashTable* h = (GHashTable*)GPOINTER_TO_SIZE(user_data);
+        Answer a = (Answer)GPOINTER_TO_SIZE(data);
+        g_hash_table_add(h,GSIZE_TO_POINTER(get_parent_id_answer(a)));
+    }
+}
 /* Imprimir o conteudo da resposta. */
 void print_answer(Answer post){
     if(post != NULL)

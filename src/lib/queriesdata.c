@@ -55,7 +55,7 @@ query4 init_query4(Date b,Date e,char* tag){
     ld->tag = tag;
     ld->list = NULL;
     return ld;
-}    
+}
 
 Date get_begin_4(query4 q){
     return q->begin;
@@ -90,7 +90,7 @@ query6 init_query6(Date b,Date e){
     ld->end = e;
     ld->list = NULL;
     return ld;
-}    
+}
 
 Date get_begin_6(query6 q){
     return q->begin;
@@ -106,4 +106,35 @@ GSList* get_list_6(query6 q){
 
 void set_list_6(query6 q,GSList* l){
     q->list = l;
+}
+//------------------------------------------------------
+struct aux9{
+    GHashTable* h;
+    GSList* l;
+};
+query9 init_query9(GHashTable* com){
+    query9 aux = (query9)malloc(sizeof(struct aux9));
+    aux->h = com;
+    aux->l = NULL;
+    return aux;
+}
+GHashTable* get_hash_9(query9 q){
+    return q->h;
+}
+
+GSList* get_slist_9(query9 q){
+    return q->l;
+}
+
+void set_slist_9(query9 q,GSList* lista){
+    q->l = lista;
+}
+
+void set_hash_9(query9 q,GHashTable* hash){
+    q->h = hash;
+}
+
+void free_9(query9 q){
+    g_slist_free(q->l);
+    free(q);
 }

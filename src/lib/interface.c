@@ -36,7 +36,7 @@ TAD_community load(TAD_community com, char* dump_path){
                          GSIZE_TO_POINTER(com));
     //Ordenar lista de utilizadores pelos nr_posts.
     set_rank_n_posts(com,g_slist_sort(get_rank_n_posts(com),comp_nr_posts_user));
-    
+
     return com;
 }
 
@@ -47,10 +47,10 @@ STR_pair info_from_post(TAD_community com, long id){
     char* name = NULL;
     User u;
     Answer a;
-    Quest q = (Quest)g_hash_table_lookup(get_hash_quest_tcd(com), 
+    Quest q = (Quest)g_hash_table_lookup(get_hash_quest_tcd(com),
                                          GSIZE_TO_POINTER(id));
 
-    //Se quest processa, se answer processa a quest associada. 
+    //Se quest processa, se answer processa a quest associada.
     if(q){
         u = (User)g_hash_table_lookup(get_hash_users(com),
                 GSIZE_TO_POINTER(get_owner_id_quest(q)));
@@ -83,7 +83,7 @@ LONG_list top_most_active(TAD_community com, int N){
     User u;
     GSList *list = get_rank_n_posts(com);
 
-    //Inserir N users da linked list na long list. 
+    //Inserir N users da linked list na long list.
     for(i=0;i<N;i++){
         u =(User) GPOINTER_TO_SIZE(list->data);
         set_list(l,i,get_id_user(u));
@@ -102,7 +102,7 @@ LONG_list top_most_active(TAD_community com, int N){
 /** QUERY 3 */
 LONG_pair total_posts(TAD_community com, Date begin, Date end){
     query3 ld = init_query3(begin,end);
-    
+
     g_tree_foreach(get_tree_days(com),(GTraverseFunc)count_posts_day,
             GSIZE_TO_POINTER(ld));
 
@@ -119,7 +119,7 @@ LONG_pair total_posts(TAD_community com, Date begin, Date end){
 
 /** QUERY 4 */
 LONG_list questions_with_tag(TAD_community com, char* tag, Date begin, Date end){
-    query4 ld = init_query4(begin,end,tag);    
+    query4 ld = init_query4(begin,end,tag);
 
     //Criar uma lista com todas a quets encontradas em cada dia.
     g_tree_foreach(get_tree_days(com),(GTraverseFunc)iter_tag_day,
@@ -343,28 +343,7 @@ LONG_list contains_word(TAD_community com, char* w, int N){
     return l;
 }
 
-//---------------------------
-typedef struct aux9{
-    TAD_community com;
-    GSList* l;
-}* query9;
-
-//adiciona o id da quest na hash
-static void iter_quest9(gpointer data, gpointer user_data){
-    if(data != NULL){
-        GHashTable* h = (GHashTable*)GPOINTER_TO_SIZE(user_data);
-        Quest q = (Quest)GPOINTER_TO_SIZE(data);
-        g_hash_table_add(h,GSIZE_TO_POINTER(get_id_quest(q)));
-    }
-}
-//adiciona o id da quest a qual a answer em causa responde
-static void iter_answer9(gpointer data,gpointer user_data){
-    if(data != NULL){
-        GHashTable* h = (GHashTable*)GPOINTER_TO_SIZE(user_data);
-        Answer a = (Answer)GPOINTER_TO_SIZE(data);
-        g_hash_table_add(h,GSIZE_TO_POINTER(get_parent_id_answer(a)));
-    }
-}
+//------------------------------------------------------------------------------
 //Função responsável por iterar a hash e retirar os elementos que não
 //estão presentes em ambas hashs.
 static gboolean iter_hash9(gpointer key, gpointer value, gpointer data){
@@ -378,9 +357,12 @@ static gboolean iter_hash9(gpointer key, gpointer value, gpointer data){
 static void iter_id_to_quest(gpointer key,gpointer value,gpointer user_data){
     if(key != NULL){
         query9 aux = (query9)GPOINTER_TO_SIZE(user_data);
-        GHashTable* q = get_hash_quest_tcd(aux->com);
-        if(g_hash_table_contains(q,key)) //evita a inserção de null na gslist se as quests não existirem na hash de Users
-            aux->l = g_slist_prepend(aux->l, g_hash_table_lookup(q,key));
+        GHashTable* q = get_hash_9(aux);
+        GSList* list;
+        if(g_hash_table_contains(q,key)){//evita a inserção de null na gslist se as quests não existirem na hash de Users
+            list = g_slist_prepend(get_slist_9(aux), g_hash_table_lookup(q,key));
+            set_slist_9(aux,list);
+        }
     }
 }
 /** QUERY 9 */
@@ -418,21 +400,18 @@ LONG_list both_participated(TAD_community com, long id1, long id2, int N){
                 (GHRFunc)iter_hash9,GSIZE_TO_POINTER(hb));
 
         //Cria a estrutura aux e inicializa a mesma.
-        query9 aux = (query9)malloc(sizeof(struct aux9));
-        aux->com = com;
-        aux->l = NULL;
+        query9 aux = init_query9(get_hash_quest_tcd(com));
 
         //Transforma hash de ids em lista de quests.
         g_hash_table_foreach(ha, (GHFunc)iter_id_to_quest,
                 GSIZE_TO_POINTER(aux));
 
         //Ordena a lista de quests.
-        GSList* list = g_slist_sort(aux->l,(GCompareFunc)compare_quest);
+        GSList* list = g_slist_sort(get_slist_9(aux),(GCompareFunc)compare_quest);
 
         //verifica o size das resposta
         int size;
-        if(g_slist_length(list)<N) size = g_slist_length(list);
-        else size = N;
+        (g_slist_length(list) < N) ? size = g_slist_length(list) : (size = N);
 
         LONG_list l = create_list(size);
 
@@ -449,9 +428,10 @@ LONG_list both_participated(TAD_community com, long id1, long id2, int N){
                 printf("\tId do nº %d: %ld\n",i+1,get_list(l,i));
         }else printf("\tUps lista query 9 vazia.\n");
         printf("\n\n");
-        free(aux);
+        free_9(aux);
         g_hash_table_destroy(ha);
         g_hash_table_destroy(hb);
+
         return l;
     }
     printf("\nQuerie 9 users com estes ids não existem em simultaneo\n\tid1: %ld\n\tid2: %ld\n\n",id1, id2);

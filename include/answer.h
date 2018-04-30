@@ -86,7 +86,7 @@ float get_average_answer(Answer a);
 
 void to_list_answer(gpointer key,gpointer value,gpointer data);
 
-/** @brief Média das answers. 
+/** @brief Média das answers.
  *
  *  @param a Answer.
  *  @param f.
@@ -96,12 +96,18 @@ void set_average_answer(Answer a,float f);
 /** @brief Compara a data de uma answer.
  *
  *  @param p1 Apontador para uma data1.
- *  @param p2 Apontador para uma data2. 
+ *  @param p2 Apontador para uma data2.
  *  @return answer compare.
  */
 int compare_answer(gconstpointer p1, gconstpointer p2);
 
 gint score_compare_answer(gconstpointer a,gconstpointer b);
+
+/** @brief Answer to Quest ID
+  * @param data Apontador para a answer
+  * @param user_Data Apontador para Hash de longs
+  */
+void iter_answer9(gpointer data,gpointer user_data);
 
 /* Imprime o conteudo do post */
 void print_answer(Answer post);
