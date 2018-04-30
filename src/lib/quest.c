@@ -115,7 +115,8 @@ void comp_words_quest(gpointer key, gpointer value, gpointer data){
         set_list_8(aux,g_slist_prepend(get_list_8(aux),value));
     }
     free(t);
-    
+}
+
 /*adiciona o id da quest na hash*/
 void iter_quest9(gpointer data, gpointer user_data){
     if(data != NULL){
