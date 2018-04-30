@@ -33,6 +33,8 @@ GSList* get_list_4(query4 q);
 
 void set_list_4(query4 q,GSList* l);
 
+void free_4(query4 q);
+
 typedef struct aux6* query6;
 
 query6 init_query6(Date b,Date e);

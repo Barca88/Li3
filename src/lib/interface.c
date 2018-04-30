@@ -143,6 +143,7 @@ LONG_list questions_with_tag(TAD_community com, char* tag, Date begin, Date end)
         printf("\tId do nº %d: %ld\n",i+1,get_list(l,i));
     printf("\n\n");
 
+    free_4(ld);
     return l;
 }
 
