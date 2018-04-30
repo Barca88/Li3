@@ -33,6 +33,8 @@ GSList* get_list_4(query4 q);
 
 void set_list_4(query4 q,GSList* l);
 
+void free_4(query4 q);
+
 typedef struct aux6* query6;
 
 query6 init_query6(Date b,Date e);
@@ -58,5 +60,17 @@ void set_slist_9(query9 q,GSList* list);
 void set_hash_9(query9 q,GHashTable* hash);
 
 void free_9(query9 q);
+
+typedef struct aux8* query8;
+
+query8 init_query8(char* word);
+
+char* get_word_8(query8 q);
+
+GSList* get_list_8(query8 q);
+
+void set_list_8(query8 q,GSList* l);
+
+void free_8(query8 q);
 
 #endif

@@ -143,6 +143,7 @@ LONG_list questions_with_tag(TAD_community com, char* tag, Date begin, Date end)
         printf("\tId do nº %d: %ld\n",i+1,get_list(l,i));
     printf("\n\n");
 
+    free_4(ld);
     return l;
 }
 
@@ -299,37 +300,21 @@ LONG_list most_answered_questions(TAD_community com, int N, Date begin, Date end
     return l;
 }
 //----------------------------------------------------
-typedef struct aux8{
-    char* word;
-    GSList* list;
-}* query8;
 
-static void iter_quest8(gpointer key, gpointer value, gpointer data){
-    query8  aux = (query8) GPOINTER_TO_SIZE(data);
-    char* w = aux->word;
-    char* t = get_title_quest((Quest)value);
-    if(strstr(t,w)){
-        aux->list = g_slist_prepend(aux->list,value);
-    }
-    free(t);
-}
 /** QUERY 8 */
 LONG_list contains_word(TAD_community com, char* w, int N){
-    query8 aux = (query8)malloc(sizeof(struct aux8));
-    aux->word = mystrdup(w);
-    aux->list = NULL;
-
-    g_hash_table_foreach(get_hash_quest_tcd(com),(GHFunc)iter_quest8,aux);
-    aux->list = g_slist_sort(aux->list,compare_quest);
+    query8 aux = init_query8(w);
+    g_hash_table_foreach(get_hash_quest_tcd(com),(GHFunc)comp_words_quest,aux);
+    set_list_8(aux, g_slist_sort(get_list_8(aux),compare_quest));
 
     LONG_list l = create_list(N);
     Quest q;
     int i;
-    if(aux->list){
+    if(get_list_8(aux)){
         for(i=0;i<N;i++){
-            q = (Quest)GPOINTER_TO_SIZE(aux->list->data);
+            q = (Quest)GPOINTER_TO_SIZE(get_list_8(aux)->data);
             set_list(l,i,get_id_quest(q));
-            aux->list = aux->list->next;
+            set_list_8(aux, get_list_8(aux)->next);
         }
 
         printf("Query 8 title contains %s e com %d elementos: \n\n",w,N);
@@ -338,8 +323,7 @@ LONG_list contains_word(TAD_community com, char* w, int N){
     }else printf("Lista query8 vazia.\n");
     printf("\n\n");
 
-    free(aux->word);
-    free(aux);
+    free_8(aux);
     return l;
 }
 

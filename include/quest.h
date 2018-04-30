@@ -117,6 +117,7 @@ int compare_quest(gconstpointer p1, gconstpointer p2);
 
 void comp_tags_quest(gpointer key,gpointer value,gpointer data);
 
+void comp_words_quest(gpointer key, gpointer value, gpointer data);
 /** @brief Quest to ID
   * @param data Apontador para a quest
   * @param user_Data Apontador para Hash de longs

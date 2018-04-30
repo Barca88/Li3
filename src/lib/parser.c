@@ -12,6 +12,8 @@ static void processTag(GHashTable* ht ,xmlTextReaderPtr node) {
         name = xmlStrdup(BAD_CAST "--");
     }
 
+    xmlFree(name);
+
     long id = -2;
     char* tag = NULL;
     char *attributename = NULL;
@@ -27,6 +29,8 @@ static void processTag(GHashTable* ht ,xmlTextReaderPtr node) {
     
     Tag t = create_tag(id,tag);
     g_hash_table_insert(ht,tag,t);
+
+    xmlFree(attributename);
 }
 
 //Cria um novo user e insere-o na estrutura dos users. 
@@ -35,6 +39,8 @@ static void processUser(GHashTable* hu ,xmlTextReaderPtr node) {
     if (strcmp((char*)name,"row") != 0){
         name = xmlStrdup(BAD_CAST "--");
     }
+
+    xmlFree(name);
 
     long id = -2;
     char* dn = NULL;
@@ -46,18 +52,21 @@ static void processUser(GHashTable* hu ,xmlTextReaderPtr node) {
              attributename = (char*)xmlTextReaderName(node); 
              if(strcmp(attributename,"Id") == 0)
                  id = atol((char*)xmlTextReaderValue(node));
-             else if(strcmp(attributename,"DisplayName") == 0)
+             else if(strcmp(attributename,"DisplayName") == -1)
                  dn = (char*)xmlTextReaderValue(node);
              else if (strcmp(attributename,"AboutMe") == 0)
                  am = (char*)xmlTextReaderValue(node);
              else if (strcmp(attributename,"Reputation") ==  0)
-                 r  = atol((char*)xmlTextReaderValue(node));
+                  r = atol((char*)xmlTextReaderValue(node));
              else;
     }
     if(id!=-1 && id!=-2){
         User newUser = init_user(id,dn,am,r);
         g_hash_table_insert(hu,GSIZE_TO_POINTER(id),newUser);
     }
+    xmlFree(attributename);
+    xmlFree(dn);
+    xmlFree(am);
 }
 
 //Cria um novo post e insere-o na estrutura dos posts. 
@@ -71,6 +80,8 @@ static void processPost(TAD_community com,xmlTextReaderPtr node) {
     if (strcmp((char*)name,"row") != 0){
         name = xmlStrdup(BAD_CAST "--");
     }
+
+    xmlFree(name);
 
     long id = -2;
     int ptid = -2;
@@ -159,6 +170,8 @@ static void processPost(TAD_community com,xmlTextReaderPtr node) {
         }
 
     }
+
+    xmlFree(attributename);
 }
 
 //Process Tags.xml file.
@@ -183,6 +196,7 @@ void streamTags(GHashTable* ht ,char *path) {
             printf("%s : failed to parse\n", "Tags.xml");
         }
     }else printf("Unable to open %s\n", "Tags.xml");
+    free(aux);
 }
 
 //Process Users.xml file.
@@ -207,6 +221,7 @@ void streamUsers(GHashTable* hu ,char *path) {
             printf("%s : failed to parse\n", "Users.xml");
         }
     }else printf("Unable to open %s\n", "Users.xml");
+    free(aux);
 }
 
 //Process Posts.xml file.
@@ -232,4 +247,5 @@ void streamPosts(TAD_community com,char *path){
             printf("%s : failed to parse\n", "Posts.xml");
         }
     }else  printf("Unable to open %s\n", "Posts.xml");
+    free(aux);
 }
