@@ -47,4 +47,16 @@ Date get_end_6(query6 q);
 
 void set_list_6 (query6 q, GSList* l); 
 
+typedef struct aux8* query8;
+
+query8 init_query8(char* word);
+
+char* get_word_8(query8 q);
+
+GSList* get_list_8(query8 q);
+
+void set_list_8(query8 q,GSList* l);
+
+void free_8(query8 q);
+
 #endif

@@ -117,6 +117,8 @@ int compare_quest(gconstpointer p1, gconstpointer p2);
 
 void comp_tags_quest(gpointer key,gpointer value,gpointer data);
 
+void comp_words_quest(gpointer key, gpointer value, gpointer data);
+
 /* Imprime o conteudo do post */
 void print_quest(Quest post);
 

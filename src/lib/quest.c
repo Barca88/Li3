@@ -107,6 +107,16 @@ void comp_tags_quest(gpointer key,gpointer value,gpointer data){
 
 }
 
+void comp_words_quest(gpointer key, gpointer value, gpointer data){
+    query8  aux = (query8) GPOINTER_TO_SIZE(data);
+    char* w = get_word_8(aux);
+    char* t = get_title_quest((Quest)value);
+    if(strstr(t,w)){
+        set_list_8(aux,g_slist_prepend(get_list_8(aux),value));
+    }
+    free(t);
+}
+
 //Imprimir o conteudo da pergunta.
 void print_quest(Quest q){
     if(q != NULL){

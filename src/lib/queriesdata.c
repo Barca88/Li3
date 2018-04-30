@@ -112,3 +112,36 @@ GSList* get_list_6(query6 q){
 void set_list_6(query6 q,GSList* l){
     q->list = l;
 }
+
+
+//-----------------------------------------------------
+struct aux8{
+    char* word;
+    GSList* list;
+};
+
+query8 init_query8(char* word){
+    query8 aux = (query8)malloc(sizeof(struct aux8));
+    aux->word = word;
+    aux->list = NULL;
+    return aux;
+}
+
+char* get_word_8(query8 q){
+    return q->word;
+}
+
+GSList* get_list_8(query8 q){
+    return q->list;
+}
+
+void set_list_8(query8 q,GSList* l){
+    q->list = l;
+}
+
+void free_8(query8 q){
+    g_slist_free(q->list);
+    free(q);
+}
+
+
