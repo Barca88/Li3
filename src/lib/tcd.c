@@ -20,7 +20,7 @@ struct TCD_community{
 TAD_community init_tcd(){
     TAD_community n = malloc(sizeof(struct TCD_community));
 
-    n->hashTags    = g_hash_table_new_full(g_direct_hash, g_direct_equal,g_free,
+    n->hashTags    = g_hash_table_new_full(g_str_hash, g_str_equal,g_free,
         free_g_tag);
     n->hashUsers   = g_hash_table_new_full(g_direct_hash, g_direct_equal,g_free,
         free_g_users);

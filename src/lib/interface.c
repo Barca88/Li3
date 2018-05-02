@@ -470,7 +470,6 @@ static void load_n_used(gpointer value,gpointer data){
     Date b = aux->begin;
     Date e = aux->end;
     char* auxt = NULL;
-
     if ((date_compare(get_date_quest(value),b)>=0 &&
          date_compare(e,get_date_quest(value))>=0)){
         auxt = get_tags_quest(value);
@@ -497,9 +496,11 @@ static int comp_reput(gconstpointer a,gconstpointer b){
 static int comp_n_used(gconstpointer a,gconstpointer b){
      int r1 = get_n_used((Tag)a);
      int r2 = get_n_used((Tag)b);
-    if(r1<r2) return 1;
-    else if(r1>r2) return -1;
-    else return 0;
+     if(r1<r2) return 1;
+     else if(r1>r2) return -1;
+     else if(get_id_tag((Tag)a)<get_id_tag((Tag)b)) return -1;
+     else return 1;
+     return 0;
 }
 
 static void create_list11(gpointer key,gpointer value,gpointer data){
@@ -509,8 +510,9 @@ static void create_list11(gpointer key,gpointer value,gpointer data){
 
 static void tag_list11(gpointer key,gpointer value,gpointer data){
     GSList** d = (GSList**)GPOINTER_TO_SIZE(data);
-    if (get_n_used(value)>0)
+    if (get_n_used(value)>0){
         *d = g_slist_prepend(*d,value);
+    }
 }
 
 // query 11
@@ -519,11 +521,11 @@ LONG_list most_used_best_rep(TAD_community com, int N, Date begin, Date end){
     GSList* llist = NULL;
     GSList** list = &llist;
 
-
     //Inserir e ordenar numa lista ligada os user por reputacao.
     g_hash_table_foreach(hu,create_list11,list);
     llist = g_slist_sort(llist,comp_reput);
 
+    //estrutura auxiliar.
     query11 aux = malloc(sizeof(struct aux11));
     clean_tags(get_hash_tags(com));
     aux->ht = get_hash_tags(com);
@@ -535,7 +537,7 @@ LONG_list most_used_best_rep(TAD_community com, int N, Date begin, Date end){
     for(;llist && c;llist = (llist)->next,c--){
         g_slist_foreach(get_quests_user(llist->data),load_n_used,aux);
     }
-
+    
     //Criar lista ligada ordenada por n_used.
     GSList* tllist = NULL;
     GSList** tlist = &tllist;
