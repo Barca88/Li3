@@ -83,6 +83,9 @@ gboolean iter_tag_day(gpointer key,gpointer value,gpointer data);
 
 gboolean iter_vote_a_day(gpointer key,gpointer value,gpointer data);
 
+gboolean iter_day7(gpointer key,gpointer value,gpointer data);
+
+
 //Print
 void print_aux(gpointer key,gpointer value,gpointer data);
 /* Imprime o conteudo de um dia */
