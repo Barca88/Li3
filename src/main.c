@@ -8,7 +8,7 @@ static void p_tempo(clock_t t){
 }
 
 int main(int argc,char** argv){
-    clock_t tpf,lod,q1,q2,q3,q4,q5,q6,q7,q8,q9,q10,q11;
+    clock_t tpf,lod,q1,q2,q3,q4,q5,q6,q7,q8,q9,q10,q11,cle;
     tpf = clock();
 
     TAD_community new = init();
@@ -88,11 +88,11 @@ int main(int argc,char** argv){
     most_used_best_rep(new,5,p,q);
     most_used_best_rep(new,10,c,d);
     q11 = clock() - q11;
-
+    cle = clock();
     clean(new);
 
     free(new);
-
+    cle = clock() - cle;
     tpf =clock() - tpf;
     printf("Tempo total:\n");
     p_tempo(tpf);
@@ -120,8 +120,9 @@ int main(int argc,char** argv){
     p_tempo(q10);
     printf("\tQuerie 11: ");
     p_tempo(q11);
-
-    int pois;
-    scanf("%d",&pois);
+    printf("\tClean: ");
+    p_tempo(cle);
+    //int pois;
+    //scanf("%d",&pois);
     return 0;
 }

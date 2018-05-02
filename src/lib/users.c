@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "users.h"
+#include "common.h"
 
 /* Definição da estrutura dos users. */
 struct node{

@@ -425,8 +425,8 @@ static void load_n_used(gpointer value,gpointer data){
     Date b = aux->begin;
     Date e = aux->end;
     char* auxt = NULL;
-    if ((date_compare(get_date_quest(value),b)>=0 &&
-         date_compare(e,get_date_quest(value))>=0)){
+    if ((date_compare(get_date_quest(value),b) >= 0 &&
+         date_compare(e,get_date_quest(value)) >= 0)){
         auxt = get_tags_quest(value);
         auxt += 1;
         auxt[strlen(auxt)-1] = '\0';
@@ -441,19 +441,19 @@ static void load_n_used(gpointer value,gpointer data){
 }
 
 static int comp_reput(gconstpointer a,gconstpointer b){
-     int r1 = get_reputation_user((User)a);
-     int r2 = get_reputation_user((User)b);
-    if(r1<r2) return 1;
-    else if(r1>r2) return -1;
+    int r1 = get_reputation_user((User)a);
+    int r2 = get_reputation_user((User)b);
+    if(r1 < r2) return 1;
+    else if(r1 > r2) return -1;
     else return 0;
 }
 
 static int comp_n_used(gconstpointer a,gconstpointer b){
      int r1 = get_n_used((Tag)a);
      int r2 = get_n_used((Tag)b);
-     if(r1<r2) return 1;
-     else if(r1>r2) return -1;
-     else if(get_id_tag((Tag)a)<get_id_tag((Tag)b)) return -1;
+     if(r1 < r2) return 1;
+     else if(r1 > r2) return -1;
+     else if(get_id_tag((Tag)a) < get_id_tag((Tag)b)) return -1;
      else return 1;
      return 0;
 }
@@ -465,7 +465,7 @@ static void create_list11(gpointer key,gpointer value,gpointer data){
 
 static void tag_list11(gpointer key,gpointer value,gpointer data){
     GSList** d = (GSList**)GPOINTER_TO_SIZE(data);
-    if (get_n_used(value)>0){
+    if (get_n_used(value) > 0){
         *d = g_slist_prepend(*d,value);
     }
 }
@@ -492,16 +492,15 @@ LONG_list most_used_best_rep(TAD_community com, int N, Date begin, Date end){
     for(;llist && c;llist = (llist)->next,c--){
         g_slist_foreach(get_quests_user(llist->data),load_n_used,aux);
     }
-    
+
     //Criar lista ligada ordenada por n_used.
     GSList* tllist = NULL;
     GSList** tlist = &tllist;
     g_hash_table_foreach(aux->ht,tag_list11,tlist);
     tllist = g_slist_sort(tllist,comp_n_used);
 
-    if(g_slist_length(tllist)<N) N = g_slist_length(tllist);
-
     int i;
+    if(g_slist_length(tllist)<N) N = g_slist_length(tllist);
     LONG_list l = create_list(N);
     Tag t;
     printf("Query 11\n");

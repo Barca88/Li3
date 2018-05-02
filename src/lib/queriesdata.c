@@ -1,4 +1,5 @@
 #include "queriesdata.h"
+
 struct aux3{
     Date begin;
     Date end;
@@ -116,7 +117,7 @@ void set_list_6(query6 q,GSList* l){
     q->list = l;
 }
 void free_6(query6 q){
-    g_slist_free(q->list); 
+    g_slist_free(q->list);
     free(q);
 }
 //-----------------------------------------------------
@@ -210,5 +211,3 @@ void free_9(query9 q){
     g_slist_free(q->l);
     free(q);
 }
-
-
