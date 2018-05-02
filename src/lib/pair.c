@@ -5,8 +5,8 @@
 
 /* Definição da estrutura das str_pair. */
 struct str_pair {
-  char* fst; /* . */
-  char* snd; /* . */
+  char* fst; /* Primeiro elemento. */
+  char* snd; /* Segundo elemento. */
 };
 
 /* Função reponsável pela criação da str_pair. */
