@@ -525,6 +525,7 @@ LONG_list most_used_best_rep(TAD_community com, int N, Date begin, Date end){
     llist = g_slist_sort(llist,comp_reput);
 
     query11 aux = malloc(sizeof(struct aux11));
+    clean_tags(get_hash_tags(com));
     aux->ht = get_hash_tags(com);
     aux->begin = begin;
     aux->end = end;

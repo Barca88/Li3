@@ -52,7 +52,14 @@ void print_tag(Tag t){
     if(t)
         printf("Tag:\n\tId: %ld\n\tTag name: %s\n\tN used: %d\n",t->id,t->tag,t->n_used);
 }
-
+static void set_0_n_used(gpointer key, gpointer value, gpointer null){
+	Tag t = (Tag)GPOINTER_TO_SIZE(value);
+	t->n_used = 0;
+}
+/*Limpa todos os n_used*/
+void clean_tags(GHashTable* tags){
+	g_hash_table_foreach(tags, set_0_n_used,NULL);
+}
 /* Apaga a tag dando free na memoria alocada. */
 void free_tag(Tag t){
     free(t->tag);

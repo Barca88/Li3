@@ -82,6 +82,12 @@ void print_tag(Tag t);
  *  @param Tag.
  *  @return Void.
  */
+ /** @brief Coloca todos os n_used a 0
+  *
+  * @param Hash de Tags
+  * @return void 
+  */
+void clean_tags(GHashTable* tags);
 void free_tag(Tag t);
 void free_g_tag(gpointer g);
 #endif
