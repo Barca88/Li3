@@ -393,11 +393,9 @@ LONG_list both_participated(TAD_community com, long id1, long id2, int N){
         //Ordena a lista de quests.
         GSList* list = g_slist_sort(get_slist_9(aux),(GCompareFunc)compare_quest);
 
-        //verifica o size das resposta
-        int size;
-        (g_slist_length(list) < N) ? size = g_slist_length(list) : (size = N);
-
-        LONG_list l = create_list(size);
+        //verifica o tamanho das resposta
+        if(g_slist_length(list) < N) N = g_slist_length(list);
+        LONG_list l = create_list(N);
 
         Quest q;
         int i;
