@@ -400,14 +400,14 @@ LONG_list both_participated(TAD_community com, long id1, long id2, int N){
 
         Quest q;
         int i;
-        printf("Query 9 id1 = %ld, id2 = %ld e com %d elementos: \n\n",id1,id2,size);
+        printf("Query 9 id1 = %ld, id2 = %ld e com %d elementos: \n\n",id1,id2,N);
         if(list){
-            for(i=0;i<size && list->data !=NULL;i++){
+            for(i=0;i<N && list->data !=NULL;i++){
                 q = (Quest)GPOINTER_TO_SIZE(list->data);
                 set_list(l,i,get_id_quest(q));
                 list = list->next;
             }
-            for(i=0;i<size;i++)
+            for(i=0;i<N;i++)
                 printf("\tId do nº %d: %ld\n",i+1,get_list(l,i));
         }else printf("\tUps lista query 9 vazia.\n");
         printf("\n\n");
@@ -540,20 +540,19 @@ LONG_list most_used_best_rep(TAD_community com, int N, Date begin, Date end){
     g_hash_table_foreach(aux->ht,tag_list11,tlist);
     tllist = g_slist_sort(tllist,comp_n_used);
 
-    int size,i;
-    if(g_slist_length(tllist)<N) size = g_slist_length(tllist);
-    else size = N;
+    if(g_slist_length(tllist)<N) N = g_slist_length(tllist);
 
-    LONG_list l = create_list(size);
+    int i;
+    LONG_list l = create_list(N);
     Tag t;
     printf("Query 11\n");
     if(tllist){
-        for(i=0;i<size && tllist->data != NULL;i++){
+        for(i=0;i<N && tllist->data != NULL;i++){
              t = (Tag)GPOINTER_TO_SIZE(tllist->data);
             set_list(l,i,get_id_tag(t));
             tllist = tllist->next;
         }
-        for(i=0;i<size;i++)
+        for(i=0;i<N;i++)
             printf("\tId da tag nº %d: %ld\n",i+1,get_list(l,i));
     }else printf("\tUps lista query 11 vazia.\n");
     return l;
