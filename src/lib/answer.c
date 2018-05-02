@@ -58,7 +58,7 @@ void set_average_answer(Answer a,float average){
 }
 
 static int id_compare_answer(long a,long b){
-    if(a<b)
+    if(a>b)
         return -1;
     else
         return 1;
@@ -83,7 +83,7 @@ gint score_compare_answer(gconstpointer a,gconstpointer b){
      int s = get_score_answer((Answer)b);
      if(f<s) return 1;
      else if(f>s) return -1;
-     else return -1*compare_answer(a,b);
+     else return compare_answer(a,b);
 }
 
 /* Quest para a lista ligada. */
@@ -103,9 +103,9 @@ void iter_answer9(gpointer data,gpointer user_data){
 void print_answer(Answer post){
     if(post != NULL)
     print_date(post->creationDate);
-    printf("Answer:\n\n\tId: %ld\n\tParentId: %ld\n\tScore: %d\n\tOwnerUserID: %ld\n\tCommentCount: %d\nFavoriteCount: %d\n",
+    printf("Answer:\n\n\tId: %ld\n\tParentId: %ld\n\tScore: %d\n\tOwnerUserID: %ld\n\tCommentCount: %d\n\tFavoriteCount: %d\n\tAverage: %f\n\n",
             post->id,post->parentId,post->score,
-            post->ownerUserId,post->commentCount,post->favoriteCount);
+            post->ownerUserId,post->commentCount,post->favoriteCount,post->average);
     printf("\n\n");
 }
 

@@ -50,7 +50,7 @@ static void processUser(GHashTable* hu ,xmlTextReaderPtr node) {
              attributename = (char*)xmlTextReaderName(node); 
              if(strcmp(attributename,"Id") == 0)
                  id = atol((char*)xmlTextReaderValue(node));
-             else if(strcmp(attributename,"DisplayName") == -1)
+             else if(strcmp(attributename,"DisplayName") == 0)
                  dn = (char*)xmlTextReaderValue(node);
              else if (strcmp(attributename,"AboutMe") == 0)
                  am = (char*)xmlTextReaderValue(node);
