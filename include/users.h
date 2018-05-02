@@ -21,7 +21,7 @@ typedef struct node* User;
 /**
  * @brief Inicializa a estrutura User, alocando espaço para a mesma.
  */
-User init_user();
+User init_user(long id, char* dn, char* am, long r);
 
 void set_id_user(User user, gint64 id);
 void set_displayname_user(User user, char* dn);

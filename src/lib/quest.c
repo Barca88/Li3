@@ -77,10 +77,10 @@ void set_tags_quest(Quest q,char* t){
 }
 
 static int id_compare_quest(long a,long b){
-    if(a<b)
-        return 1;
-    else
+    if(a>b)
         return -1;
+    else
+        return 1;
     return 0;
 }
 
@@ -94,6 +94,15 @@ int compare_quest(gconstpointer t1, gconstpointer t2){
         if(!c)
            c = id_compare_quest(id1,id2);
         return c;
+}
+
+//Funcao de comparação de score para ordenar uma lista ligada.
+gint  answer_c_compare_quest(gconstpointer a,gconstpointer b){
+     int f = get_answer_c_quest((Quest)a);
+     int s = get_answer_c_quest((Quest)b);
+     if(f<s) return 1;
+     else if(f>s) return -1;
+     else return compare_quest(a,b);
 }
 
 void comp_tags_quest(gpointer key,gpointer value,gpointer data){

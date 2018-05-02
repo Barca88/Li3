@@ -187,13 +187,22 @@ USER get_user_info(TAD_community com, long id){
         else{
              Quest q = (Quest) GPOINTER_TO_SIZE(quests->data);
              Answer a = (Answer) GPOINTER_TO_SIZE(answers->data);
+             long idq,ida;
 
              dq = get_date_quest(q);
              da = get_date_answer(a);
+             idq = get_id_quest(q);
+             ida = get_id_answer(a);
              if(date_compare(dq,da) > 0){
                  l[i] = get_id_quest(q);
                  quests = quests->next;
-             }else {
+             }else if(date_compare(dq,da) < 0){
+                 l[i] = get_id_answer(a);
+                 answers = answers->next;
+             }else if(idq > ida){
+                 l[i] = get_id_quest(q);
+                 quests = quests->next;
+             }else{
                  l[i] = get_id_answer(a);
                  answers = answers->next;
              }
@@ -262,15 +271,6 @@ static gboolean iter_day7(gpointer key,gpointer value,gpointer data){
     return FALSE;
 }
 
-//Funcao de comparação de score para ordenar uma lista ligada.
-static gint  answer_c_compare(gconstpointer a,gconstpointer b){
-     int f = get_answer_c_quest((Quest)a);
-     int s = get_answer_c_quest((Quest)b);
-     if(f<s) return 1;
-     else if(f>s) return -1;
-     else return 0;
-}
-
 /** QUERY 7 */
 LONG_list most_answered_questions(TAD_community com, int N, Date begin, Date end){
     query7 ld = (query7)malloc(sizeof(struct aux7));
@@ -280,7 +280,7 @@ LONG_list most_answered_questions(TAD_community com, int N, Date begin, Date end
 
     g_tree_foreach(get_tree_days(com),(GTraverseFunc)iter_day7,
                    GSIZE_TO_POINTER(ld));
-    ld->list = g_slist_sort(ld->list,answer_c_compare);
+    ld->list = g_slist_sort(ld->list,answer_c_compare_quest);
 
     int i;
     Quest q;
@@ -308,20 +308,20 @@ LONG_list contains_word(TAD_community com, char* w, int N){
     g_hash_table_foreach(get_hash_quest_tcd(com),(GHFunc)comp_words_quest,aux);
     set_list_8(aux, g_slist_sort(get_list_8(aux),compare_quest));
 
-    LONG_list l = create_list(N);
     Quest q;
     int i;
-    if(get_list_8(aux)){
-        for(i=0;i<N;i++){
-            q = (Quest)GPOINTER_TO_SIZE(get_list_8(aux)->data);
-            set_list(l,i,get_id_quest(q));
-            set_list_8(aux, get_list_8(aux)->next);
-        }
+    if(g_slist_length(get_list_8(aux)) < N)N = g_slist_length(get_list_8(aux));
+    LONG_list l = create_list(N);
 
-        printf("Query 8 title contains %s e com %d elementos: \n\n",w,N);
-        for(i=0;i<N;i++)
-            printf("\tId do nº %d: %ld\n",i+1,get_list(l,i));
-    }else printf("Lista query8 vazia.\n");
+    for(i=0;i<N && get_list_8(aux) ;i++){
+        q = (Quest)get_list_8(aux)->data;
+        set_list(l,i,get_id_quest(q));
+        set_list_8(aux, get_list_8(aux)->next);
+    }
+
+    printf("Query 8 title contains %s e com %d elementos: \n\n",w,N);
+    for(i=0;i<N;i++)
+        printf("\tId do nº %d: %ld\n",i+1,get_list(l,i));
     printf("\n\n");
 
     free_8(aux);
@@ -434,8 +434,8 @@ static void average_answer(Answer a,GHashTable* users){
 static gint compare_average(gconstpointer a,gconstpointer b){
     float a1 = get_average_answer((Answer)a);
     float a2 = get_average_answer((Answer)b);
-    if(a1<a2) return -1;
-    else if(a1>a2) return 1;
+    if(a1<a2) return 1;
+    else if(a1>a2) return -1;
     return 0;
 }
 
@@ -449,6 +449,7 @@ long better_answer(TAD_community com, long id){
         for(laux = list;laux->next;laux=laux->next)
             average_answer((Answer)laux->data,get_hash_users(com));
         list = g_slist_sort(list,compare_average);
+
         printf("Query 10 melhor resposta a pergunta %ld: \n\n\tMelhor resposta = %ld\n\n",id,get_id_answer(list->data));
         return get_id_answer(list->data);
     }else{

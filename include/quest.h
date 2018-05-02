@@ -115,6 +115,8 @@ void set_tags_quest(Quest q,char* t);
  */
 int compare_quest(gconstpointer p1, gconstpointer p2);
 
+gint  answer_c_compare_quest(gconstpointer a,gconstpointer b);
+
 void comp_tags_quest(gpointer key,gpointer value,gpointer data);
 
 void comp_words_quest(gpointer key, gpointer value, gpointer data);
