@@ -117,5 +117,5 @@ void free_answer(Answer a){
 void free_g_answer(gpointer g){
     Answer a = (Answer)GPOINTER_TO_SIZE(g);
     free_answer(a);
-    g_free(g);
+    //g_free(g);
 }

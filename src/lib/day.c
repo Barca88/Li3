@@ -111,5 +111,5 @@ void free_day(Day d){
 void free_g_day(gpointer g){
     Day d = (Day)GPOINTER_TO_SIZE(g);
     free_day(d);
-    g_free(g);
+    //g_free(g);
 }

@@ -153,14 +153,19 @@ void add_answer_quest(Quest q, Answer a){
 }
 
 void free_quest(Quest q){
+    printf("ola 1 \n");
     free_date(q->creationDate);
+    printf("ola 2 \n");
     free(q->title);
+    printf("ola 3 \n");
     free(q->tags);
+    printf("ola 4 \n");
     g_slist_free(q->answerList);
+    printf("ola 5 \n");
     free(q);
 }
 void free_g_quest(gpointer g){
     Quest q = (Quest)GPOINTER_TO_SIZE(g);
     free_quest(q);
-    g_free(g);
+    //g_free(g);
 }

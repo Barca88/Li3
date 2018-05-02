@@ -20,16 +20,12 @@ struct TCD_community{
 TAD_community init_tcd(){
     TAD_community n = malloc(sizeof(struct TCD_community));
 
-    n->hashTags    = g_hash_table_new_full(g_direct_hash, g_direct_equal,g_free,
-        free_g_tag);
-    n->hashUsers   = g_hash_table_new_full(g_direct_hash, g_direct_equal,g_free,
-        free_g_users);
-    n->hashQuests  = g_hash_table_new_full(g_direct_hash, g_direct_equal,g_free,
-        free_g_quest);
-    n->hashAnswers = g_hash_table_new_full(g_direct_hash, g_direct_equal,g_free,
-        free_g_answer);
-    n->treeDays    = g_tree_new_full((GCompareDataFunc)date_compare,g_free,
-        free_g_date,free_g_day);
+    n->hashTags    = g_hash_table_new_full(g_direct_hash, g_direct_equal,NULL,free_g_tag);
+    //n->hashUsers = g_hash_table_new(g_direct_hash, g_direct_equal);
+    n->hashUsers   = g_hash_table_new_full(g_direct_hash, g_direct_equal,NULL,free_g_users);
+    n->hashQuests = g_hash_table_new_full(g_direct_hash, g_direct_equal,NULL,free_g_quest);
+    n->hashAnswers = g_hash_table_new_full(g_direct_hash, g_direct_equal,NULL,free_g_answer);
+    n->treeDays    = g_tree_new_full((GCompareDataFunc)date_compare,NULL,free_g_date,free_g_day);
     n->rankNPosts  = NULL;
     return n;
 }
@@ -63,13 +59,24 @@ gboolean load_rank_gslist_tcd(gpointer key,gpointer value,gpointer data){
     set_rank_n_posts(com, g_slist_prepend(get_rank_n_posts(com),value));
     return FALSE;
 }
-
+void lib_user(gpointer key, gpointer value, gpointer null){
+    printf("lib_user in\n");
+    free_g_users(value);
+    printf("lib_user out\n");
+}
 /* Apaga a tcd dando free na memoria alocada. */
 void free_tcd(TAD_community root){
     g_hash_table_destroy(root->hashTags);
+    printf("Tags out\n");
+    //g_hash_table_foreach(root->hashUsers,(GHFunc)lib_user,NULL);
     g_hash_table_destroy(root->hashUsers);
+    printf("Useres out\n");
     g_hash_table_destroy(root->hashQuests);
+    printf("Quests out\n");
     g_hash_table_destroy(root->hashAnswers);
+    printf("Answers out\n");
     g_tree_destroy(root->treeDays);
+    printf("Days out\n");
     g_slist_free(root->rankNPosts);
+    printf("RankNPosts out\n");
 }

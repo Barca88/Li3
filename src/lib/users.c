@@ -19,8 +19,8 @@ struct node{
 User init_user(long id, char* dn, char* am, long r){
     User n = malloc(sizeof(struct node));
     n->Id = id;
-    n->DisplayName = dn;
-    n->AboutMe = am;
+    n->DisplayName = mystrdup(dn); // fica ou não?m
+    n->AboutMe = mystrdup(am);
     n->Reputation = r;
     n->nr_posts = 0;
     n->quests = NULL;
@@ -99,7 +99,7 @@ void print_a(gpointer data,gpointer n){
 /* Imprimir o conteúdo de um user. */
 void print_user(User user){
     if(user)
-        printf("user:\n\n\tId: %ld\n\tName:  %s\n\tAbouteMe: %s\n\tReputation: %ld\n\tNr de Posts: %d\n\n",user->Id,user->DisplayName,user->AboutMe,user->Reputation,user->nr_posts); 
+        printf("user:\n\n\tId: %ld\n\tName:  %s\n\tAbouteMe: %s\n\tReputation: %ld\n\tNr de Posts: %d\n\n",user->Id,user->DisplayName,user->AboutMe,user->Reputation,user->nr_posts);
 }
 void free_users(User u){
     free(u->DisplayName);
@@ -111,5 +111,5 @@ void free_users(User u){
 void free_g_users(gpointer g){
     User u = (User)GPOINTER_TO_SIZE(g);
     free_users(u);
-    g_free(g);
+    //g_free(g);
 }
