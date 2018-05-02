@@ -9,6 +9,7 @@
 #ifndef __ANSWER_H__
 #define __ANSWER_H__
 
+
 #include "date.h"
 #include "common.h"
 #include "queriesdata.h"
@@ -58,6 +59,9 @@ Date get_date_answer(Answer a);
  *  @return score da answer.
  */
 int get_score_answer(Answer a);
+
+
+gint compare_average_answer(gconstpointer a,gconstpointer b);
 /** @brief Retorna o ownerUserId do utilizador que fez a answer.
  *
  *  @param a Answer.
@@ -93,6 +97,9 @@ void to_list_answer(gpointer key,gpointer value,gpointer data);
  *  @return Void.
  */
 void set_average_answer(Answer a,float f);
+
+void average_answer(Answer a,GHashTable* users);
+
 /** @brief Compara a data de uma answer.
  *
  *  @param p1 Apontador para uma data1.

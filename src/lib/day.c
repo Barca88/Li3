@@ -86,6 +86,24 @@ gboolean iter_tag_day(gpointer key,gpointer value,gpointer data){
    return FALSE;
 }
 
+static void to_list7(gpointer key,gpointer value,gpointer data){
+    query7 ld = (query7)GPOINTER_TO_SIZE(data);
+    set_list_7(ld,g_slist_prepend(get_list_7(ld),value));
+}
+
+//Função resposável pelo que fazer por cada dia.
+gboolean iter_day7(gpointer key,gpointer value,gpointer data){
+    query7 ld = (query7)GPOINTER_TO_SIZE(data);
+    Date b = get_begin_7(ld);
+    Date e = get_end_7(ld);
+    GHashTable* hq = get_hash_quest_day((Day)value);
+
+    if (between_dates(b,e,get_date_day(value))){
+         g_hash_table_foreach(hq,(GHFunc)to_list7,data);
+    }
+    return FALSE;
+}
+
 void print_aux(gpointer key,gpointer value,gpointer data){
     Quest q = (Quest)GPOINTER_TO_SIZE(value);
     print_quest(q);

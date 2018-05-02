@@ -11,7 +11,7 @@ struct tag {
 Tag create_tag(long id,char* s){
     Tag t = malloc(sizeof(struct tag));
     t->id = id;
-    t->tag =  mystrdup(s);
+    t->tag = s;
     t->n_used = 0;
     return t;
 }

@@ -29,7 +29,6 @@ static void processTag(GHashTable* ht ,xmlTextReaderPtr node) {
     
     Tag t = create_tag(id,tag);
     g_hash_table_insert(ht,tag,t);
-
     xmlFree(attributename);
 }
 

@@ -10,6 +10,7 @@
 #define __USERS_H__
 
 #include <glib.h>
+#include "common.h"
 #include "answer.h"
 #include "quest.h"
 

@@ -1,5 +1,4 @@
 #include "queriesdata.h"
-#include <stdlib.h>
 struct aux3{
     Date begin;
     Date end;
@@ -120,7 +119,36 @@ void free_6(query6 q){
     g_slist_free(q->list); 
     free(q);
 }
+//-----------------------------------------------------
+struct aux7{
+    Date begin;
+    Date end;
+    GSList* list;
+};
 
+
+query7 init_query7(Date b,Date e){
+    query7 ld = (query7)malloc(sizeof(struct aux7));
+    ld->begin = b;
+    ld->end = e;
+    ld->list = NULL;
+    return ld;
+}
+Date get_begin_7(query7 q){
+    return q->begin;
+}
+
+Date get_end_7(query7 q){
+    return q->end;
+}
+
+GSList* get_list_7(query7 q){
+    return q->list;
+}
+
+void set_list_7(query7 q,GSList* l){
+    q->list = l;
+}
 //-----------------------------------------------------
 struct aux8{
     char* word;
