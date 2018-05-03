@@ -87,7 +87,6 @@ static void processPost(TAD_community com,xmlTextReaderPtr node) {
     char* ta = NULL;
     int ac = -2;
     int cc = -2;
-    int fc = -2;
     char *attributename = NULL;
 
     while(xmlTextReaderMoveToNextAttribute(node)){
@@ -112,15 +111,13 @@ static void processPost(TAD_community com,xmlTextReaderPtr node) {
                  ac = atoi((char*)xmlTextReaderValue(node));
          else if (strcmp(attributename,"CommentCount") == 0)
                  cc = atoi((char*)xmlTextReaderValue(node));
-         else if (strcmp(attributename,"FavoriteCount") == 0)
-                 fc = atoi((char*)xmlTextReaderValue(node));
          else;
     }
     if(ouid!=-2 && ouid!=-1){
         //Resposável por criar uma nova quest ou answer
         Day d = g_tree_lookup(td,cd);
         if(ptid == 1){
-            Quest q = init_quest(id,cd,s,ouid,ti,ta,ac,cc,fc);
+            Quest q = init_quest(id,cd,s,ouid,ti,ta,ac,cc);
             //Insere perguntas numa hash table de perguntas.
             g_hash_table_insert(hq,GSIZE_TO_POINTER(id),q);
             //Incrementar o numero de posts do respetivo user.
@@ -139,7 +136,7 @@ static void processPost(TAD_community com,xmlTextReaderPtr node) {
             }
         }
         if(ptid == 2){
-            Answer a = init_answer(id,pid,cd,s,ouid,cc,fc);
+            Answer a = init_answer(id,pid,cd,s,ouid,cc);
             //Insere respostas numa hash table de respostas.
             g_hash_table_insert(ha,GSIZE_TO_POINTER(id),a);
             //Incrementar o numero de posts do respetivo user.
@@ -160,7 +157,7 @@ static void processPost(TAD_community com,xmlTextReaderPtr node) {
             set_answer_list_quest((Quest)g_hash_table_lookup(hq,GSIZE_TO_POINTER(pid)),
                                   g_slist_prepend(get_answer_list_quest(
                                   (Quest)g_hash_table_lookup(hq,
-                                                        GSIZE_TO_POINTER(pid))),a));
+                                  GSIZE_TO_POINTER(pid))),a));
         }
 
     }

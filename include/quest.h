@@ -33,7 +33,7 @@ typedef struct quest* Quest;
  *  @return Quest.
  */
 Quest init_quest(long id, Date cd, int s,long ouid, char* ti, char* ta, int ac,
-        int cc, int fc);
+        int cc);
 
 //Getters
 

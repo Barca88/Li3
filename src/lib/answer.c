@@ -13,7 +13,7 @@ struct answer{
 };
 
 /* Função que inicia a estrutura answer. */
-Answer init_answer(long id,int pid,Date cd,int s,long ouid,int cc,int fc){
+Answer init_answer(long id,int pid,Date cd,int s,long ouid,int cc){
     Answer a = malloc(sizeof(struct answer));
     a->id = id;
     a->parentId = pid;
@@ -21,7 +21,6 @@ Answer init_answer(long id,int pid,Date cd,int s,long ouid,int cc,int fc){
     a->score = s;
     a->ownerUserId = ouid;
     a->commentCount = cc;
-    a->favoriteCount = fc;
     a->average = 0;
     return a;
 }

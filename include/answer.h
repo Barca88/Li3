@@ -30,7 +30,7 @@ typedef struct answer* Answer;
  *  @param fc favoriteCount.
  *  @return Answer.
  */
-Answer init_answer(long id,int ptid,Date cd,int s,long ouid,int cc,int fc);
+Answer init_answer(long id,int ptid,Date cd,int s,long ouid,int cc);
 
 //Getters
 
