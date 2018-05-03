@@ -8,10 +8,10 @@ struct tag {
 };
 
 /* Funcao reponsável pela alocacao de memoria e a inicializacao dos campos, da tag.*/
-Tag create_tag(long id,char* s){
+Tag create_tag(long id, char* s){
     Tag t = malloc(sizeof(struct tag));
     t->id = id;
-    t->tag = s;
+    t->tag = mystrdup(s);
     t->n_used = 0;
     return t;
 }
@@ -68,5 +68,5 @@ void free_tag(Tag t){
 void free_g_tag(gpointer g){
 	Tag t = (Tag)GPOINTER_TO_SIZE(g);
 	free_tag(t);
-    g_free(g);
+    //g_free(g);
 }

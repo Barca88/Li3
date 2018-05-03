@@ -1,3 +1,4 @@
+#include "users.h"
 #include "answer.h"
 
 /* Definição da estrutura das respostas (answer). */
@@ -56,6 +57,12 @@ void set_average_answer(Answer a,float average){
     a->average = average;
 }
 
+void average_answer(Answer a,GHashTable* users){
+    set_average_answer(a,(get_score_answer(a)*0.65)+
+    (get_comment_count_answer(a)*0.1)+
+    (get_reputation_user(g_hash_table_lookup(users,GSIZE_TO_POINTER(get_owner_user_id_answer(a))))*0.25));
+}
+
 static int id_compare_answer(long a,long b){
     if(a>b)
         return -1;
@@ -83,6 +90,14 @@ gint score_compare_answer(gconstpointer a,gconstpointer b){
      if(f<s) return 1;
      else if(f>s) return -1;
      else return compare_answer(a,b);
+}
+
+gint compare_average_answer(gconstpointer a,gconstpointer b){
+    float a1 = get_average_answer((Answer)a);
+    float a2 = get_average_answer((Answer)b);
+    if(a1<a2) return 1;
+    else if(a1>a2) return -1;
+    return 0;
 }
 
 /* Quest para a lista ligada. */
@@ -116,5 +131,5 @@ void free_answer(Answer a){
 void free_g_answer(gpointer g){
     Answer a = (Answer)GPOINTER_TO_SIZE(g);
     free_answer(a);
-    g_free(g);
+    //g_free(g);
 }

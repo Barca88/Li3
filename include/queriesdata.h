@@ -2,6 +2,7 @@
 #define __QUERIESDATA_H__
 
 #include "date.h"
+#include <stdlib.h>
 
 typedef struct aux3* query3;
 
@@ -50,6 +51,18 @@ Date get_end_6(query6 q);
 void set_list_6 (query6 q, GSList* l); 
 
 void free_6(query6 q);
+
+typedef struct aux7* query7;
+
+query7 init_query7(Date b,Date e);
+
+Date get_begin_7(query7 q);
+
+Date get_end_7(query7 q);
+
+GSList* get_list_7(query7 q);
+
+void set_list_7(query7 q,GSList* l);
 
 typedef struct aux8* query8;
 

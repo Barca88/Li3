@@ -71,7 +71,7 @@ gboolean between_dates(Date b,Date e, Date tocomp){
     return FALSE;
 }
 
-//Cria uma data a partir de uma string.  
+//Cria uma data a partir de uma string.
 Date date_from_string(char* date){
     *(date + 10) = '\0';
     char* day = date+8;
@@ -92,5 +92,5 @@ void free_date(Date d) {
 void free_g_date(gpointer g){
     Date d = (Date)GPOINTER_TO_SIZE(g);
     free_date(d);
-    g_free(g);
+    //g_free(g);
 }

@@ -85,7 +85,7 @@ void inc_nr_posts(User user);
  */
 gint comp_nr_posts_user(gconstpointer a,gconstpointer b);
 
-/** @brief Imprime o conteúdo de uma quest. 
+/** @brief Imprime o conteúdo de uma quest.
  *
  *  @param data apontador para uma data.
  *  @param n apontador para um quest.

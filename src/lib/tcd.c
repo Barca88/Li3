@@ -20,15 +20,16 @@ struct TCD_community{
 TAD_community init_tcd(){
     TAD_community n = malloc(sizeof(struct TCD_community));
 
-    n->hashTags    = g_hash_table_new_full(g_str_hash, g_str_equal,g_free,
+    n->hashTags    = g_hash_table_new_full(g_str_hash, g_str_equal,NULL,
         free_g_tag);
-    n->hashUsers   = g_hash_table_new_full(g_direct_hash, g_direct_equal,g_free,
+    //n->hashUsers = g_hash_table_new(g_direct_hash, g_direct_equal);
+    n->hashUsers   = g_hash_table_new_full(g_direct_hash, g_direct_equal,NULL,
         free_g_users);
-    n->hashQuests  = g_hash_table_new_full(g_direct_hash, g_direct_equal,g_free,
+    n->hashQuests  = g_hash_table_new_full(g_direct_hash, g_direct_equal,NULL,
         free_g_quest);
-    n->hashAnswers = g_hash_table_new_full(g_direct_hash, g_direct_equal,g_free,
+    n->hashAnswers = g_hash_table_new_full(g_direct_hash, g_direct_equal,NULL,
         free_g_answer);
-    n->treeDays    = g_tree_new_full((GCompareDataFunc)date_compare,g_free,
+    n->treeDays    = g_tree_new_full((GCompareDataFunc)date_compare,NULL,
         free_g_date,free_g_day);
     n->rankNPosts  = NULL;
     return n;
@@ -67,9 +68,15 @@ gboolean load_rank_gslist_tcd(gpointer key,gpointer value,gpointer data){
 /* Apaga a tcd dando free na memoria alocada. */
 void free_tcd(TAD_community root){
     g_hash_table_destroy(root->hashTags);
+    printf("Tags out\n");
     g_hash_table_destroy(root->hashUsers);
-    g_hash_table_destroy(root->hashQuests);
+    printf("Useres out\n");
+    //g_hash_table_destroy(root->hashQuests);
+    printf("Quests out - sqn\n");
     g_hash_table_destroy(root->hashAnswers);
-    g_tree_destroy(root->treeDays);
+    printf("Answers out\n");
+    //g_tree_destroy(root->treeDays);
+    printf("Days out   - sqn\n");
     g_slist_free(root->rankNPosts);
+    printf("RankNPosts out\n");
 }
