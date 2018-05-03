@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "users.h"
+#include "tcd.h"
 #include "common.h"
 
 /* Definição da estrutura dos users. */
@@ -76,6 +77,10 @@ void inc_nr_posts(User user){
     (user->nr_posts)++;
 }
 
+void create_list11(gpointer key,gpointer value,gpointer data){
+    set_best_user_tcd(data,g_slist_prepend(get_best_user_tcd(data),value));
+}
+
 gint comp_nr_posts_user(gconstpointer a,gconstpointer b){
     if(((User)a)->nr_posts > ((User)b)->nr_posts)
         return -1;
@@ -83,6 +88,14 @@ gint comp_nr_posts_user(gconstpointer a,gconstpointer b){
         return 1;
     else
         return 0;
+}
+
+int comp_reput_user(gconstpointer a,gconstpointer b){
+    int r1 = get_reputation_user((User)a);
+    int r2 = get_reputation_user((User)b);
+    if(r1 < r2) return 1;
+    else if(r1 > r2) return -1;
+    else return 0;
 }
 
 /* Imprimir o conteúdo de uma quest. */

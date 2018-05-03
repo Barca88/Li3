@@ -17,6 +17,7 @@
 #include <glib.h>
 #include <time.h>
 
+
 /*Função responsável por inicializar a estrutura. */
 TAD_community init()
 {
@@ -37,6 +38,8 @@ TAD_community load(TAD_community com, char* dump_path){
     //Ordenar lista de utilizadores pelos nr_posts.
     set_rank_n_posts(com,g_slist_sort(get_rank_n_posts(com),comp_nr_posts_user));
 
+    g_hash_table_foreach(get_hash_users(com),create_list11,com);
+    set_best_user_tcd(com,g_slist_sort(get_best_user_tcd(com),comp_reput_user));
     return com;
 }
 
@@ -270,7 +273,6 @@ LONG_list most_answered_questions(TAD_community com, int N, Date begin, Date end
     printf("\n\n");
     return l;
 }
-//----------------------------------------------------
 
 /** QUERY 8 */
 LONG_list contains_word(TAD_community com, char* w, int N){
@@ -279,8 +281,8 @@ LONG_list contains_word(TAD_community com, char* w, int N){
     set_list_8(aux, g_slist_sort(get_list_8(aux),compare_quest));
 
     Quest q;
-    int i;
-    if(g_slist_length(get_list_8(aux)) < N)N = g_slist_length(get_list_8(aux));
+    int i,size = g_slist_length(get_list_8(aux));
+    if( size < N) N = size;
     LONG_list l = create_list(N);
 
     for(i=0;i<N && get_list_8(aux) ;i++){
@@ -413,91 +415,23 @@ long better_answer(TAD_community com, long id){
 
 
 /** QUERY 11 */
- //----------------------------------------------------------------------------------
-typedef struct aux11{
-    GHashTable* ht;
-    Date begin;
-    Date end;
-}* query11;
-
-static void load_n_used(gpointer value,gpointer data){
-    query11 aux = (query11)GPOINTER_TO_SIZE(data);
-    Date b = aux->begin;
-    Date e = aux->end;
-    char* auxt = NULL;
-    if ((date_compare(get_date_quest(value),b) >= 0 &&
-         date_compare(e,get_date_quest(value)) >= 0)){
-        auxt = get_tags_quest(value);
-        auxt += 1;
-        auxt[strlen(auxt)-1] = '\0';
-        //set_tags_quest(value,auxt);
-        char *p;
-        p = strtok (auxt,"><");
-        while (p) {
-            inc_n_used(g_hash_table_lookup(aux->ht,p));
-            p = strtok (NULL, "><");
-        }
-    }
-}
-
-static int comp_reput(gconstpointer a,gconstpointer b){
-    int r1 = get_reputation_user((User)a);
-    int r2 = get_reputation_user((User)b);
-    if(r1 < r2) return 1;
-    else if(r1 > r2) return -1;
-    else return 0;
-}
-
-static int comp_n_used(gconstpointer a,gconstpointer b){
-     int r1 = get_n_used((Tag)a);
-     int r2 = get_n_used((Tag)b);
-     if(r1 < r2) return 1;
-     else if(r1 > r2) return -1;
-     else if(get_id_tag((Tag)a) < get_id_tag((Tag)b)) return -1;
-     else return 1;
-     return 0;
-}
-
-static void create_list11(gpointer key,gpointer value,gpointer data){
-    GSList** d = (GSList**)GPOINTER_TO_SIZE(data);
-    *d = g_slist_prepend(*d,value);
-}
-
-static void tag_list11(gpointer key,gpointer value,gpointer data){
-    GSList** d = (GSList**)GPOINTER_TO_SIZE(data);
-    if (get_n_used(value) > 0){
-        *d = g_slist_prepend(*d,value);
-    }
-}
-
-// query 11
 LONG_list most_used_best_rep(TAD_community com, int N, Date begin, Date end){
-    GHashTable* hu = get_hash_users(com);
-    GSList* llist = NULL;
-    GSList** list = &llist;
-
-    //Inserir e ordenar numa lista ligada os user por reputacao.
-    g_hash_table_foreach(hu,create_list11,list);
-    llist = g_slist_sort(llist,comp_reput);
-
     //estrutura auxiliar.
-    query11 aux = malloc(sizeof(struct aux11));
+    query11 aux = init_query11(com,begin,end);
     clean_tags(get_hash_tags(com));
-    aux->ht = get_hash_tags(com);
-    aux->begin = begin;
-    aux->end = end;
     int c = N;
 
+    //g_hash_table_foreach(get_ht_11(aux),print_tags,NULL);
     //Incrementar o numero de vezes que a tag foi usada
+    GSList* llist = get_best_user_tcd(com);
     for(;llist && c;llist = (llist)->next,c--){
-        g_slist_foreach(get_quests_user(llist->data),load_n_used,aux);
+        g_slist_foreach(get_quests_user(llist->data),load_n_used_tag,aux);
     }
-
     //Criar lista ligada ordenada por n_used.
     GSList* tllist = NULL;
     GSList** tlist = &tllist;
-    g_hash_table_foreach(aux->ht,tag_list11,tlist);
-    tllist = g_slist_sort(tllist,comp_n_used);
+    g_hash_table_foreach(get_ht_11(aux),tag_list11,tlist);
+    tllist = g_slist_sort(tllist,comp_n_used_tag);
 
     int i;
     if(g_slist_length(tllist)<N) N = g_slist_length(tllist);

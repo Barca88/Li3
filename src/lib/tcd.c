@@ -13,7 +13,8 @@ struct TCD_community{
     GHashTable* hashQuests;  /* Hash das quest.    */
     GHashTable* hashAnswers; /* Hash das answers.  */
     GTree* treeDays;         /* Tree dos days.     */
-    GSList* rankNPosts;      /* Lista com N posts. */
+    GSList* rankNPosts;      /* Lista numero de posts. */
+    GSList* bestUsers;       /* Lista reputacao users. */
 };
 
 /* Função que inicia a estrutura tcd. */
@@ -32,6 +33,7 @@ TAD_community init_tcd(){
     n->treeDays    = g_tree_new_full((GCompareDataFunc)date_compare,NULL,
         (GDestroyNotify)free_date,(GDestroyNotify)free_g_day);
     n->rankNPosts  = NULL;
+    n->bestUsers = NULL; 
     return n;
 }
 
@@ -54,9 +56,15 @@ GTree* get_tree_days(TAD_community root){
 GSList* get_rank_n_posts(TAD_community root){
     return root->rankNPosts;
 }
+GSList* get_best_user_tcd(TAD_community root){
+    return root->bestUsers;
+}
 
 void set_rank_n_posts(TAD_community root, GSList *new){
     root->rankNPosts = new;
+}
+void set_best_user_tcd(TAD_community root, GSList *new){
+    root->bestUsers = new;
 }
 
 gboolean load_rank_gslist_tcd(gpointer key,gpointer value,gpointer data){

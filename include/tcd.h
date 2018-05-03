@@ -57,6 +57,8 @@ GTree* get_tree_days(TAD_community root);
  */
 GSList* get_rank_n_posts(TAD_community root);
 
+GSList* get_best_user_tcd(TAD_community root);
+
 /** @brief Rank n_posts.
  *
  *  @param TAD_community Estrutura.
@@ -64,6 +66,8 @@ GSList* get_rank_n_posts(TAD_community root);
  *  @return Void.
  */
 void set_rank_n_posts(TAD_community root,GSList *new);
+
+void set_best_user_tcd(TAD_community root, GSList *new);
 
 /*Liberta a memoria alocada para as estruturas de dados*/
 void free_tcd(TAD_community com);
