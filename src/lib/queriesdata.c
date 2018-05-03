@@ -1,4 +1,5 @@
 #include "queriesdata.h"
+#include "tcd.h"
 
 struct aux3{
     Date begin;
@@ -185,6 +186,7 @@ struct aux9{
     GHashTable* h;
     GSList* l;
 };
+
 query9 init_query9(GHashTable* com){
     query9 aux = (query9)malloc(sizeof(struct aux9));
     aux->h = com;
@@ -211,3 +213,29 @@ void free_9(query9 q){
     g_slist_free(q->l);
     free(q);
 }
+
+//------------------------------------------------------
+struct aux11{
+    GHashTable* ht;
+    Date begin;
+    Date end;
+};
+
+query11 init_query11(TAD_community com,Date b,Date e){
+    query11 aux = malloc(sizeof(struct aux11));
+    aux->ht = get_hash_tags(com);
+    aux->begin = b;
+    aux->end = e;
+    return aux;
+}
+
+Date get_begin_11(query11 q){
+    return q->begin;
+}
+Date get_end_11(query11 q){
+    return q->end;
+}
+GHashTable* get_ht_11(query11 q){
+    return q->ht;
+}
+

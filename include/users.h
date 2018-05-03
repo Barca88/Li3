@@ -80,10 +80,14 @@ GSList* get_answers_user(User user);
  */
 void inc_nr_posts(User user);
 
+void create_list11(gpointer key,gpointer value,gpointer data);
+
 /** @brief Imprime o conteúdo de uma quest.
  *
  */
 gint comp_nr_posts_user(gconstpointer a,gconstpointer b);
+
+int comp_reput_user(gconstpointer a,gconstpointer b);
 
 /** @brief Imprime o conteúdo de uma quest.
  *

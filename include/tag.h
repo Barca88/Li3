@@ -76,7 +76,14 @@ int get_n_used (Tag t);
 //Métodos
 int equal_tag(Tag t,char* s);
 
+int comp_n_used_tag(gconstpointer a,gconstpointer b);
+
+void tag_list11(gpointer key,gpointer value,gpointer data);
+
+void load_n_used_tag(gpointer value,gpointer data);
+
 void print_tag(Tag t);
+
 /** @brief Liberta o espaço ocupado pela tag.
  *
  *  @param Tag.

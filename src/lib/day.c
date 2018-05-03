@@ -56,8 +56,9 @@ gboolean count_posts_day(gpointer key,gpointer value,gpointer data){
     if (between_dates(b,e,get_date_day(value))){
             inc_nq_3(ld,get_n_quest(value));
             inc_na_3(ld,get_n_answer(value));
-    }
-    return FALSE;
+    }else if(date_compare(e,get_date_day(value)) < 0)
+        return TRUE;
+     return FALSE;
 }
 
 gboolean iter_tag_day(gpointer key,gpointer value,gpointer data){
@@ -68,11 +69,12 @@ gboolean iter_tag_day(gpointer key,gpointer value,gpointer data){
 
     if (between_dates(b,e,get_date_day(value))){
          g_hash_table_foreach(ht,(GHFunc)comp_tags_quest,data);
-    }
-    return FALSE;
+    }else if(date_compare(e,get_date_day(value)) < 0)
+        return TRUE;
+     return FALSE;
 }
 
-//Função resposável pelo que fazer por cada dia.
+//Função resposável pelo que fazer por cada dia na query 6.
  gboolean iter_vote_a_day(gpointer key,gpointer value,gpointer data){
     query6 ld = (query6)GPOINTER_TO_SIZE(data);
     Date b = get_begin_6(ld);
@@ -82,8 +84,9 @@ gboolean iter_tag_day(gpointer key,gpointer value,gpointer data){
     if ((date_compare(get_date_day(value),b)>=0 &&
     date_compare(e,get_date_day(value))>=0)){
     g_hash_table_foreach(ha,(GHFunc)to_list_answer,data);
-    }
-   return FALSE;
+    }else if(date_compare(e,get_date_day(value)) < 0)
+        return TRUE;
+     return FALSE;
 }
 
 static void to_list7(gpointer key,gpointer value,gpointer data){
@@ -100,8 +103,9 @@ gboolean iter_day7(gpointer key,gpointer value,gpointer data){
 
     if (between_dates(b,e,get_date_day(value))){
          g_hash_table_foreach(hq,(GHFunc)to_list7,data);
-    }
-    return FALSE;
+    }else if(date_compare(e,get_date_day(value)) < 0)
+        return TRUE;
+     return FALSE;
 }
 
 void print_aux(gpointer key,gpointer value,gpointer data){

@@ -2,6 +2,7 @@
 #define __QUERIESDATA_H__
 
 #include "date.h"
+#include "interface.h"
 #include <stdlib.h>
 
 typedef struct aux3* query3;
@@ -90,4 +91,13 @@ void set_hash_9(query9 q,GHashTable* hash);
 
 void free_9(query9 q);
 
+typedef struct aux11* query11;
+
+query11 init_query11(TAD_community com,Date b,Date e);
+
+Date get_begin_11(query11 q);
+
+Date get_end_11(query11 q);
+
+GHashTable* get_ht_11(query11 q);
 #endif
