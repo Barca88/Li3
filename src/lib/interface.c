@@ -430,7 +430,7 @@ static void load_n_used(gpointer value,gpointer data){
         auxt = get_tags_quest(value);
         auxt += 1;
         auxt[strlen(auxt)-1] = '\0';
-        set_tags_quest(value,auxt);
+        //set_tags_quest(value,auxt);
         char *p;
         p = strtok (auxt,"><");
         while (p) {
