@@ -42,8 +42,7 @@ void set_tag (Tag t, char* l) {
 }
 
 void inc_n_used (Tag t) {
-    if(t)
-	    (t->n_used)++;
+	(t->n_used)++;
 }
 
 int equal_tag(Tag t,char* s){
@@ -68,30 +67,30 @@ void tag_list11(gpointer key,gpointer value,gpointer data){
     }
 }
 
-}
 void load_n_used_tag(gpointer value,gpointer data){
-    query11 aux = (query11)GPOINTER_TO_SIZE(data);
-    Date b = get_begin_11(aux);
-    Date e = get_end_11(aux);
+    query11 q = (query11)GPOINTER_TO_SIZE(data);
+    Date b = get_begin_11(q);
+    Date e = get_end_11(q);
+	Date aux = get_date_quest(value);
     char* auxt = NULL;
-    if (between_dates(b,e,get_date_quest(value))){
+    if (between_dates(b,e,aux)){
         auxt = get_tags_quest(value);
         auxt += 1;
         auxt[strlen(auxt)-1] = '\0';
         char *p;
         p = strtok (auxt,"><");
         while (p) {
-            inc_n_used(g_hash_table_lookup(get_ht_11(aux),p));
+            inc_n_used(g_hash_table_lookup(get_ht_11(q),p));
             p = strtok (NULL, "><");
         }
 		free(auxt-1);
     }
 }
-
+/*
 void print_tag(Tag t){
     if(t)
         printf("Tag:\n\tId: %ld\n\tTag name: %s\n\tN used: %d\n",t->id,t->tag,t->n_used);
-}
+}*/
 
 static void set_zero_n_used(gpointer key, gpointer value, gpointer data){
 	Tag t = (Tag)GPOINTER_TO_SIZE(value);
@@ -110,5 +109,4 @@ void free_tag(Tag t){
 void free_g_tag(gpointer g){
 	Tag t = (Tag)GPOINTER_TO_SIZE(g);
 	free_tag(t);
-    //g_free(g);
 }

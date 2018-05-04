@@ -92,5 +92,4 @@ void free_date(Date d) {
 void free_g_date(gpointer g){
     Date d = (Date)GPOINTER_TO_SIZE(g);
     free_date(d);
-    //g_free(g);
 }

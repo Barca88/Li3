@@ -24,8 +24,8 @@ Day init_day(Date day){
 void add_quest_day(Day d, Quest q){
     g_hash_table_insert(d->hash_quest,GSIZE_TO_POINTER(get_id_quest(q)),q);
     (d->n_quest)++;
-   // print_quest(q);
 }
+
 void add_answer_day(Day d, Answer a){
     g_hash_table_insert(d->hash_answer,GSIZE_TO_POINTER(get_id_answer(a)),a);
     (d->n_answer)++;
@@ -52,26 +52,33 @@ gboolean count_posts_day(gpointer key,gpointer value,gpointer data){
     query3 ld = (query3)GPOINTER_TO_SIZE(data);
     Date b = get_begin_3(ld);
     Date e = get_end_3(ld);
-
-    if (between_dates(b,e,get_date_day(value))){
+    Date aux = get_date_day(value);
+    if (between_dates(b,e,aux)){
             inc_nq_3(ld,get_n_quest(value));
             inc_na_3(ld,get_n_answer(value));
-    }else if(date_compare(e,get_date_day(value)) < 0)
+    }else if(date_compare(e,aux) < 0){
+        free_date(aux);
         return TRUE;
-     return FALSE;
+    }
+    free_date(aux);
+    return FALSE;
 }
 
 gboolean iter_tag_day(gpointer key,gpointer value,gpointer data){
     query4 ld = (query4)GPOINTER_TO_SIZE(data);
     Date b = get_begin_4(ld);
     Date e = get_end_4(ld);
+    Date aux = get_date_day(value);
     GHashTable* ht = get_hash_quest_day((Day)value);
 
-    if (between_dates(b,e,get_date_day(value))){
+    if (between_dates(b,e,aux)){
          g_hash_table_foreach(ht,(GHFunc)comp_tags_quest,data);
-    }else if(date_compare(e,get_date_day(value)) < 0)
+    }else if(date_compare(e,aux) < 0){
+        free_date(aux);
         return TRUE;
-     return FALSE;
+    }
+    free_date(aux);
+    return FALSE;
 }
 
 //Função resposável pelo que fazer por cada dia na query 6.
@@ -79,14 +86,18 @@ gboolean iter_tag_day(gpointer key,gpointer value,gpointer data){
     query6 ld = (query6)GPOINTER_TO_SIZE(data);
     Date b = get_begin_6(ld);
     Date e = get_end_6(ld);
+    Date aux = get_date_day(value);
     GHashTable* ha = get_hash_answer_day((Day)value);
 
-    if ((date_compare(get_date_day(value),b)>=0 &&
-    date_compare(e,get_date_day(value))>=0)){
+    if ((date_compare(aux,b)>=0 &&
+    date_compare(e,aux)>=0)){
     g_hash_table_foreach(ha,(GHFunc)to_list_answer,data);
-    }else if(date_compare(e,get_date_day(value)) < 0)
+    }else if(date_compare(e,aux) < 0){
+        free_date(aux);
         return TRUE;
-     return FALSE;
+    }
+    free_date(aux);
+    return FALSE;
 }
 
 static void to_list7(gpointer key,gpointer value,gpointer data){
@@ -99,21 +110,24 @@ gboolean iter_day7(gpointer key,gpointer value,gpointer data){
     query7 ld = (query7)GPOINTER_TO_SIZE(data);
     Date b = get_begin_7(ld);
     Date e = get_end_7(ld);
+    Date aux = get_date_day(value);
     GHashTable* hq = get_hash_quest_day((Day)value);
 
-    if (between_dates(b,e,get_date_day(value))){
+    if (between_dates(b,e,aux)){
          g_hash_table_foreach(hq,(GHFunc)to_list7,data);
-    }else if(date_compare(e,get_date_day(value)) < 0)
+    }else if(date_compare(e,aux) < 0){
+        free_date(aux);
         return TRUE;
-     return FALSE;
+    }
+    free_date(aux);
+    return FALSE;
 }
 
 void print_aux(gpointer key,gpointer value,gpointer data){
     Quest q = (Quest)GPOINTER_TO_SIZE(value);
     print_quest(q);
 }
-
-/* Imprimir o conteúdo de uma data. */
+/*Imprimir o conteúdo de uma data.*/
 void print_day(Day day){
     if(day != NULL) {
         print_date(day->day);
@@ -125,6 +139,7 @@ void print_day(Day day){
 }
 /*liberta a memoria alocada para o Day d*/
 void free_day(Day d){
+    print_day(d);
     free_date(d->day);
     g_hash_table_destroy(d->hash_quest);
     g_hash_table_destroy(d->hash_answer);
@@ -133,5 +148,4 @@ void free_day(Day d){
 void free_g_day(gpointer g){
     Day d = (Day)GPOINTER_TO_SIZE(g);
     free_day(d);
-    //g_free(g);
 }

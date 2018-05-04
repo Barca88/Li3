@@ -238,4 +238,8 @@ Date get_end_11(query11 q){
 GHashTable* get_ht_11(query11 q){
     return q->ht;
 }
-
+void free_11(query11 q){
+    free(q->ht);
+    free_date(q->begin);
+    free_date(q->end);
+}

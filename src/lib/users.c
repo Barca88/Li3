@@ -98,22 +98,25 @@ int comp_reput_user(gconstpointer a,gconstpointer b){
     else return 0;
 }
 
-/* Imprimir o conteúdo de uma quest. */
+/*
+Imprimir o conteúdo de uma quest.
 void print_q(gpointer data,gpointer n){
     Quest q = (Quest)GPOINTER_TO_SIZE(data);
     print_quest(q);
-}
-/* Imprimir o conteúdo de uma answer. */
+}*/
+/*
+Imprimir o conteúdo de uma answer.
 void print_a(gpointer data,gpointer n){
     Answer a = (Answer)GPOINTER_TO_SIZE(data);
     print_answer(a);
-}
+}*/
 
-/* Imprimir o conteúdo de um user. */
+/*
+Imprimir o conteúdo de um user.
 void print_user(User user){
     if(user)
         printf("user:\n\n\tId: %ld\n\tName:  %s\n\tAbouteMe: %s\n\tReputation: %ld\n\tNr de Posts: %d\n\n",user->Id,user->DisplayName,user->AboutMe,user->Reputation,user->nr_posts);
-}
+}*/
 void free_users(User u){
     free(u->DisplayName);
     free(u->AboutMe);

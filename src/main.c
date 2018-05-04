@@ -35,57 +35,57 @@ int main(int argc,char** argv){
 
     q1 = clock();
     //query1
-    info_from_post(new,801049);
+    //info_from_post(new,801049);
     info_from_post(new,796430);
     q1 = clock()-q1;
     q2 = clock();
     //query2
-    top_most_active(new,10);
+    //top_most_active(new,10);
     top_most_active(new,100);
     q2 = clock() - q2;
     q3 = clock();
     //query3
-    total_posts(new,a,b);
+    //total_posts(new,a,b);
     total_posts(new,c,d);
     q3 = clock() - q3;
     q4 = clock();
     //query4
-    questions_with_tag(new,"package-management",e,f);
+    //questions_with_tag(new,"package-management",e,f);
     questions_with_tag(new,"nautilus",c,g);
     q4 = clock() - q4;
     q5 = clock();
     //query5
-    get_user_info(new,15811);
+    //get_user_info(new,15811);
     get_user_info(new,449);
     q5 = clock() - q5;
     q6 = clock();
     //query6
-    most_voted_answers(new,5,h,i);
+    //most_voted_answers(new,5,h,i);
     most_voted_answers(new,50,j,k);
     q6 = clock() - q6;
     q7 = clock();
     //query7
-    most_answered_questions(new,10,l,m);
+    //most_answered_questions(new,10,l,m);
     most_answered_questions(new,100,n,o);
     q7 = clock() - q7;
     q8 = clock();
     //query8
-    contains_word(new,"kde",10);
+    //contains_word(new,"kde",10);
     contains_word(new,"glib",10);
     q8 = clock() - q8;
     q9 = clock();
     //query9
-    both_participated(new,87,5691,10);
+    //both_participated(new,87,5691,10);
     both_participated(new,253,455,10);
     q9 = clock() - q9;
     q10 = clock();
     //query10
-    better_answer(new,30334);
+    //better_answer(new,30334);
     better_answer(new,5942);
     q10 = clock() - q10;
     q11 = clock();
     //query11
-    most_used_best_rep(new,5,p,q);
+    //most_used_best_rep(new,5,p,q);
     most_used_best_rep(new,10,c,d);
     q11 = clock() - q11;
     cle = clock();

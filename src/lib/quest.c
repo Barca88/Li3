@@ -72,7 +72,8 @@ void set_answer_list_quest(Quest q,GSList* l){
 
 void set_tags_quest(Quest q,char* t){
     if(q)
-        q->tags = t;
+        q->tags = mystrdup(t);
+    free(t);
 }
 
 static int id_compare_quest(long a,long b){

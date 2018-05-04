@@ -49,7 +49,7 @@ Date get_begin_6(query6 q);
 
 Date get_end_6(query6 q);
 
-void set_list_6 (query6 q, GSList* l); 
+void set_list_6 (query6 q, GSList* l);
 
 void free_6(query6 q);
 
@@ -100,4 +100,6 @@ Date get_begin_11(query11 q);
 Date get_end_11(query11 q);
 
 GHashTable* get_ht_11(query11 q);
+
+void free_11(query11 q);
 #endif
