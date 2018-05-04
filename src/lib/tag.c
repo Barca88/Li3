@@ -67,7 +67,6 @@ void tag_list11(gpointer key,gpointer value,gpointer data){
         *d = g_slist_prepend(*d,(Tag)value);
     }
 }
-char* realloc_tag(char* tag){
 
 }
 void load_n_used_tag(gpointer value,gpointer data){
