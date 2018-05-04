@@ -67,7 +67,9 @@ void tag_list11(gpointer key,gpointer value,gpointer data){
         *d = g_slist_prepend(*d,(Tag)value);
     }
 }
+char* realloc_tag(char* tag){
 
+}
 void load_n_used_tag(gpointer value,gpointer data){
     query11 aux = (query11)GPOINTER_TO_SIZE(data);
     Date b = get_begin_11(aux);
@@ -77,13 +79,13 @@ void load_n_used_tag(gpointer value,gpointer data){
         auxt = get_tags_quest(value);
         auxt += 1;
         auxt[strlen(auxt)-1] = '\0';
-        set_tags_quest(value,auxt);
         char *p;
         p = strtok (auxt,"><");
         while (p) {
             inc_n_used(g_hash_table_lookup(get_ht_11(aux),p));
             p = strtok (NULL, "><");
         }
+		free(auxt-1);
     }
 }
 
