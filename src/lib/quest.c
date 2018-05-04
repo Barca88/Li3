@@ -85,24 +85,24 @@ static int id_compare_quest(long a,long b){
 }
 
 int compare_quest(gconstpointer t1, gconstpointer t2){
-        Date d1 = get_date_quest((Quest)GPOINTER_TO_SIZE(t1));
-        Date d2 = get_date_quest((Quest)GPOINTER_TO_SIZE(t2));
-        long id1 = get_id_quest((Quest)GPOINTER_TO_SIZE(t1));
-        long id2 = get_id_quest((Quest)GPOINTER_TO_SIZE(t2));
-        int c = 0;
-        c = (-1)*date_compare(d1,d2);
-        if(!c)
-           c = id_compare_quest(id1,id2);
-        return c;
+    Date d1 = get_date_quest((Quest)GPOINTER_TO_SIZE(t1));
+    Date d2 = get_date_quest((Quest)GPOINTER_TO_SIZE(t2));
+    long id1 = get_id_quest((Quest)GPOINTER_TO_SIZE(t1));
+    long id2 = get_id_quest((Quest)GPOINTER_TO_SIZE(t2));
+    int c = 0;
+    c = (-1)*date_compare(d1,d2);
+    if(!c)
+       c = id_compare_quest(id1,id2);
+    return c;
 }
 
 //Funcao de comparação de score para ordenar uma lista ligada.
 gint  answer_c_compare_quest(gconstpointer a,gconstpointer b){
-     int f = get_answer_c_quest((Quest)a);
-     int s = get_answer_c_quest((Quest)b);
-     if(f<s) return 1;
-     else if(f>s) return -1;
-     else return compare_quest(a,b);
+    int f = get_answer_c_quest((Quest)a);
+    int s = get_answer_c_quest((Quest)b);
+    if(f<s) return 1;
+    else if(f>s) return -1;
+    else return compare_quest(a,b);
 }
 
 void comp_tags_quest(gpointer key,gpointer value,gpointer data){
@@ -161,6 +161,5 @@ void free_quest(Quest q){
 }
 void free_g_quest(gpointer g){
     Quest q = (Quest)GPOINTER_TO_SIZE(g);
-    if(q)free_quest(q);
-    //g_free(g);
+    free_quest(q);
 }

@@ -5,7 +5,7 @@
 #include "answer.h"
 #include "tag.h"
 
-//Cria uma tag e insere-a na estrutura das tags. 
+//Cria uma tag e insere-a na estrutura das tags.
 static void processTag(GHashTable* ht ,xmlTextReaderPtr node) {
     xmlChar *name = xmlTextReaderName(node);
     if (strcmp((char*)name,"row") != 0){
@@ -19,20 +19,20 @@ static void processTag(GHashTable* ht ,xmlTextReaderPtr node) {
     char *attributename = NULL;
 
     while(xmlTextReaderMoveToNextAttribute(node)){
-             attributename = (char*)xmlTextReaderName(node); 
+             attributename = (char*)xmlTextReaderName(node);
              if(strcmp(attributename,"Id") == 0)
                  id = atol((char*)xmlTextReaderValue(node));
              else if(strcmp(attributename,"TagName") == 0)
                  tag = (char*)xmlTextReaderValue(node);
              else;
     }
-    
+
     Tag t = create_tag(id,tag);
     g_hash_table_insert(ht,tag,t);
     xmlFree(attributename);
 }
 
-//Cria um novo user e insere-o na estrutura dos users. 
+//Cria um novo user e insere-o na estrutura dos users.
 static void processUser(GHashTable* hu ,xmlTextReaderPtr node) {
     xmlChar *name = xmlTextReaderName(node);
     if (strcmp((char*)name,"row") != 0){
@@ -46,7 +46,7 @@ static void processUser(GHashTable* hu ,xmlTextReaderPtr node) {
     char *attributename = NULL;
 
     while(xmlTextReaderMoveToNextAttribute(node)){
-             attributename = (char*)xmlTextReaderName(node); 
+             attributename = (char*)xmlTextReaderName(node);
              if(strcmp(attributename,"Id") == 0)
                  id = atol((char*)xmlTextReaderValue(node));
              else if(strcmp(attributename,"DisplayName") == 0)
@@ -63,7 +63,7 @@ static void processUser(GHashTable* hu ,xmlTextReaderPtr node) {
     }
 }
 
-//Cria um novo post e insere-o na estrutura dos posts. 
+//Cria um novo post e insere-o na estrutura dos posts.
 static void processPost(TAD_community com,xmlTextReaderPtr node) {
     GTree *td = get_tree_days(com);
     GHashTable *hq = get_hash_quest_tcd(com);
@@ -79,7 +79,7 @@ static void processPost(TAD_community com,xmlTextReaderPtr node) {
 
     long id = -2;
     int ptid = -2;
-    long pid = -2; 
+    long pid = -2;
     Date cd = NULL;
     int s = -2;
     long ouid = -2;
@@ -90,7 +90,7 @@ static void processPost(TAD_community com,xmlTextReaderPtr node) {
     char *attributename = NULL;
 
     while(xmlTextReaderMoveToNextAttribute(node)){
-         attributename = (char*)xmlTextReaderName(node); 
+         attributename = (char*)xmlTextReaderName(node);
          if(strcmp(attributename,"Id") == 0)
                  id = atol((char*)xmlTextReaderValue(node));
          else if(strcmp(attributename,"PostTypeId") == 0)
@@ -171,7 +171,7 @@ void streamTags(GHashTable* ht ,char *path) {
     strcpy(aux,path);
     int nodeReader;
     xmlTextReaderPtr stream = xmlNewTextReaderFilename(strcat(aux,"/Tags.xml"));
-    
+
     if (stream != NULL) {
         nodeReader = xmlTextReaderRead(stream);
 
@@ -196,7 +196,7 @@ void streamUsers(GHashTable* hu ,char *path) {
     strcpy(aux,path);
     int nodeReader;
     xmlTextReaderPtr stream = xmlNewTextReaderFilename(strcat(aux,"/Users.xml"));
-    
+
     if (stream != NULL) {
         nodeReader = xmlTextReaderRead(stream);
 
@@ -222,7 +222,7 @@ void streamPosts(TAD_community com,char *path){
     strcpy(aux,path);
     int nodeReader;
     xmlTextReaderPtr stream = xmlNewTextReaderFilename(strcat(aux,"/Posts.xml"));
-    
+
     if (stream != NULL) {
         nodeReader = xmlTextReaderRead(stream);
 
