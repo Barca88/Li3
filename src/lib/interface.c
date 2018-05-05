@@ -35,14 +35,6 @@ TAD_community load(TAD_community com, char* dump_path){
     //load lista ligada de utilizadores organizada por nº de posts.
     sort_rank_tcd(com);
     sort_best_tcd(com);
-    //foreach_hash_tcd(com,'p', (GHFunc)load_rank_gslist_tcd, GSIZE_TO_POINTER(com));
-    //g_hash_table_foreach(get_hash_users(com),(GHFunc)load_rank_gslist_tcd,GSIZE_TO_POINTER(com));
-    //Ordenar lista de utilizadores pelos nr_posts.
-    //sort_list_tcd(com,'p',comp_nr_posts_user);
-
-    //foreach_hash_tcd(com,'u',create_list11,GSIZE_TO_POINTER(com));
-
-    //sort_list_tcd(com,'u',comp_reput_user);
     return com;
 }
 
@@ -50,25 +42,12 @@ TAD_community load(TAD_community com, char* dump_path){
 STR_pair info_from_post(TAD_community com, long id){
     int x = isQuest(com,id);
     STR_pair r = get_info_post_tcd(com,x,id);
-
-    printf("Query 1 com id %ld: \n\n",id);
-    printf("\tTitle: %s\n\tName: %s\n",get_fst_str(r),get_snd_str(r));
-    printf("\n\n");
-
     return r;
 }
 
 /** QUERY 2 */
 LONG_list top_most_active(TAD_community com, int N){
     LONG_list l = get_most_active_tcd(com,N);
-    int i;
-    printf("Query 2 com %d elementos: \n\n",N);
-
-    for(i=0;i<get_size(l);i++){
-        printf("\tId do nº %d: %ld\n",i+1,get_list(l,i));
-    }
-    printf("\n\n");
-
     return l;
 }
 
@@ -77,12 +56,6 @@ LONG_pair total_posts(TAD_community com, Date begin, Date end){
     query3 ld = init_query3(begin,end);
 
     query3_tcd(com,ld);
-    printf("Query 3: \n\n");
-    printf("\tNumero de users: %d\n",g_hash_table_size(get_hash_users(com)));
-    printf("\tNumero de respostas: %d\n",get_na_3(ld));
-    printf("\tNumero de perguntas: %d\n",get_nq_3(ld));
-    printf("\tNumero de posts: %d\n",get_na_3(ld)+get_nq_3(ld));
-    printf("\n\n");
 
     LONG_pair lp = create_long_pair(get_nq_3(ld),get_na_3(ld));
     free_3(ld);
@@ -109,11 +82,6 @@ LONG_list questions_with_tag(TAD_community com, char* tag, Date begin, Date end)
         set_list(l,i,get_id_quest(q));
         list = list->next;
     }
-
-    printf("Query 4 com %d elementos: \n\n",N);
-    for(i=0;i<N;i++)
-        printf("\tId do nº %d: %ld\n",i+1,get_list(l,i));
-    printf("\n\n");
 
     free_4(ld);
     return l;
@@ -179,11 +147,6 @@ USER get_user_info(TAD_community com, long id){
              }
         }
     }
-    printf("Query 5 com id %ld: \n\n",get_id_user(u));
-    printf("\n\tAbout Me do USER: \n%s\n",am);
-    for(i=0;i<10;i++)
-        printf("\tId post mais recente nº %d: %ld\n",i+1,l[i]);
-    printf("\n\n");
     USER r = create_user(am,l);
     return r;
 }
@@ -206,12 +169,7 @@ LONG_list most_voted_answers(TAD_community com, int N, Date begin, Date end){
             set_list(l,i,get_id_answer(a));
             list = list->next;
         }
-
-        printf("Query 6 com %d elementos: \n\n",N);
-        for(i=0;i<N;i++)
-            printf("\tId do nº %d: %ld\n",i+1,get_list(l,i));
     }else printf("Lista query6 vazia.\n");
-    printf("\n\n");
     free_6(ld);
     return l;
 }
@@ -235,11 +193,7 @@ LONG_list most_answered_questions(TAD_community com, int N, Date begin, Date end
             list = list->next;
         }
 
-        printf("Query 7 com %d elementos: \n\n",N);
-        for(i=0;i<N;i++)
-            printf("\tId do nº %d: %ld\n",i+1,get_list(l,i));
     }else printf("Lista query7 vazia.\n");
-    printf("\n\n");
     free_7(ld);
     return l;
 }
@@ -260,11 +214,6 @@ LONG_list contains_word(TAD_community com, char* w, int N){
         set_list(l,i,get_id_quest(q));
         set_list_8(aux, get_list_8(aux)->next);
     }
-
-    printf("Query 8 title contains %s e com %d elementos: \n\n",w,N);
-    for(i=0;i<N;i++)
-        printf("\tId do nº %d: %ld\n",i+1,get_list(l,i));
-    printf("\n\n");
 
     free_8(aux);
     return l;
@@ -343,24 +292,19 @@ LONG_list both_participated(TAD_community com, long id1, long id2, int N){
 
         Quest q;
         int i;
-        printf("Query 9 id1 = %ld, id2 = %ld e com %d elementos: \n\n",id1,id2,N);
         if(list){
             for(i=0;i<N && list->data !=NULL;i++){
                 q = (Quest)GPOINTER_TO_SIZE(list->data);
                 set_list(l,i,get_id_quest(q));
                 list = list->next;
             }
-            for(i=0;i<N;i++)
-                printf("\tId do nº %d: %ld\n",i+1,get_list(l,i));
         }else printf("\tUps lista query 9 vazia.\n");
-        printf("\n\n");
         free_9(aux);
         g_hash_table_destroy(ha);
         g_hash_table_destroy(hb);
 
         return l;
     }
-    printf("\nQuerie 9 users com estes ids não existem em simultaneo\n\tid1: %ld\n\tid2: %ld\n\n",id1, id2);
     return create_list(0);
 }
 
@@ -375,7 +319,6 @@ long better_answer(TAD_community com, long id){
             average_answer((Answer)laux->data,get_hash_users(com));
         list = g_slist_sort(list,compare_average_answer);
 
-        printf("Query 10 melhor resposta a pergunta %ld: \n\n\tMelhor resposta = %ld\n\n",id,get_id_answer(list->data));
         return get_id_answer(list->data);
     }else{
         printf("Query 10 sem respostas.\n\n");
@@ -389,14 +332,10 @@ LONG_list most_used_best_rep(TAD_community com, int N, Date begin, Date end){
     //estrutura auxiliar.
     query11 aux = init_query11(com,begin,end);
     clean_tags(get_hash_tags(com));
-    int c = N;
 
-    //g_hash_table_foreach(get_ht_11(aux),print_tags,NULL);
     //Incrementar o numero de vezes que a tag foi usada
-    GSList* llist = get_best_user_tcd(com);
-    for(;llist && c;llist = (llist)->next,c--){
-        g_slist_foreach(get_quests_user(llist->data),load_n_used_tag,aux);
-    }
+    load_n_posts_tags_tcd(com,N,aux);
+
     //Criar lista ligada ordenada por n_used.
     GSList* tllist = NULL;
     GSList** tlist = &tllist;
@@ -407,15 +346,12 @@ LONG_list most_used_best_rep(TAD_community com, int N, Date begin, Date end){
     if(g_slist_length(tllist)<N) N = g_slist_length(tllist);
     LONG_list l = create_list(N);
     Tag t;
-    printf("Query 11\n");
     if(tllist){
         for(i=0;i<N && tllist->data != NULL;i++){
              t = (Tag)GPOINTER_TO_SIZE(tllist->data);
             set_list(l,i,get_id_tag(t));
             tllist = tllist->next;
         }
-        for(i=0;i<N;i++)
-            printf("\tId da tag nº %d: %ld\n",i+1,get_list(l,i));
     }else printf("\tUps lista query 11 vazia.\n");
     return l;
 }

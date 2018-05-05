@@ -122,9 +122,9 @@ void print_answer(Answer post){
             post->ownerUserId,post->commentCount,post->favoriteCount,post->average);
     printf("\n\n");
 }
-gpointer copy_answer((gconstpointer src,gpointer data)){
+gpointer copy_answer(gconstpointer src,gpointer data){
     Answer a = (Answer)GPOINTER_TO_SIZE(src);
-    Answer b = init_answer(a->id,a->parentId,a->creationDate,a->score_compare_answer,a->ownerUserId,a->commentCount,a->average);
+    Answer b = init_answer(a->id,a->parentId,a->creationDate,a->score,a->ownerUserId,a->commentCount);
     return GSIZE_TO_POINTER(b);
 }
 
@@ -133,6 +133,7 @@ void free_answer(Answer a){
     free_date(a->creationDate);
     free(a);
 }
+
 void free_g_answer(gpointer g){
     Answer a = (Answer)GPOINTER_TO_SIZE(g);
     free_answer(a);

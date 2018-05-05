@@ -65,6 +65,12 @@ void set_rank_n_posts(TAD_community root, GSList *new){
 void set_best_user_tcd(TAD_community root, GSList *new){
     root->bestUsers = new;
 }
+void load_n_posts_tags_tcd(TAD_community com,int c,query11 aux){
+    GSList* llist = com->bestUsers;
+    for(;llist && c;llist = (llist)->next,c--){
+        g_slist_foreach(get_quests_user(llist->data),load_n_used_tag,aux);
+    }
+}
 
 gboolean load_rank_gslist_tcd(gpointer key,gpointer value,gpointer data){
     TAD_community com = (TAD_community)GPOINTER_TO_SIZE(data);
@@ -75,6 +81,7 @@ void sort_rank_tcd(TAD_community root){
     g_hash_table_foreach(root->hashUsers,(GHFunc)load_rank_gslist_tcd,root);
     root->rankNPosts = g_slist_sort(root->rankNPosts,comp_nr_posts_user);
 }
+
 void sort_best_tcd(TAD_community root){
     g_hash_table_foreach(root->hashUsers,create_list11,root);
     root->bestUsers = g_slist_sort(root->bestUsers,comp_reput_user);
@@ -88,6 +95,7 @@ int isQuest(TAD_community root, long id){
         return 2;
     return 0;
 }
+
 STR_pair get_info_post_tcd(TAD_community root, int x, long id){
     char* title = NULL;
     char* name = NULL;
