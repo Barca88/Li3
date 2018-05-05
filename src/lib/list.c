@@ -15,7 +15,9 @@ LONG_list create_list(int size) {
     l->list = malloc(sizeof(long) * size);
     return l;
 }
-
+int get_size(LONG_list l){
+    return l->size;
+}
 /* Gets (Obter valor das variaveis da estrutura) */
 long get_list(LONG_list l, int index) {
     return l->list[index];

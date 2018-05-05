@@ -10,10 +10,11 @@
 #define __LONG_LIST__
 
 /**
- * @brief Declaração do tipo LONG_list, um tipo abstrato. 
+ * @brief Declaração do tipo LONG_list, um tipo abstrato.
  */
 typedef struct llist * LONG_list;
 
+int get_size(LONG_list l);
 /** @brief Criação de um LONG_list.
  *  @param size tamanho alocado para um LONG_list.
  *  @return LONG_list.
@@ -26,7 +27,7 @@ LONG_list create_list(int size);
  *  @return Lista.
  */
 long get_list(LONG_list l, int index);
-/** @brief Lista. 
+/** @brief Lista.
  *
  *  @param l lista.
  *  @param index .

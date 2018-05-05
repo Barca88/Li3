@@ -33,68 +33,38 @@ TAD_community load(TAD_community com, char* dump_path){
     //Carregar as hashs quests e answers e a tree de days.
     streamPosts(com,dump_path);
     //load lista ligada de utilizadores organizada por nº de posts.
-    g_hash_table_foreach(get_hash_users(com),(GHFunc)load_rank_gslist_tcd,
-                         GSIZE_TO_POINTER(com));
+    sort_rank_tcd(com);
+    sort_best_tcd(com);
+    //foreach_hash_tcd(com,'p', (GHFunc)load_rank_gslist_tcd, GSIZE_TO_POINTER(com));
+    //g_hash_table_foreach(get_hash_users(com),(GHFunc)load_rank_gslist_tcd,GSIZE_TO_POINTER(com));
     //Ordenar lista de utilizadores pelos nr_posts.
-    set_rank_n_posts(com,g_slist_sort(get_rank_n_posts(com),comp_nr_posts_user));
+    //sort_list_tcd(com,'p',comp_nr_posts_user);
 
-    g_hash_table_foreach(get_hash_users(com),create_list11,com);
-    set_best_user_tcd(com,g_slist_sort(get_best_user_tcd(com),comp_reput_user));
+    //foreach_hash_tcd(com,'u',create_list11,GSIZE_TO_POINTER(com));
+
+    //sort_list_tcd(com,'u',comp_reput_user);
     return com;
 }
 
 /** QUERY 1 */
 STR_pair info_from_post(TAD_community com, long id){
-    STR_pair sp = NULL;
-    char* title = NULL;
-    char* name = NULL;
-    User u;
-    Answer a;
-    Quest q = (Quest)g_hash_table_lookup(get_hash_quest_tcd(com),
-                                         GSIZE_TO_POINTER(id));
-
-    //Se quest processa, se answer processa a quest associada.
-    if(q){
-        u = (User)g_hash_table_lookup(get_hash_users(com),
-                GSIZE_TO_POINTER(get_owner_id_quest(q)));
-        title = get_title_quest(q);
-        name = get_displayname_user(u);
-    }else{
-        a = (Answer)g_hash_table_lookup(get_hash_answer_tcd(com),
-             GSIZE_TO_POINTER(id));
-        if(a){
-            q = (Quest)g_hash_table_lookup(get_hash_quest_tcd(com),
-                GSIZE_TO_POINTER(get_parent_id_answer(a)));
-            u = (User)g_hash_table_lookup(get_hash_users(com),
-                GSIZE_TO_POINTER(get_owner_user_id_answer(a)));
-            title = get_title_quest(q);
-            name = get_displayname_user(u);
-        }
-    }
+    int x = isQuest(com,id);
+    STR_pair r = get_info_post_tcd(com,x,id);
 
     printf("Query 1 com id %ld: \n\n",id);
-    printf("\tTitle: %s\n\tName: %s\n",title,name);
+    printf("\tTitle: %s\n\tName: %s\n",get_fst_str(r),get_snd_str(r));
     printf("\n\n");
 
-    return sp = create_str_pair(title,name);
+    return r;
 }
 
 /** QUERY 2 */
 LONG_list top_most_active(TAD_community com, int N){
-    LONG_list l = create_list(N);
+    LONG_list l = get_most_active_tcd(com,N);
     int i;
-    User u;
-    GSList *list = get_rank_n_posts(com);
-
-    //Inserir N users da linked list na long list.
-    for(i=0;i<N;i++){
-        u =(User) GPOINTER_TO_SIZE(list->data);
-        set_list(l,i,get_id_user(u));
-        list = list->next;
-    }
-
     printf("Query 2 com %d elementos: \n\n",N);
-    for(i=0;i<N;i++){
+
+    for(i=0;i<get_size(l);i++){
         printf("\tId do nº %d: %ld\n",i+1,get_list(l,i));
     }
     printf("\n\n");
@@ -106,9 +76,7 @@ LONG_list top_most_active(TAD_community com, int N){
 LONG_pair total_posts(TAD_community com, Date begin, Date end){
     query3 ld = init_query3(begin,end);
 
-    g_tree_foreach(get_tree_days(com),(GTraverseFunc)count_posts_day,
-            GSIZE_TO_POINTER(ld));
-
+    query3_tcd(com,ld);
     printf("Query 3: \n\n");
     printf("\tNumero de users: %d\n",g_hash_table_size(get_hash_users(com)));
     printf("\tNumero de respostas: %d\n",get_na_3(ld));

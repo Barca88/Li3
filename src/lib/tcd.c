@@ -5,6 +5,7 @@
 #include "answer.h"
 #include "day.h"
 #include "tag.h"
+#include "queriesdata.h"
 
 /* Definição da estrutura dos tcd (TCD_community). */
 struct TCD_community{
@@ -71,7 +72,122 @@ gboolean load_rank_gslist_tcd(gpointer key,gpointer value,gpointer data){
     set_rank_n_posts(com, g_slist_prepend(get_rank_n_posts(com),value));
     return FALSE;
 }
+//---------------------------------------------------------
+//TODO comments
+void sort_list_tcd(TAD_community root, char c, GCompareFunc func){
+    if(c == 'p')
+        root->rankNPosts = g_slist_sort(root->rankNPosts,func);//TODO func
+    else if(c == 'u')
+        root->bestUsers = g_slist_prepend(root->bestUsers,func);//TODO func
+}
+void sort_rank_tcd(TAD_community root){
+    g_hash_table_foreach(root->hashUsers,(GHFunc)load_rank_gslist_tcd,root);
+    root->rankNPosts = g_slist_sort(root->rankNPosts,comp_nr_posts_user);
+}
+void sort_best_tcd(TAD_community root){
+    g_hash_table_foreach(root->hashUsers,create_list11,root);
+    root->bestUsers = g_slist_sort(root->bestUsers,comp_reput_user);
+}
 
+//desnecessario
+void prepend_list_tcd(TAD_community root, char c,  void* data){
+    if(c == 'p')
+        root->rankNPosts = g_slist_prepend(root->rankNPosts,data);
+    else if(c == 'u')
+        root->bestUsers = g_slist_prepend(root->bestUsers,data);
+}
+//Diz qual é o tipo do id recebido 1 quest 2 answer e 0 se não existe
+int isQuest(TAD_community root, long id){
+    if(g_hash_table_contains(root->hashQuests,GSIZE_TO_POINTER(id)))
+        return 1;
+    else if(g_hash_table_contains(root->hashAnswers,GSIZE_TO_POINTER(id)))
+        return 2;
+    return 0;
+}
+STR_pair get_info_post_tcd(TAD_community root, int x, long id){
+    char* title = NULL;
+    char* name = NULL;
+    Quest q;
+    User u;
+    if(x == 1){
+        q = g_hash_table_lookup(root->hashQuests, GSIZE_TO_POINTER(id));
+        u = g_hash_table_lookup(root->hashUsers,
+            GSIZE_TO_POINTER(get_owner_id_quest(q)));
+        title = get_title_quest(q);
+        name = get_displayname_user(u);
+    }
+    else if(x == 2){
+        Answer a = g_hash_table_lookup(root->hashAnswers,GSIZE_TO_POINTER(id));
+        u = g_hash_table_lookup(root->hashUsers,
+            GSIZE_TO_POINTER(get_owner_user_id_answer(a)));
+        q = g_hash_table_lookup(root->hashQuests,
+            GSIZE_TO_POINTER(get_parent_id_answer(a)));
+        title = get_title_quest(q);
+        name = get_displayname_user(u);
+    }
+    return create_str_pair(title,name);
+}
+LONG_list get_most_active_tcd(TAD_community root, int N){
+    GSList *list = root->rankNPosts;
+    if(g_slist_length(list) < N) N = g_slist_length(list);
+    LONG_list l = create_list(N);
+    int i;
+    User u;
+    for(i=0;i<N;i++){
+        u = (User) GPOINTER_TO_SIZE(list->data);
+        set_list(l,i,get_id_user(u));
+        list = list->next;
+    }
+    return l;
+}
+void query3_tcd(TAD_community root,query3 ld){
+    g_tree_foreach(root->treeDays,(GTraverseFunc)count_posts_day,
+            GSIZE_TO_POINTER(ld));
+}
+
+void foreach_hash_tcd(TAD_community root, char c, GHFunc func,void* data){
+    GHashTable* h;
+    switch (c) {
+        case 't':
+            h = root->hashTags;
+            break;
+        case 'u':
+            h = root->hashUsers;
+            break;
+        case 'q':
+            h = root->hashQuests;
+            break;
+        case 'a':
+            h = root->hashQuests;
+            break;
+        default:
+            return;
+    }
+    g_hash_table_foreach(h, func, data);
+}
+void insert_tree_tcd(TAD_community root, void* key, void* value){
+    GTree* t = root->treeDays;
+    g_tree_insert(t,key,value);
+}
+void insert_hash_tcd(TAD_community root,char c, void* key, void* value){
+    GHashTable* h;
+    switch (c) {
+        case 't':
+            h = root->hashTags;
+            break;
+        case 'u':
+            h = root->hashUsers;
+            break;
+        case 'q':
+            h = root->hashQuests;
+            break;
+        case 'a':
+            h = root->hashQuests;
+            break;
+    }
+    g_hash_table_insert(h,key,value);
+}
+//-----------------------------------------------------------
 /* Apaga a tcd dando free na memoria alocada. */
 void free_tcd(TAD_community root){
     g_hash_table_destroy(root->hashTags);
