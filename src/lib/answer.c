@@ -122,6 +122,11 @@ void print_answer(Answer post){
             post->ownerUserId,post->commentCount,post->favoriteCount,post->average);
     printf("\n\n");
 }
+gpointer copy_answer((gconstpointer src,gpointer data)){
+    Answer a = (Answer)GPOINTER_TO_SIZE(src);
+    Answer b = init_answer(a->id,a->parentId,a->creationDate,a->score_compare_answer,a->ownerUserId,a->commentCount,a->average);
+    return GSIZE_TO_POINTER(b);
+}
 
 /* Apaga a resposta dando free na memoria alocada. */
 void free_answer(Answer a){
