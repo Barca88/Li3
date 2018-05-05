@@ -83,6 +83,7 @@ static void processUser(GHashTable* hu ,xmlTextReaderPtr node) {
         User newUser = init_user(id,dn,am,r);
         g_hash_table_insert(hu,GSIZE_TO_POINTER(id),newUser);
     }
+    xmlFree(attributename);
     free(dn);
     free(am);
 }

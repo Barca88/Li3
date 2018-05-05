@@ -155,7 +155,7 @@ void set_list_7(query7 q,GSList* l){
 
 void free_7(query7 q){
     if(q){
-        if(q->list)g_slist_free_full(q->list,free_g_quest);
+        if(q->list)g_slist_free(q->list);
         free(q);
     }
 }
