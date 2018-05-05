@@ -4,7 +4,6 @@
 #include "quest.h"
 #include "answer.h"
 #include "day.h"
-#include "tag.h"
 
 /* Definição da estrutura dos tcd (TCD_community). */
 struct TCD_community{
