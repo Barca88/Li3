@@ -69,6 +69,8 @@ void set_rank_n_posts(TAD_community root, GSList *new);
 
 void set_best_user_tcd(TAD_community root, GSList *new);
 
+void load_n_posts_tags_tcd(TAD_community com,int c,query11 aux);
+
 gboolean load_rank_gslist_tcd(gpointer key,gpointer value,gpointer data);
 
 void sort_rank_tcd(TAD_community root);

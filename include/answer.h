@@ -116,7 +116,7 @@ gint score_compare_answer(gconstpointer a,gconstpointer b);
   */
 void iter_answer9(gpointer data,gpointer user_data);
 
-gpointer copy_answer((gconstpointer src,gpointer data));
+gpointer copy_answer(gconstpointer src,gpointer data);
 
 /* Imprime o conteudo do post */
 void print_answer(Answer post);
