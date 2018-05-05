@@ -212,6 +212,7 @@ LONG_list most_voted_answers(TAD_community com, int N, Date begin, Date end){
             printf("\tId do nº %d: %ld\n",i+1,get_list(l,i));
     }else printf("Lista query6 vazia.\n");
     printf("\n\n");
+    free_6(ld);
     return l;
 }
 
@@ -239,6 +240,7 @@ LONG_list most_answered_questions(TAD_community com, int N, Date begin, Date end
             printf("\tId do nº %d: %ld\n",i+1,get_list(l,i));
     }else printf("Lista query7 vazia.\n");
     printf("\n\n");
+//    free_7(ld);
     return l;
 }
 

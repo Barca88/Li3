@@ -153,11 +153,13 @@ void add_answer_quest(Quest q, Answer a){
 }
 
 void free_quest(Quest q){
-    free_date(q->creationDate);
-    free(q->title);
-    free(q->tags);
-    g_slist_free(q->answerList);
-    free(q);
+    if(q){
+        free_date(q->creationDate);
+        free(q -> title);
+        free(q -> tags);
+        g_slist_free(q->answerList);
+        free(q);
+    }
 }
 void free_g_quest(gpointer g){
     Quest q = (Quest)GPOINTER_TO_SIZE(g);

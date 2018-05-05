@@ -122,7 +122,22 @@ int main(int argc,char** argv){
     p_tempo(q11);
     printf("\tClean: ");
     p_tempo(cle);
-    //int pois;
-    //scanf("%d",&pois);
+    free(a);
+    free(b);
+    free(c);
+    free(d);
+    free(e);
+    free(f);
+    free(g);
+    free(h);
+    free(i);
+    free(j);
+    free(k);
+    free(l);
+    free(m);
+    free(n);
+    free(o);
+    free(p);
+    free(q);
     return 0;
 }

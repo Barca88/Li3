@@ -65,6 +65,8 @@ GSList* get_list_7(query7 q);
 
 void set_list_7(query7 q,GSList* l);
 
+void free_7(query7 q);
+
 typedef struct aux8* query8;
 
 query8 init_query8(char* word);

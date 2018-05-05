@@ -1,4 +1,5 @@
 #include "queriesdata.h"
+#include "quest.h"
 #include "tcd.h"
 
 struct aux3{
@@ -151,6 +152,13 @@ GSList* get_list_7(query7 q){
 void set_list_7(query7 q,GSList* l){
     q->list = l;
 }
+
+void free_7(query7 q){
+    if(q){
+        if(q->list)g_slist_free_full(q->list,free_g_quest);
+        free(q);
+    }
+}
 //-----------------------------------------------------
 struct aux8{
     char* word;
@@ -240,6 +248,4 @@ GHashTable* get_ht_11(query11 q){
 }
 void free_11(query11 q){
     free(q->ht);
-    free_date(q->begin);
-    free_date(q->end);
 }

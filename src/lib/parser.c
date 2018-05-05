@@ -14,16 +14,23 @@ static void processTag(GHashTable* ht ,xmlTextReaderPtr node) {
 
     xmlFree(name);
 
+    xmlChar* f;
     long id = -2;
     char* tag = NULL;
     char *attributename = NULL;
 
     while(xmlTextReaderMoveToNextAttribute(node)){
              attributename = (char*)xmlTextReaderName(node);
-             if(strcmp(attributename,"Id") == 0)
-                 id = atol((char*)xmlTextReaderValue(node));
-             else if(strcmp(attributename,"TagName") == 0)
-                 tag = (char*)xmlTextReaderValue(node);
+             if(strcmp(attributename,"Id") == 0){
+                 f = (xmlChar*)xmlTextReaderValue(node);
+                 id = atol((char*)f);
+                 xmlFree(f);
+             }
+             else if(strcmp(attributename,"TagName") == 0){
+                 f = (xmlChar*)xmlTextReaderValue(node);
+                 tag = mystrdup((char*)f);
+                 xmlFree(f);
+             }
              else;
     }
 
@@ -39,6 +46,9 @@ static void processUser(GHashTable* hu ,xmlTextReaderPtr node) {
         name = xmlStrdup(BAD_CAST "--");
     }
 
+    xmlFree(name);
+
+    xmlChar* f;
     long id = -2;
     char* dn = NULL;
     char* am = NULL;
@@ -47,20 +57,34 @@ static void processUser(GHashTable* hu ,xmlTextReaderPtr node) {
 
     while(xmlTextReaderMoveToNextAttribute(node)){
              attributename = (char*)xmlTextReaderName(node);
-             if(strcmp(attributename,"Id") == 0)
-                 id = atol((char*)xmlTextReaderValue(node));
-             else if(strcmp(attributename,"DisplayName") == 0)
-                 dn = (char*)xmlTextReaderValue(node);
-             else if (strcmp(attributename,"AboutMe") == 0)
-                 am = (char*)xmlTextReaderValue(node);
-             else if (strcmp(attributename,"Reputation") ==  0)
-                  r = atol((char*)xmlTextReaderValue(node));
+             if(strcmp(attributename,"Id") == 0){
+                 f = (xmlChar*)xmlTextReaderValue(node);
+                 id = atol((char*)f);
+                 xmlFree(f);
+             }
+             else if(strcmp(attributename,"DisplayName") == 0){
+                 f = (xmlChar*)xmlTextReaderValue(node);
+                 dn = mystrdup((char*)f);
+                 xmlFree(f);
+             }
+             else if (strcmp(attributename,"AboutMe") == 0){
+                 f = (xmlChar*)xmlTextReaderValue(node);
+                 am = mystrdup((char*)f);
+                 xmlFree(f);
+             }
+             else if (strcmp(attributename,"Reputation") ==  0){
+                 f = (xmlChar*)xmlTextReaderValue(node);
+                 r = atol((char*)f);
+                 xmlFree(f);
+             }
              else;
     }
     if(id!=-1 && id!=-2){
         User newUser = init_user(id,dn,am,r);
         g_hash_table_insert(hu,GSIZE_TO_POINTER(id),newUser);
     }
+    free(dn);
+    free(am);
 }
 
 //Cria um novo post e insere-o na estrutura dos posts.
@@ -77,6 +101,7 @@ static void processPost(TAD_community com,xmlTextReaderPtr node) {
 
     xmlFree(name);
 
+    xmlChar* f;
     long id = -2;
     int ptid = -2;
     long pid = -2;
@@ -91,26 +116,56 @@ static void processPost(TAD_community com,xmlTextReaderPtr node) {
 
     while(xmlTextReaderMoveToNextAttribute(node)){
          attributename = (char*)xmlTextReaderName(node);
-         if(strcmp(attributename,"Id") == 0)
-                 id = atol((char*)xmlTextReaderValue(node));
-         else if(strcmp(attributename,"PostTypeId") == 0)
-                 ptid = atoi((char*)xmlTextReaderValue(node));
-         else if (strcmp(attributename,"ParentId") == 0)
-                 pid = atol( (char*)xmlTextReaderValue(node));
-         else if (strcmp(attributename,"CreationDate") == 0)
-                 cd = date_from_string((char*)xmlTextReaderValue(node));
-         else if (strcmp(attributename,"Score") == 0)
-                 s = atoi((char*)xmlTextReaderValue(node));
-         else if (strcmp(attributename,"OwnerUserId") == 0)
-                 ouid = atol((char*)xmlTextReaderValue(node));
-         else if (strcmp(attributename,"Title") == 0)
-                 ti = (char*)xmlTextReaderValue(node);
-         else if (strcmp(attributename,"Tags") == 0)
-                 ta = (char*)xmlTextReaderValue(node);
-         else if (strcmp(attributename,"AnswerCount") == 0)
-                 ac = atoi((char*)xmlTextReaderValue(node));
-         else if (strcmp(attributename,"CommentCount") == 0)
-                 cc = atoi((char*)xmlTextReaderValue(node));
+         if(strcmp(attributename,"Id") == 0){
+                 f = (xmlChar*)xmlTextReaderValue(node);
+                 id = atol((char*)f);
+                 xmlFree(f);
+         }
+         else if(strcmp(attributename,"PostTypeId") == 0){
+                 f = (xmlChar*)xmlTextReaderValue(node);
+                 ptid = atoi((char*)f);
+                 xmlFree(f);
+         }
+         else if (strcmp(attributename,"ParentId") == 0){
+                 f = (xmlChar*)xmlTextReaderValue(node);
+                 pid = atol( (char*)f);
+                 xmlFree(f);
+         }
+         else if (strcmp(attributename,"CreationDate") == 0){
+                 f = (xmlChar*)xmlTextReaderValue(node);
+                 cd = date_from_string((char*)f);
+                 xmlFree(f);
+         }
+         else if (strcmp(attributename,"Score") == 0){
+                 f = (xmlChar*)xmlTextReaderValue(node);
+                 s = atoi((char*)f);
+                 xmlFree(f);
+         }
+         else if (strcmp(attributename,"OwnerUserId") == 0){
+                 f = (xmlChar*)xmlTextReaderValue(node);
+                 ouid = atol((char*)f);
+                 xmlFree(f);
+         }
+         else if (strcmp(attributename,"Title") == 0){
+                 f = (xmlChar*)xmlTextReaderValue(node);
+                 ti = mystrdup((char*)f);
+                 xmlFree(f);
+         }
+         else if (strcmp(attributename,"Tags") == 0){
+                 f = (xmlChar*)xmlTextReaderValue(node);
+                 ta = mystrdup((char*)f);
+                 xmlFree(f);
+         }
+         else if (strcmp(attributename,"AnswerCount") == 0){
+                 f = (xmlChar*)xmlTextReaderValue(node);
+                 ac = atoi((char*)f);
+                 xmlFree(f);
+         }
+         else if (strcmp(attributename,"CommentCount") == 0){
+                 f = (xmlChar*)xmlTextReaderValue(node);
+                 cc = atoi((char*)f);
+                 xmlFree(f);
+         }
          else;
     }
     if(ouid!=-2 && ouid!=-1){
@@ -161,7 +216,6 @@ static void processPost(TAD_community com,xmlTextReaderPtr node) {
         }
 
     }
-
     xmlFree(attributename);
 }
 

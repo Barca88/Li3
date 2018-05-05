@@ -42,7 +42,7 @@ void set_tag (Tag t, char* l) {
 }
 
 void inc_n_used (Tag t) {
-	(t->n_used)++;
+	if(t)(t->n_used)++;
 }
 
 int equal_tag(Tag t,char* s){
