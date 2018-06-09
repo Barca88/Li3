@@ -1,4 +1,5 @@
 import java.time.LocalDate;
+import java.lang.StringBuilder;
 
 public abstract class Post{
     //variaveis de instancia
@@ -16,35 +17,47 @@ public abstract class Post{
         this.ownerUserId = ownerUserId;
         this.comment_c = comment_c;
     }
+
     //getters
-    public get_id(){
+    public getId(){
         return id;
     }
-    public get_date(){
+    public getDate(){
         return creationDate.clone();
     }
-    public get_score(){
+    public getScore(){
         return score;
     }
-    public get_owner_id(){
+    public getUser(){
         return ownerUserId;
     }
-    public get_comment_c(){
+    public getComment(){
         return comment_c;
     }
     //clone
     public abstract Post clone();
-    //equals
-    public boolean equals(Object obj){
-        if(obj == this)
-            return true;
-        if(obj == null || obj.getClass() != this.getClass())
-            return false;
-        Post p = (Post) obj;
-        return p.get_id() == this.id &&
-               p.get_date().equals(this.creationDate) &&
-               p.get_score() == this.score &&
-               p.get_owner_id() == this.ownerUserId &&
-               p.get_comment_c == this.comment_c;
+
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Post object = (Post) o;
+
+        if (id != object.id) return false;
+        if (creationDate != null ? !creationDate.equals(object.creationDate) : object.creationDate != null) return false;
+        if (score != object.score) return false;
+        if (ownerUserId != object.ownerUserId) return false;
+        return !(comment_c != object.comment_c);
     }
+
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Post{");
+        sb.append("id = ").append(id);
+        sb.append(", creationDate = ").append(creationDate);
+        sb.append(", score = ").append(score);
+        sb.append(", ownerUserId = ").append(ownerUserId);
+        sb.append(", comment_c = ").append(comment_c);
+        return sb.append("}").toString();
+    }
+
 }
