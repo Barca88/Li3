@@ -3,28 +3,80 @@ package engine;
 import common.MyLog;
 import common.Pair;
 import li3.TADCommunity;
-import org.w3c.dom.Document;
-import org.xml.sax.SAXException;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.File;
-import java.io.IOException;
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.TreeMap;
+import java.util.stream;
+import java.util.stream.Collectors;
+import java.lang.StringBuilder;
 
-public class TCDExample implements TADCommunity {
 
+public class TCD implements TADCommunity {
+    //var de instancia
     private MyLog qelog;
-
-    /*
-    public void init() {
+    private Map<Long,Tag> hashTags;       /* Hash das tags.         */
+    private Map<Long,User> hashUsers;     /* Hash dos users.        */
+    private Map<Long,Post> hashPosts;     /* Hash de Posts.         */
+    private Map<LocalDate,Day> treeDays;  /* Tree dos days.         */
+    //Contrutuores vazio, parameterizado e cópia
+    public TCD(){
         this.qelog = new MyLog("queryengine");
+        this.hashTags = new HashTable<Long,Tag>();
+        this.hashUsers = new HashTable<Long,Tag>();
+        this.hashPosts = new HashTable<Long,Tag>();
+        this.treeDays = new TreeMap<LocalDate,Day>();
     }
-    */
+    public TCD(MyLog qelog, Map<Long,Tag> hashTags, Map<Long,User> hashUsers, Map<Long,Post> hashPosts, Map<LocalDate,Day> treeDays){
+        this.qelog = qelog.clone();
+        this.hashTags = hashTags.values().stream().collect(Collectors.toMap(c->c.getId(),c.clone(),HashMap<Long,Tag> :: new)); 
+        this.hashUsers = hashUsers.values().stream().collect(Collectors.toMap(c->c.getId(),c.clone(),HashMap<Long,User> :: new));
+        this.hashPosts = hashPosts.values().stream().collect(Collectors.toMap(c->c.getId(),c.clone(),HashMap<Long,Post> :: new));
+        this.treeDays = treeDays.values().stream().collect(Collectors.toMap(c->c.getId(),c.clone(),HashTree<LocalDate,Day> :: new));
+    }
+    public TCD(TCD t){
+        this.qelog = t.getLog();
+        this.hashTags = t.getTags();
+        this.hashUsers = t.getUsers();
+        this.hashPosts = t.getPosts();
+        this.treeDays = t.getDays();
+    }
+    //Setters
+    public void setQelog(MyLog qelog) {
+        this.qelog = qelog.clone();
+    }
+    public void setHashTags(Map<Long,Tag> hashTags) {
+        this.hashTags = hashTags.values().stream().collect(Collectors.toMap(c->c.getId(),c.clone(),HashMap<Long,Tag> :: new)); 
+    }
+    public void setHashUsers(Map<Long,User> hashUsers) {
+        this.hashUsers = hashUsers.values().stream().collect(Collectors.toMap(c->c.getId(),c.clone(),HashMap<Long,User> :: new));
+    }
+    public void setHashPosts(Map<Long,Post> hashPosts) {
+        this.hashPosts = hashPosts.values().stream().collect(Collectors.toMap(c->c.getId(),c.clone(),HashMap<Long,Post> :: new));
+    }
+    public void setTreeDays(Map<LocalDate,Day> treeDays) {
+        this.treeDays = treeDays.values().stream().collect(Collectors.toMap(c->c.getId(),c.clone(),HashTree<LocalDate,Day> :: new));
+    }
+    //Getters
+    public MyLog getQelog() {
+        return qelog;
+    }
+    public Map<Long,Tag> getHashTags() {
+        return this.hashTags.values().stream().collect(Collectors.toMap(c->c.getId(),c.clone(),HashMap<Long,Tag> :: new)); 
+    }
+    public Map<Long,User> getHashUsers() {
+        return this.hashUsers.values().stream().collect(Collectors.toMap(c->c.getId(),c.clone(),HashMap<Long,User> :: new));
+    }
+    public Map<Long,Post> getHashPosts() {
+        return this.hashPosts.values().stream().collect(Collectors.toMap(c->c.getId(),c.clone(),HashMap<Long,Post> :: new));
+    }
+    public Map<Long,User> getTreeDays() {
+        return this.treeDays.values().stream().collect(Collectors.toMap(c->c.getId(),c.clone(),HashTree<LocalDate,Day> :: new));
+    }
 
+    
+    //Metodos
     public void load(String dumpPath) {
         File inputFile = new File(dumpPath);
         try {
@@ -115,4 +167,31 @@ public class TCDExample implements TADCommunity {
     public void clear(){
 
     }
+    public TCD clone(){
+        TCD r = new TCD(this);
+    }
+
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        TCD object = (TCD) o;
+
+        if (qelog != null ? !qelog.equals(object.qelog) : object.qelog != null) return false;
+        if (hashTags != null ? !hashTags.equals(object.hashTags) : object.hashTags != null) return false;
+        if (hashUsers != null ? !hashUsers.equals(object.hashUsers) : object.hashUsers != null) return false;
+        if (hashPosts != null ? !hashPosts.equals(object.hashPosts) : object.hashPosts != null) return false;
+        return !(treeDays != null ? !treeDays.equals(object.treeDays) : object.treeDays != null);
+    }
+
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("TCD{");
+        sb.append("qelog = ").append(getQelog());
+        sb.append(", hashTags = ").append(getHashTags());
+        sb.append(", hashUsers = ").append(getHashUsers());
+        sb.append(", hashPosts = ").append(getHashPosts());
+        sb.append(", treeDays = ").append(treeDays);
+        return sb.append("}").toString();
+    }
+
 }
