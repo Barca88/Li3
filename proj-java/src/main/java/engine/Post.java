@@ -17,6 +17,13 @@ public abstract class Post{
         this.ownerUserId = ownerUserId;
         this.comment_c = comment_c;
     }
+    public Post(Post p){
+        this.id = p.getId();
+        this.creationDate = p.getDate();
+        this.score = p.getScore();
+        this.ownerUserId = p.getUser();
+        this.comment_c = p.getComment();
+    }
 
     //getters
     public getId(){
