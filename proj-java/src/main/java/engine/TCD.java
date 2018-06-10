@@ -169,6 +169,7 @@ public class TCD implements TADCommunity {
     }
     public TCD clone(){
         TCD r = new TCD(this);
+        return r;
     }
 
     public boolean equals(Object o) {
