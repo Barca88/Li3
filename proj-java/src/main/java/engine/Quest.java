@@ -1,3 +1,4 @@
+package engine;
 import java.util.ArrayList;
 import java.time.LocalDate;
 import java.lang.StringBuilder;
@@ -41,7 +42,10 @@ public class Quest extends Post{
         this.answer_c = answer_c;
     }
     public void setAnswerList(ArrayList<Long> answerList) {
-        this.answerList = answerList.clone();
+        ArrayList<Long> l = new ArrayList<Long>();
+        answerList.forEach(c->l.add(c));
+        answerList.clear();
+        this.answerList = l;
     }
     //Getters
     public String getTitle() {
@@ -54,7 +58,9 @@ public class Quest extends Post{
         return answer_c;
     }
     public ArrayList<Long> getAnswerList() {
-        return answerList.clone();
+        ArrayList<Long> l = new ArrayList<Long>();
+        this.answerList.forEach(c->l.add(c));
+        return l;
     }
     //Metodos
     public Quest clone(){

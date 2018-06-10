@@ -1,3 +1,5 @@
+package engine;
+
 import java.time.LocalDate;
 import java.lang.StringBuilder;
 
@@ -7,7 +9,7 @@ public class Answer extends Post{
     private float average; /* variavel que define a qualidade da resposta */
 
     public Answer(long id){
-        super(id,LocalDate.now(),o,-2,0);
+        super(id,LocalDate.now(),0,-2,0);
         this.parentId = -2;
         this.average = 0;
     }
@@ -18,8 +20,8 @@ public class Answer extends Post{
     }
     public Answer(Answer a){
         super(a);
-        this.parentId = g.getParentId();
-        this.average = g.getAverage();
+        this.parentId = a.getParentId();
+        this.average = a.getAverage();
     }
     //Setters
     public void setParentId(long parentId) {

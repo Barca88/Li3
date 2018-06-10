@@ -25,7 +25,10 @@ public class User {
         this.aboutMe = aboutMe;
         this.reputation = reputation;
         this.Nposts = Nposts;
-        this.posts = posts.forEach(c->c.clone()).clone();
+        ArrayList<Post> l = new ArrayList<Post>();
+        posts.forEach(c->l.add(c.clone()));
+        posts.clear();
+        this.posts = l;
     }
     public User(User u){
         this.id = u.getId();
@@ -51,7 +54,11 @@ public class User {
         this.Nposts = Nposts;
     }
     public void setPosts(ArrayList<Post> posts) {
-        this.posts = posts.forEach(c->c.clone()).clone();
+        ArrayList<Post> l = new ArrayList<Post>();
+        posts.forEach(c->l.add(c.clone()));
+        posts.clear();
+        this.posts.clear();
+        this.posts = l;
     }
     //Getters
     public long getId() {
@@ -70,7 +77,9 @@ public class User {
         return Nposts;
     }
     public ArrayList<Post> getPosts() {
-        return posts.forEach(c->c.clone()).clone();
+        ArrayList<Post> l = new ArrayList<Post>();
+        this.posts.forEach(c->l.add(c.clone()));
+        return l;
     }
     //Metodos
     public User clone(){

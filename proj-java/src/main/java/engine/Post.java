@@ -1,5 +1,7 @@
+package engine;
 import java.time.LocalDate;
 import java.lang.StringBuilder;
+import java.lang.Object;
 
 public abstract class Post{
     //variaveis de instancia
@@ -19,7 +21,7 @@ public abstract class Post{
     //unico metodo de criação necessario
     public Post(long id,LocalDate creationDate, int score, long ownerUserId, int comment_c){
         this.id = id;
-        this.creationDate = creationDate.clone();
+        this.creationDate = creationDate;
         this.score = score;
         this.ownerUserId = ownerUserId;
         this.comment_c = comment_c;
@@ -53,7 +55,7 @@ public abstract class Post{
         return id;
     }
     public LocalDate getDate(){
-        return creationDate.clone();
+        return creationDate;
     }
     public int getScore(){
         return score;
