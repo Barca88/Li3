@@ -9,6 +9,13 @@ public abstract class Post{
     private long ownerUserId;
     private int comment_c;
 
+    public Post(long id){
+        this.id = id;
+        this.creationDate = LocalDate.now();
+        this.score = 0;
+        this.ownerUserId = -2;
+        this.comment_c =0;
+    }
     //unico metodo de criação necessario
     public Post(long id,LocalDate creationDate, int score, long ownerUserId, int comment_c){
         this.id = id;
@@ -23,6 +30,22 @@ public abstract class Post{
         this.score = p.getScore();
         this.ownerUserId = p.getUser();
         this.comment_c = p.getComment();
+    }
+    //Setters
+    public void setId(long id) {
+        this.id = id;
+    }
+    public void setCreationDate(LocalDate creationDate) {
+        this.creationDate = creationDate;
+    }
+    public void setScore(int score) {
+        this.score = score;
+    }
+    public void setOwnerUserId(long ownerUserId) {
+        this.ownerUserId = ownerUserId;
+    }
+    public void setComment_c(int comment_c) {
+        this.comment_c = comment_c;
     }
 
     //getters
