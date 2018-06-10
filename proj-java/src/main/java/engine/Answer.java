@@ -6,6 +6,11 @@ public class Answer extends Post{
     private long parentId; /* Id da quest à qual esta answer responde. */
     private float average; /* variavel que define a qualidade da resposta */
 
+    public Answer(long id){
+        super(id,LocalDate.now(),o,-2,0);
+        this.parentId = -2;
+        this.average = 0;
+    }
     public Answer(long id, LocalDate data, int score, long ownerUserId, int comment_c, long parentId) {
         super(id,data,score,ownerUserId,comment_c);        
         this.parentId = parentId;
