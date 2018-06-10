@@ -1,3 +1,6 @@
+import java.time.LocalDate;
+import java.lang.StringBuilder;
+
 public class Answer extends Post{
     //var. de instancia
     private long parentId; /* Id da quest à qual esta answer responde. */
