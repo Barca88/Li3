@@ -1,13 +1,14 @@
 package engine;
 
 import common.Pair;
+import engine.Day;
 
+import java.util.Arrays;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.TreeMap;
-import java.util.stream;
-import java.util.stream.Collectors;
 import java.lang.StringBuilder;
 
 
@@ -19,16 +20,28 @@ public class TCD {
     private Map<LocalDate,Day> treeDays;  /* Tree dos days.         */
     //Contrutuores vazio, parameterizado e cópia
     public TCD(){
-        this.hashTags = new HashTable<Long,Tag>();
-        this.hashUsers = new HashTable<Long,Tag>();
-        this.hashPosts = new HashTable<Long,Tag>();
+        this.hashTags = new HashMap<Long,Tag>();
+        this.hashUsers = new HashMap<Long,User>();
+        this.hashPosts = new HashMap<Long,Post>();
         this.treeDays = new TreeMap<LocalDate,Day>();
     }
     public TCD(Map<Long,Tag> hashTags, Map<Long,User> hashUsers, Map<Long,Post> hashPosts, Map<LocalDate,Day> treeDays){
-        this.hashTags = hashTags.values().stream().collect(Collectors.toMap(c->c.getId(),c.clone(),HashMap<Long,Tag> :: new)); 
-        this.hashUsers = hashUsers.values().stream().collect(Collectors.toMap(c->c.getId(),c.clone(),HashMap<Long,User> :: new));
-        this.hashPosts = hashPosts.values().stream().collect(Collectors.toMap(c->c.getId(),c.clone(),HashMap<Long,Post> :: new));
-        this.treeDays = treeDays.values().stream().collect(Collectors.toMap(c->c.getId(),c.clone(),HashTree<LocalDate,Day> :: new));
+        HashMap<Long,Tag> hTags = new HashMap<Long,Tag>();
+        hashTags.values().forEach(t->hTags.put(t.getId(),t.clone()));
+        hashTags.clear();
+        this.hashTags = hTags;
+        HashMap<Long,User> hUsers = new HashMap<Long,User>();
+        hashUsers.values().forEach(t->hUsers.put(t.getId(),t.clone()));
+        hashUsers.clear();
+        this.hashUsers = hUsers;
+        HashMap<Long,Post> hPosts = new HashMap<Long,Post>();
+        hashPosts.values().forEach(t->hPosts.put(t.getId(),t.clone()));
+        hashPosts.clear();
+        this.hashPosts = hPosts;
+        TreeMap<LocalDate,Day> tDays = new TreeMap<LocalDate,Day>();
+        treeDays.values().forEach(d->tDays.put(d.getData(),d.clone()));
+        treeDays.clear();
+        this.treeDays = tDays;
     }
     public TCD(TCD t){
         this.hashTags = t.getTags();
@@ -38,29 +51,49 @@ public class TCD {
     }
     //Setters
     public void setHashTags(Map<Long,Tag> hashTags) {
-        this.hashTags = hashTags.values().stream().collect(Collectors.toMap(c->c.getId(),c.clone(),HashMap<Long,Tag> :: new)); 
+        HashMap<Long,Tag> hTags = new HashMap<Long,Tag>();
+        hashTags.values().forEach(t->hTags.put(t.getId(),t.clone()));
+        hashTags.clear();
+        this.hashTags = hTags;
     }
     public void setHashUsers(Map<Long,User> hashUsers) {
-        this.hashUsers = hashUsers.values().stream().collect(Collectors.toMap(c->c.getId(),c.clone(),HashMap<Long,User> :: new));
+        HashMap<Long,User> hUsers = new HashMap<Long,User>();
+        hashUsers.values().forEach(t->hUsers.put(t.getId(),t.clone()));
+        hashUsers.clear();
+        this.hashUsers = hUsers;
     }
     public void setHashPosts(Map<Long,Post> hashPosts) {
-        this.hashPosts = hashPosts.values().stream().collect(Collectors.toMap(c->c.getId(),c.clone(),HashMap<Long,Post> :: new));
+        HashMap<Long,Post> hPosts = new HashMap<Long,Post>();
+        hashPosts.values().forEach(t->hPosts.put(t.getId(),t.clone()));
+        hashPosts.clear();
+        this.hashPosts = hPosts;
     }
     public void setTreeDays(Map<LocalDate,Day> treeDays) {
-        this.treeDays = treeDays.values().stream().collect(Collectors.toMap(c->c.getId(),c.clone(),HashTree<LocalDate,Day> :: new));
+        TreeMap<LocalDate,Day> tDays = new TreeMap<LocalDate,Day>();
+        treeDays.values().forEach(d->tDays.put(d.getData(),d.clone()));
+        treeDays.clear();
+        this.treeDays = tDays;
     }
     //Getters
-    public Map<Long,Tag> getHashTags() {
-        return this.hashTags.values().stream().collect(Collectors.toMap(c->c.getId(),c.clone(),HashMap<Long,Tag> :: new)); 
+    public Map<Long,Tag> getTags() {
+        HashMap<Long,Tag> hTags = new HashMap<Long,Tag>();
+        this.hashTags.values().forEach(t->hTags.put(t.getId(),t.clone()));
+        return hTags;
     }
-    public Map<Long,User> getHashUsers() {
-        return this.hashUsers.values().stream().collect(Collectors.toMap(c->c.getId(),c.clone(),HashMap<Long,User> :: new));
+    public Map<Long,User> getUsers() {
+        HashMap<Long,User> hUsers = new HashMap<Long,User>();
+        this.hashUsers.values().forEach(t->hUsers.put(t.getId(),t.clone()));
+        return hUsers;
     }
-    public Map<Long,Post> getHashPosts() {
-        return this.hashPosts.values().stream().collect(Collectors.toMap(c->c.getId(),c.clone(),HashMap<Long,Post> :: new));
+    public Map<Long,Post> getPosts() {
+        HashMap<Long,Post> hPosts = new HashMap<Long,Post>();
+        this.hashPosts.values().forEach(t->hPosts.put(t.getId(),t.clone()));
+        return hPosts;
     }
-    public Map<Long,User> getTreeDays() {
-        return this.treeDays.values().stream().collect(Collectors.toMap(c->c.getId(),c.clone(),HashTree<LocalDate,Day> :: new));
+    public Map<LocalDate,Day> getDays() {
+        TreeMap<LocalDate,Day> tDays = new TreeMap<LocalDate,Day>();
+        this.treeDays.values().forEach(d->tDays.put(d.getData(),d.clone()));
+        return tDays;
     }
     
     //Metodos
@@ -147,7 +180,6 @@ public class TCD {
 
         TCD object = (TCD) o;
 
-        if (qelog != null ? !qelog.equals(object.qelog) : object.qelog != null) return false;
         if (hashTags != null ? !hashTags.equals(object.hashTags) : object.hashTags != null) return false;
         if (hashUsers != null ? !hashUsers.equals(object.hashUsers) : object.hashUsers != null) return false;
         if (hashPosts != null ? !hashPosts.equals(object.hashPosts) : object.hashPosts != null) return false;
@@ -156,10 +188,9 @@ public class TCD {
 
     public String toString() {
         final StringBuilder sb = new StringBuilder("TCD{");
-        sb.append("qelog = ").append(getQelog());
-        sb.append(", hashTags = ").append(getHashTags());
-        sb.append(", hashUsers = ").append(getHashUsers());
-        sb.append(", hashPosts = ").append(getHashPosts());
+        sb.append("hashTags = ").append(hashTags);
+        sb.append(", hashUsers = ").append(hashUsers);
+        sb.append(", hashPosts = ").append(hashPosts);
         sb.append(", treeDays = ").append(treeDays);
         return sb.append("}").toString();
     }

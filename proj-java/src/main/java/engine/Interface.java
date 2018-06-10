@@ -4,6 +4,8 @@ import common.MyLog;
 import li3.TADCommunity;
 import engine.TCD;
 
+import java.util.List;
+import java.time.LocalDate;
 import java.lang.StringBuilder;
 public class Interface implements TADCommunity {
     private TCD tcd;
@@ -20,6 +22,7 @@ public class Interface implements TADCommunity {
     //Setters
     public void setTcd(TCD tcd) {
         this.tcd = tcd.clone();
+        //tcd.clear()  --TODO
     }
     //Getters
     public TCD getTcd() {
@@ -88,13 +91,11 @@ public class Interface implements TADCommunity {
 
         Interface object = (Interface) o;
 
-        if (qeLog != null ? !qeLog.equals(object.qeLog) : object.qeLog != null) return false;
         return !(tcd != null ? !tcd.equals(object.tcd) : object.tcd != null);
     }
     //toString
     public String toString() {
         final StringBuilder sb = new StringBuilder("Interface{");
-        sb.append("qeLog = ").append(getQeLog());
         sb.append(", tcd = ").append(getTcd());
         return sb.append("}").toString();
     }
