@@ -1,3 +1,9 @@
+/** @file User.java
+ *  @brief Funções que trabalham com os User.
+ *
+ *  @author Grupo 19
+ */
+
 package engine;
 import java.util.ArrayList;
 import java.lang.StringBuilder;

@@ -1,3 +1,9 @@
+/** @file Tag.java
+ *  @brief Funções que trabalham com as Tag.
+ *
+ *  @author Grupo 19
+ */
+
 package engine;
 import java.lang.StringBuilder;
 public class Tag {

@@ -1,3 +1,9 @@
+/** @file Post.java
+ *  @brief Funções que trabalham com os Post.
+ *
+ *  @author Grupo 19
+ */
+
 package engine;
 import java.time.LocalDate;
 import java.lang.StringBuilder;
@@ -5,11 +11,11 @@ import java.lang.Object;
 
 public abstract class Post{
     //variaveis de instancia
-    private long id;
-    private LocalDate creationDate;
-    private int score;
-    private long ownerUserId;
-    private int comment_c;
+    private long id; /* Id de um post. */
+    private LocalDate creationDate; /* Data de criação de um post. */
+    private int score; /* Score de um post. */
+    private long ownerUserId; /* Id de um user que elaborou um determinado post. */
+    private int comment_c; /* Nº de comentários que um determinado post tem. */
 
     public Post(long id){
         this.id = id;

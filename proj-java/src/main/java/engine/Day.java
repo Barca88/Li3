@@ -1,3 +1,9 @@
+/** @file Day.java
+ *  @brief Funções que trabalham com os Days.
+ *
+ *  @author Grupo 19
+ */
+
 package engine;
 
 import engine.Post;
@@ -9,10 +15,10 @@ import java.lang.StringBuilder;
 
 public class Day{
     //var. de inststancia
-    private LocalDate data;
-    private Map<Long,Post> posts;
-    private int nQuest;
-    private int nAnswer;
+    private LocalDate data; /* Data de um dia. */
+    private Map<Long,Post> posts; /* Lista de posts. */
+    private int nQuest; /* Nº de quest num dia. */
+    private int nAnswer; /* Nº de answer num dia. */
     //Construtores
     public Day(){
         this.data = LocalDate.now();

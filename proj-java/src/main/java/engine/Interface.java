@@ -1,3 +1,9 @@
+/** @file Interface.java
+ *  @brief Funções que trabalham com o Interface.
+ *
+ *  @author Grupo 19
+ */
+
 package engine;
 import common.Pair;
 import common.MyLog;

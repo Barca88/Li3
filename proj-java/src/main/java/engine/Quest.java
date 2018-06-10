@@ -1,3 +1,9 @@
+/** @file Quest.java
+ *  @brief Funções que trabalham com as Quest.
+ *
+ *  @author Grupo 19
+ */
+
 package engine;
 import java.util.ArrayList;
 import java.time.LocalDate;
@@ -5,10 +11,10 @@ import java.lang.StringBuilder;
 
 public class Quest extends Post{
     //var. de instancia
-    private String title;
-    private String tags;
-    private int answer_c;
-    private ArrayList<Long> answerList;
+    private String title; /* Título da pergunta. */
+    private String tags; /* Tag da pergunta. */
+    private int answer_c; /* Nº de answer. */
+    private ArrayList<Long> answerList; /* Lista das answer de uma quest. */
     //Construtores
     public Quest(long id){
         super(id,LocalDate.now(),0,-2,0);

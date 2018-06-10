@@ -1,3 +1,9 @@
+/** @file Answer.java
+ *  @brief Funções que trabalham com as Answer.
+ *
+ *  @author Grupo 19
+ */
+
 package engine;
 
 import java.time.LocalDate;

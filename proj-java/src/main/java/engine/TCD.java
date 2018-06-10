@@ -1,3 +1,9 @@
+/** @file TCD.java
+ *  @brief Funções que trabalham com os TCD.
+ *
+ *  @author Grupo 19
+ */
+
 package engine;
 
 import common.Pair;
