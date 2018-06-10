@@ -93,6 +93,7 @@ public class User {
         return r;
     }
 
+    //Equals
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -107,6 +108,7 @@ public class User {
         return !(posts != null ? !posts.equals(object.posts) : object.posts != null);
     }
 
+    //toString
     public String toString() {
         final StringBuilder sb = new StringBuilder("User{");
         sb.append("id = ").append(getId());

@@ -74,6 +74,7 @@ public class Quest extends Post{
         return q;
     }
 
+    //Equals
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -87,6 +88,7 @@ public class Quest extends Post{
         return !(answerList != null ? !answerList.equals(object.answerList) : object.answerList != null);
     }
 
+    //toString
     public String toString() {
         final StringBuilder sb = new StringBuilder("Quest{");
         sb.append("title = ").append(getTitle());

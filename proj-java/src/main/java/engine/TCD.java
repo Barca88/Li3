@@ -175,11 +175,14 @@ public class TCD {
     public void clear(){//acho que isto serve para dar clear nos ArrayList
 
     }
+
+    //Clone
     public TCD clone(){
         TCD r = new TCD(this);
         return r;
     }
 
+    //Equals
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -192,6 +195,7 @@ public class TCD {
         return !(treeDays != null ? !treeDays.equals(object.treeDays) : object.treeDays != null);
     }
 
+    //toString
     public String toString() {
         final StringBuilder sb = new StringBuilder("TCD{");
         sb.append("hashTags = ").append(hashTags);

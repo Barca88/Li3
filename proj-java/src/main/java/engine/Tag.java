@@ -53,6 +53,7 @@ public class Tag {
         return r;
     }
 
+    //Equals
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -64,6 +65,7 @@ public class Tag {
         return !(n_used != object.n_used);
     }
 
+    //toString
     public String toString() {
         final StringBuilder sb = new StringBuilder("Tag{");
         sb.append("id = ").append(getId());

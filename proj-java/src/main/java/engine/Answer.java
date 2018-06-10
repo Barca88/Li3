@@ -50,6 +50,7 @@ public class Answer extends Post{
         return r;
     }
 
+    //Equals
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -61,6 +62,7 @@ public class Answer extends Post{
         return !(Float.compare(average, object.average) != 0);
     }
 
+    //toString
     public String toString() {
         final StringBuilder sb = new StringBuilder("Answer{");
         sb.append("parentId = ").append(getParentId());

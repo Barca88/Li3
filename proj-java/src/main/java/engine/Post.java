@@ -56,7 +56,7 @@ public abstract class Post{
         this.comment_c = comment_c;
     }
 
-    //getters
+    //Getters
     public long getId(){
         return id;
     }
@@ -72,9 +72,10 @@ public abstract class Post{
     public int getComment(){
         return comment_c;
     }
-    //clone
+    //Clone
     public abstract Post clone();
 
+    //Equals
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -88,6 +89,7 @@ public abstract class Post{
         return !(comment_c != object.comment_c);
     }
 
+    //toString
     public String toString() {
         final StringBuilder sb = new StringBuilder("Post{");
         sb.append("id = ").append(id);
