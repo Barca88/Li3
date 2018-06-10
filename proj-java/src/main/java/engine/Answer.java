@@ -34,6 +34,7 @@ public class Answer extends Post{
     //Metodos
     public Answer clone(){
         Answer r = new Answer(this);
+        return r;
     }
 
     public boolean equals(Object o) {
