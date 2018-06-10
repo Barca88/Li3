@@ -5,34 +5,24 @@ import engine.TCD;
 
 import java.lang.StringBuilder;
 public class Interface implements TADCommunity {
-    private Mylog qeLog;
     private TCD tcd;
 
     public Interface(){
-        this.qeLog = new MyLog("queryengine");
         this.tcd = new TCD();
     }
-    public Interface(MyLog qeLog, TCD t){
-        this.qeLog = qeLog;
+    public Interface(TCD t){
         this.tcd = t.clone();
     }
     public Interface(Interface i){
-        this.qeLog = i.getQeLog();
         this.tcd = i.getTcd();
     }
     //Setters
-    public void setQeLog(Mylog qeLog) {
-        this.qeLog = qeLog;
-    }
     public void setTcd(TCD tcd) {
-        this.tcd = tcd;
+        this.tcd = tcd.clone();
     }
     //Getters
-    public Mylog getQeLog() {
-        return qeLog;
-    }
     public TCD getTcd() {
-        return tcd;
+        return tcd.clone();
     }
     //Load
     public void load(String file){
@@ -81,6 +71,9 @@ public class Interface implements TADCommunity {
     // Query 11
     public List<Long> mostUsedBestRep(int N, LocalDate begin, LocalDate end) {
         return this.tcd.query11(N,begin,end);
+    }
+    //Clear
+    public void clear(){
     }
     //Clone
     public Interface clone(){

@@ -49,19 +49,19 @@ public abstract class Post{
     }
 
     //getters
-    public getId(){
+    public long getId(){
         return id;
     }
-    public getDate(){
+    public LocalDate getDate(){
         return creationDate.clone();
     }
-    public getScore(){
+    public int getScore(){
         return score;
     }
-    public getUser(){
+    public long getUser(){
         return ownerUserId;
     }
-    public getComment(){
+    public int getComment(){
         return comment_c;
     }
     //clone
