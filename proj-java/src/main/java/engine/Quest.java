@@ -9,6 +9,13 @@ public class Quest extends Post{
     private int answer_c;
     private ArrayList<Long> answerList;
     //Construtores
+    public Quest(long id){
+        super(id,LocalDate.now(),0,-2,0);
+        this.title = "";
+        this.tags = "";
+        this.answer_c = 0;
+        this.answerList = new ArrayList<Long>();
+    }
     public Quest(long id, LocalDate date, int score, long ownerUserId, int comment_c, String title, String tags, int answer_c){
         super(id,date,score,ownerUserId,comment_c);
         this.title = title;
@@ -76,5 +83,4 @@ public class Quest extends Post{
         sb.append(", answerList = ").append(getAnswerList());
         return sb.append("}").toString();
     }
-
 }
