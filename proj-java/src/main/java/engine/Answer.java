@@ -3,10 +3,10 @@ public class Answer extends Post{
     private long parentId; /* Id da quest à qual esta answer responde. */
     private float average; /* variavel que define a qualidade da resposta */
 
-    public Answer(long id, LocalDate data, int score, long ownerUserId, int comment_c, long parentId, float average) {
+    public Answer(long id, LocalDate data, int score, long ownerUserId, int comment_c, long parentId) {
         super(id,data,score,ownerUserId,comment_c);        
         this.parentId = parentId;
-        this.average = average;
+        this.average = 0;
     }
     public Answer(Answer a){
         super(a);
