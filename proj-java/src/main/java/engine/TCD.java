@@ -104,6 +104,28 @@ public class TCD {
     }
     
     //Metodos
+    public void addTag(Tag t){
+        if(this.hashTags.containsKey(t.getId())) return;
+        this.hashTags.put(t.getId(),t.clone());
+        t.clear();
+    }
+    public void addUser(User u){
+        if(this.hashUsers.containsKey(u.getId())) return;
+        this.hashUsers.put(t.getId(),t.clone());
+        t.clear();
+    }
+    //--TODO  TCD.addDay(Post p) e User.addPost(p)
+    public void addPost(Post p){
+        if(this.hashPosts.containsKey(p.getId())) return;
+        this.addDay(p);
+        long user = p.getUser();
+        if(this.hashUsers.containsKey(user)){
+            this.hashUsers.get(user).addPost(p);
+        }
+        this.hashPosts.put(p.getId(),p.clone());
+        p.clear();
+    }
+
     public void load(String dumpPath) {
         Parser p = new Parser();
         p.parseTags(dumpPath);
