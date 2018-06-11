@@ -9,28 +9,29 @@ import engine.Answer;
 import javax.xml.stream.XMLStreamException;
 import java.io.FileNotFoundException;
 
+import javax.xml.stream.XMLInputFactory;
+import java.io.FileInputStream;
 import java.io.FileReader;
+import java.io.File;
 import java.util.Iterator;
 import javax.xml.stream.*;
 import javax.xml.namespace.QName;
 import javax.xml.stream.events.XMLEvent;
 
 public class Parser{
-    public void parseTags(TCD d,String file) {
-        XMLInputFactory xmlif = XMLInputFactory.newInstance();
-        int e;
-        String id;
-        String tagName;
-        String text;
+    public void parseTags(TCD data, String file) {
+        int ev;
+        String text,id,TagName = "nnnn";
         try{
-            XMLStreamReader xmlr = xmlif.createXMLStreamReader(new FileReader(file));
-            Tag t;
+            XMLInputFactory xmlif = XMLInputFactory.newInstance();
+            xmlif.setProperty(XMLInputFactory.IS_COALESCING,true);
+            XMLStreamReader xmlr = xmlif.createXMLStreamReader(new FileInputStream(new File(file)));
+
             while(xmlr.hasNext()) {
-				e = xmlr.next();
-				if(e == XMLStreamConstants.START_ELEMENT) {
+				ev = xmlr.next();
+				if(ev == XMLStreamConstants.START_ELEMENT) {
 					text = xmlr.getLocalName();
 					if (text.equals("row")) {
-						id = xmlr.getAttributeValue(null, "Id");               
 						tagName = xmlr.getAttributeValue(null, "TagName");  
                         t = new Tag(Long.parseLong(id),tagName,0);
                         data.addTag(t);
@@ -120,10 +121,10 @@ public class Parser{
                     }
 				}
             }
-        } catch (FileNotFoundException eis) {
-            eis.printStackTrace();
-        } catch (XMLStreamException eis) {
-            eis.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (XMLStreamException e) {
+            e.printStackTrace();
         }
    }
 }
