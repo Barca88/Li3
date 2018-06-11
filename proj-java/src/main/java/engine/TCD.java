@@ -8,6 +8,7 @@ package engine;
 
 import common.Pair;
 import engine.Day;
+import engine.Parser;
 
 import java.util.Arrays;
 import java.time.LocalDate;
@@ -104,7 +105,8 @@ public class TCD {
     
     //Metodos
     public void load(String dumpPath) {
-        //Parser(this,dumpPath);
+        Parser p = new Parser();
+        p.parseTags(dumpPath);
     }
 
     // Query 1
