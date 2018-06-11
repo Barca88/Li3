@@ -109,16 +109,15 @@ public class TCD {
     }
     public void addUser(User u){
         if(this.hashUsers.containsKey(u.getId())) return;
-        this.hashUsers.put(u.getId(),u.clone());
+        this.hashUsers.put(u.getId(),u);
     }
     public void addPost(Post p){
         if(this.hashPosts.containsKey(p.getId())) return;
+        this.hashPosts.put(p.getId(),p);
         this.addDay(p);
         long user = p.getUser();
-        if(this.hashUsers.containsKey(user)){
+        if(this.hashUsers.containsKey(user))
             this.hashUsers.get(user).addPost(p);
-        }
-        this.hashPosts.put(p.getId(),p.clone());
        // p.clear();
     }
     private void addDay(Post p){
@@ -141,12 +140,11 @@ public class TCD {
         pa.parseTags(this,t);
         pa.parseUsers(this,u);
         pa.parsePosts(this,p);
-        System.out.println(this);
     }
 
     // Query 1
     public Pair<String,String> query1(long id) {
-        return new Pair<>("What are the actual risks of giving www-data sudo nopasswd access?", "WebNinja");
+        return new Pair<>("WebNinjalol", this.hashUsers.get(this.hashPosts.get(id).getUser()).getName());
     }
 
     // Query 2
