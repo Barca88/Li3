@@ -1,3 +1,9 @@
+/** @file Parser.java
+ *  @brief Funções que trabalham com o Parser.
+ *
+ *  @author Grupo 19
+ */
+
 package engine;
 
 import javax.xml.stream.XMLStreamException;
@@ -15,6 +21,7 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.events.XMLEvent;
 
 public class Parser{
+//Cria uma tag e insere-a na estrutura das tags.
     public void parseTags(TCD data,String file) {
         int ev;
         String text,TagName;
@@ -44,6 +51,7 @@ public class Parser{
         }
    }
 
+//Cria um novo user e insere-o na estrutura dos users.
    public void parseUsers(TCD data,String file) {
         int ev;
         long id,reputation;
@@ -72,6 +80,7 @@ public class Parser{
         }
     }
 
+//Cria um novo post e insere-o na estrutura dos posts.
     public void parsePosts(TCD data,String file) {
         XMLInputFactory xmlif = XMLInputFactory.newInstance();
         int ev, score, nComment, nAnswer;
