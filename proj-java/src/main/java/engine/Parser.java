@@ -1,70 +1,66 @@
 package engine;
-import engine.TCD;
-import engine.Tag;
-import engine.User;
-import engine.Post;
-import engine.Quest;
-import engine.Answer;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.FileNotFoundException;
 
-import javax.xml.stream.XMLInputFactory;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.File;
+import java.lang.Number;
 import java.util.Iterator;
 import javax.xml.stream.*;
 import javax.xml.namespace.QName;
 import javax.xml.stream.events.XMLEvent;
 
 public class Parser{
-    public void parseTags(TCD data, String file) {
+    public void parseTags(TCD data,String file) {
         int ev;
-        String text,id,TagName = "nnnn";
+        String text,TagName;
+        long Id;
+        int Count;
         try{
             XMLInputFactory xmlif = XMLInputFactory.newInstance();
             xmlif.setProperty(XMLInputFactory.IS_COALESCING,true);
             XMLStreamReader xmlr = xmlif.createXMLStreamReader(new FileInputStream(new File(file)));
-
             while(xmlr.hasNext()) {
 				ev = xmlr.next();
 				if(ev == XMLStreamConstants.START_ELEMENT) {
 					text = xmlr.getLocalName();
 					if (text.equals("row")) {
-						tagName = xmlr.getAttributeValue(null, "TagName");  
-                        t = new Tag(Long.parseLong(id),tagName,0);
+						Id = Long.parseLong(xmlr.getAttributeValue(null, "Id"),10);               
+						TagName = xmlr.getAttributeValue(null, "TagName");  
+                        Count = Integer.parseInt(xmlr.getAttributeValue(null, "Count"));
+                        Tag t = new Tag(Id,TagName,Count);
                         data.addTag(t);
                     }
 				}
             }
-        } catch (FileNotFoundException eis) {
-            eis.printStackTrace();
-        } catch (XMLStreamException eis) {
-            eis.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (XMLStreamException e) {
+            e.printStackTrace();
         }
    }
-   public void parseUsers(TCD d,String file) {
-        XMLInputFactory xmlif = XMLInputFactory.newInstance();
-        int e;
-        String id;
-        String name;
-        String aboutMe;
-        String reputation;
+
+   public void parseUsers(TCD data,String file) {
+        int ev;
+        long id,reputation;
+        String name, aboutMe, text;
         try{
+            XMLInputFactory xmlif = XMLInputFactory.newInstance();
             XMLStreamReader xmlr = xmlif.createXMLStreamReader(new FileReader(file));
-            User u; 
             while(xmlr.hasNext()) {
-				e = xmlr.next();
-				if(e == XMLStreamConstants.START_ELEMENT) {
+				ev = xmlr.next();
+				if(ev == XMLStreamConstants.START_ELEMENT) {
 					text = xmlr.getLocalName();
 					if (text.equals("row")) {
-						id = xmlr.getAttributeValue(null, "Id");               
-						reputation = xmlr.getAttributeValue(null, "Reputation");  
+						id = Long.parseLong(xmlr.getAttributeValue(null, "Id"));
+						reputation = Long.parseLong(xmlr.getAttributeValue(null, "Reputation"));
 						name = xmlr.getAttributeValue(null, "DisplayName");  
 						aboutMe = xmlr.getAttributeValue(null, "AboutMe");  
-
-                        u = new User(Long.parseLong(id),name,aboutMe,Long.parseLong(reputation),0,new ArryList<Posts>());
+                        User u = new User(id,name,aboutMe,reputation,0,new ArrayList<Post>());
                         data.addUser(u);
                     }
 				}
@@ -75,47 +71,37 @@ public class Parser{
             eis.printStackTrace();
         }
     }
-    public void parsePost(TCD d,String file) {
+
+    public void parsePosts(TCD data,String file) {
         XMLInputFactory xmlif = XMLInputFactory.newInstance();
-        int e;
-        String id;
-        String date;
-        String score;
-        String userId;
-        String nComment;
-        String pId;
-        String title;
-        String tags;
-        String nAnswer;
+        int ev, score, nComment, nAnswer;
+        long id, pId, userId;
+        LocalDate date;
+        String text, title, tags;
         try{
             XMLStreamReader xmlr = xmlif.createXMLStreamReader(new FileReader(file));
             Quest q;
             Answer a;
             while(xmlr.hasNext()) {
-				e = xmlr.next();
-				if(e == XMLStreamConstants.START_ELEMENT) {
+				ev = xmlr.next();
+				if(ev == XMLStreamConstants.START_ELEMENT) {
 					text = xmlr.getLocalName();
 					if (text.equals("row")) {
-                        id = xmlr.getAttributeValue(null, "Id");
-                        date = xmlr.getAttributeValue(null, "CreationDate");               
-                        score = xmlr.getAttributeValue(null, "Score");
-                        userId = xmlr.getAttributeValue(null, "OwnerUserId");
-                        nComment = xmlr.getAttributeValue(null, "CommentCount");
-                        String[] s = date.split("T");
-
+                        id = Long.parseLong(xmlr.getAttributeValue(null, "Id"));
+                        date = LocalDate.parse(xmlr.getAttributeValue(null, "CreationDate").substring(11));               
+                        score =  Integer.parseInt(xmlr.getAttributeValue(null, "Score"));
+                        userId =  Long.parseLong(xmlr.getAttributeValue(null, "OwnerUserId"));
+                        nComment =  Integer.parseInt(xmlr.getAttributeValue(null, "CommentCount"));
                         if(xmlr.getAttributeValue(null,"PostTypeId") == "1"){
                             title = xmlr.getAttributeValue(null, "Title");
                             tags = xmlr.getAttributeValue(null, "Tags");
-                            nAnswer = xmlr.getAttributeValue(null, "AnswerCount");
+                            nAnswer = Integer.parseInt(xmlr.getAttributeValue(null, "AnswerCount"));
 
-                            q = new Quest(Long.parseLong(id), LocalDate.parse(s[0]), Integer.parseInt(score), 
-                                        Long.parseLong(userId), Integer.parseInt(nComment), 
-                                        title, tags, Integer.parseInt(nAnswer));
+                            q = new Quest(id, date, score, userId, nComment, title, tags, nAnswer);
                             data.addPost(q);
                         } else if(xmlr.getAttributeValue(null,"PostTypeId") == "2"){
-                            pId = xmlr.getAttributeValue(null,"ParentId");
-                            a = new Answer(Long.parseLong(id),LocalDate.parse(s[0]), Integer.parseInt(score),
-                                        Long.parseLong(userId), Integer.parseInt(nComment),Long.parseLong(pId));
+                            pId = Long.parseLong(xmlr.getAttributeValue(null,"ParentId"));
+                            a = new Answer(id, date, score, userId,nComment,pId);
                             data.addPost(a);
                         }
                     }
@@ -126,5 +112,5 @@ public class Parser{
         } catch (XMLStreamException e) {
             e.printStackTrace();
         }
-   }
+    }
 }

@@ -5,6 +5,7 @@
  */
 
 package engine;
+
 import java.util.ArrayList;
 import java.lang.StringBuilder;
 
@@ -88,6 +89,11 @@ public class User {
         return l;
     }
     //Metodos
+    public void addPost(Post p){
+        this.Nposts += 1;
+        this.posts.add(p.clone());
+    }
+
     public User clone(){
         User r = new User(this);
         return r;

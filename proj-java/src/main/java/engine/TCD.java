@@ -7,8 +7,6 @@
 package engine;
 
 import common.Pair;
-import engine.Day;
-import engine.Parser;
 
 import java.util.Arrays;
 import java.time.LocalDate;
@@ -21,20 +19,21 @@ import java.lang.StringBuilder;
 
 public class TCD {
     //var de instancia
-    private Map<Long,Tag> hashTags;       /* Hash das tags.         */
+    private Map<String,Tag> hashTags;       /* Hash das tags.         */
     private Map<Long,User> hashUsers;     /* Hash dos users.        */
     private Map<Long,Post> hashPosts;     /* Hash de Posts.         */
     private Map<LocalDate,Day> treeDays;  /* Tree dos days.         */
+    
     //Contrutuores vazio, parameterizado e cópia
     public TCD(){
-        this.hashTags = new HashMap<Long,Tag>();
+        this.hashTags = new HashMap<String,Tag>();
         this.hashUsers = new HashMap<Long,User>();
         this.hashPosts = new HashMap<Long,Post>();
         this.treeDays = new TreeMap<LocalDate,Day>();
     }
-    public TCD(Map<Long,Tag> hashTags, Map<Long,User> hashUsers, Map<Long,Post> hashPosts, Map<LocalDate,Day> treeDays){
-        HashMap<Long,Tag> hTags = new HashMap<Long,Tag>();
-        hashTags.values().forEach(t->hTags.put(t.getId(),t.clone()));
+    public TCD(Map<String,Tag> hashTags, Map<Long,User> hashUsers, Map<Long,Post> hashPosts, Map<LocalDate,Day> treeDays){
+        HashMap<String,Tag> hTags = new HashMap<String,Tag>();
+        hashTags.values().forEach(t->hTags.put(t.getTag(),t.clone()));
         hashTags.clear();
         this.hashTags = hTags;
         HashMap<Long,User> hUsers = new HashMap<Long,User>();
@@ -58,8 +57,8 @@ public class TCD {
     }
     //Setters
     public void setHashTags(Map<Long,Tag> hashTags) {
-        HashMap<Long,Tag> hTags = new HashMap<Long,Tag>();
-        hashTags.values().forEach(t->hTags.put(t.getId(),t.clone()));
+        HashMap<String,Tag> hTags = new HashMap<String,Tag>();
+        hashTags.values().forEach(t->hTags.put(t.getTag(),t.clone()));
         hashTags.clear();
         this.hashTags = hTags;
     }
@@ -82,9 +81,9 @@ public class TCD {
         this.treeDays = tDays;
     }
     //Getters
-    public Map<Long,Tag> getTags() {
-        HashMap<Long,Tag> hTags = new HashMap<Long,Tag>();
-        this.hashTags.values().forEach(t->hTags.put(t.getId(),t.clone()));
+    public Map<String,Tag> getTags() {
+        HashMap<String,Tag> hTags = new HashMap<String,Tag>();
+        this.hashTags.values().forEach(t->hTags.put(t.getTag(),t.clone()));
         return hTags;
     }
     public Map<Long,User> getUsers() {
@@ -105,16 +104,13 @@ public class TCD {
     
     //Metodos
     public void addTag(Tag t){
-        if(this.hashTags.containsKey(t.getId())) return;
-        this.hashTags.put(t.getId(),t.clone());
-        t.clear();
+        if(this.hashTags.containsKey(t.getTag())) return;
+        this.hashTags.put(t.getTag(),t.clone());
     }
     public void addUser(User u){
         if(this.hashUsers.containsKey(u.getId())) return;
-        this.hashUsers.put(t.getId(),t.clone());
-        t.clear();
+        this.hashUsers.put(u.getId(),u.clone());
     }
-    //--TODO  TCD.addDay(Post p) e User.addPost(p)
     public void addPost(Post p){
         if(this.hashPosts.containsKey(p.getId())) return;
         this.addDay(p);
@@ -123,12 +119,29 @@ public class TCD {
             this.hashUsers.get(user).addPost(p);
         }
         this.hashPosts.put(p.getId(),p.clone());
-        p.clear();
+       // p.clear();
     }
-
+    private void addDay(Post p){
+        Day d;
+        if(this.treeDays.containsKey(p.getDate())){
+            d = this.treeDays.get(p.getDate());
+        } else {
+            d = new Day(p.getDate());
+            this.treeDays.put(p.getDate(),d);
+        }
+        d.addPost(p);
+    }
     public void load(String dumpPath) {
-        Parser p = new Parser();
-        p.parseTags(dumpPath);
+        String t = new String(dumpPath),u = new String(dumpPath),p = new String(dumpPath);
+        t = t.concat("Tags.xml");
+        u = u.concat("Users.xml");
+        p = p.concat("Posts.xml");
+
+        Parser pa = new Parser();
+        pa.parseTags(this,t);
+        pa.parseUsers(this,u);
+        pa.parsePosts(this,p);
+        System.out.println(this);
     }
 
     // Query 1

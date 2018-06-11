@@ -20,8 +20,8 @@ public class Day{
     private int nQuest; /* Nº de quest num dia. */
     private int nAnswer; /* Nº de answer num dia. */
     //Construtores
-    public Day(){
-        this.data = LocalDate.now();
+    public Day(LocalDate d){
+        this.data = d;
         this.posts = new HashMap<Long,Post>();
         this.nQuest = 0;
         this.nAnswer = 0;
@@ -70,6 +70,14 @@ public class Day{
     }
     public int getNAnswer() {
         return nAnswer;
+    }
+    public void addPost(Post p){
+        if(p instanceof Quest){
+            this.nQuest += 1;
+        }else {
+            this.nAnswer += 1;
+        }
+        this.posts.put(p.getId(),p.clone());
     }
     //Clone
     public Day clone(){
