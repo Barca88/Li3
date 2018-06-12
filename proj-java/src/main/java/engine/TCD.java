@@ -191,7 +191,23 @@ public class TCD {
 
     // Query 6
     public List<Long> query6(int N, LocalDate begin, LocalDate end) {
-        return Arrays.asList(701775L,697197L,694560L,696641L,704208L);
+        Map<Long,Post> auxA = new HashMap<>();
+    
+        for(Day d : this.getDays().values()){
+            if(d.getDate().isBefore(end) && d.getDate().isAfter(begin)){
+                for(Post p : d.getPosts().values()){
+                    if(p instanceof Answer) auxA.put(p.getId(),p);
+                }
+            }
+        }
+
+        return auxA.values().stream().sorted(new ComparatorScorePost())
+                            .limit(N)
+                            .map(c->c.getId())
+                            .collect(Collectors.toCollection(ArrayList::new));
+
+
+        //return Arrays.asList(701775L,697197L,694560L,696641L,704208L);
     }
 
     // Query 7
@@ -205,8 +221,47 @@ public class TCD {
     }
 
     // Query 9
+    // Funcão para transformar um Map de posts em um map de ids de Quests
+    private Map<Long,Long> aux9(Map<Long,Post> posts){
+        Map<Long,Long> r = new HashMap<>();
+        Answer a;
+        for( Post p : posts.values()){
+            if(p instanceof Quest) r.put(p.getId(),p.getId());
+            if(p instanceof Answer){
+                a = (Answer)p;
+                r.put(a.getParentId(),a.getParentId());
+            }
+        }
+        return r;
+    }
     public List<Long> query9(int N, long id1, long id2) {
-        return Arrays.asList(594L);
+        User a = this.hashUsers.get(id1).clone();
+        User b = this.hashUsers.get(id2).clone();
+
+        Map<Long,Long> questA = aux9(a.getPosts());
+        Map<Long,Long> questB = aux9(b.getPosts());
+
+        ArrayList<Long> r = new ArrayList<Long>();
+        ArrayList<Post> ps = new ArrayList<Post>();
+
+        for(Long q : questA.values()){
+            if(questB.containsKey(q)){
+                r.add(q);
+            }
+        }
+        for(Long l : r){
+            ps.add(this.hashPosts.get(l).clone());
+        }
+
+        r = ps.stream().sorted(new ComparatorDatePost())
+                  .limit(N)
+                  .map(p->p.getId())
+                  .collect(Collectors.toCollection(ArrayList :: new));
+
+        questA.clear();
+        questB.clear();
+        System.out.println(r);
+        return r;
     }
 
     // Query 10
