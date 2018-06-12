@@ -53,6 +53,7 @@ public class Quest extends Post{
         answerList.clear();
         this.answerList = l;
     }
+
     //Getters
     public String getTitle() {
         return title;
