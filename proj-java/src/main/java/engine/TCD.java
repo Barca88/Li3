@@ -150,12 +150,10 @@ public class TCD {
 
     // Query 2
     public List<Long> query2(int N) {
-        
-        //Map<Long,User> map = this.getUsers();
-        List<Long> l =  this.getUsers().values().stream().sorted(new ComparatorNposts()).limit(N)
-                                    .map(u->u.getId())
-                                    .collect(Collectors.toCollection(ArrayList :: new));
-        return l;
+        return this.getUsers().values().stream().sorted(new ComparatorNPosts())
+                                        .limit(N)
+                                        .map(u->u.getId())
+                                        .collect(Collectors.toCollection(ArrayList :: new));
     }
 
     // Query 3
