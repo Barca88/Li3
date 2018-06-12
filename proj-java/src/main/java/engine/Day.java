@@ -15,19 +15,19 @@ import java.lang.StringBuilder;
 
 public class Day{
     //var. de inststancia
-    private LocalDate data; /* Data de um dia. */
+    private LocalDate date; /* Data de um dia. */
     private Map<Long,Post> posts; /* Lista de posts. */
     private int nQuest; /* Nº de quest num dia. */
     private int nAnswer; /* Nº de answer num dia. */
     //Construtores
     public Day(LocalDate d){
-        this.data = d;
+        this.date = d;
         this.posts = new HashMap<Long,Post>();
         this.nQuest = 0;
         this.nAnswer = 0;
     }
     public Day(LocalDate date,Map<Long,Post> map,int nQuest,int nAnswer){
-        this.data = date;
+        this.date = date;
         HashMap<Long,Post> m = new HashMap<Long,Post>();
         map.values().forEach(p->m.put(p.getId(),p.clone()));
         this.posts = m;
@@ -35,14 +35,14 @@ public class Day{
         this.nAnswer = nAnswer;
     }
     public Day(Day d){
-        this.data = d.getData();
+        this.date = d.getDate();
         this.posts = d.getPosts();
         this.nQuest = d.getNQuest();
         this.nAnswer = d.getNAnswer();
     }
     //Setters
     public void setData(LocalDate data) {
-        this.data = data;
+        this.date = data;
     }
     public void setPosts(Map<Long,Post> posts) {
         HashMap<Long,Post> m = new HashMap<Long,Post>();
@@ -57,8 +57,8 @@ public class Day{
         this.nAnswer = nAnswer;
     }
     //Gettrs
-    public LocalDate getData() {
-        return data;
+    public LocalDate getDate() {
+        return date;
     }
     public Map<Long,Post> getPosts() {
         HashMap<Long,Post> m = new HashMap<Long,Post>();
@@ -91,7 +91,7 @@ public class Day{
 
         Day object = (Day) o;
 
-        if (data != null ? !data.equals(object.data) : object.data != null) return false;
+        if (date != null ? !date.equals(object.date) : object.date != null) return false;
         if (posts != null ? !posts.equals(object.posts) : object.posts != null) return false;
         if (nQuest != object.nQuest) return false;
 return !(nAnswer != object.nAnswer);
@@ -99,7 +99,7 @@ return !(nAnswer != object.nAnswer);
     //toString
     public String toString() {
         final StringBuilder sb = new StringBuilder("Day{");
-        sb.append("data = ").append(getData());
+        sb.append("data = ").append(getDate());
         sb.append(", posts = ").append(getPosts());
         sb.append(", nQuest = ").append(getNQuest());
         sb.append(", nAnswer = ").append(getNAnswer());

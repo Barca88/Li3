@@ -39,7 +39,7 @@ public class TCD {
         hashPosts.clear();
         this.hashPosts = hPosts;
         TreeMap<LocalDate,Day> tDays = new TreeMap<LocalDate,Day>();
-        treeDays.values().forEach(d->tDays.put(d.getData(),d.clone()));
+        treeDays.values().forEach(d->tDays.put(d.getDate(),d.clone()));
         treeDays.clear();
         this.treeDays = tDays;
     }
@@ -70,7 +70,7 @@ public class TCD {
     }
     public void setTreeDays(Map<LocalDate,Day> treeDays) {
         TreeMap<LocalDate,Day> tDays = new TreeMap<LocalDate,Day>();
-        treeDays.values().forEach(d->tDays.put(d.getData(),d.clone()));
+        treeDays.values().forEach(d->tDays.put(d.getDate(),d.clone()));
         treeDays.clear();
         this.treeDays = tDays;
     }
@@ -92,7 +92,7 @@ public class TCD {
     }
     public Map<LocalDate,Day> getDays() {
         TreeMap<LocalDate,Day> tDays = new TreeMap<LocalDate,Day>();
-        this.treeDays.values().forEach(d->tDays.put(d.getData(),d.clone()));
+        this.treeDays.values().forEach(d->tDays.put(d.getDate(),d.clone()));
         return tDays;
     }
     
@@ -158,7 +158,7 @@ public class TCD {
 
     // Query 3
     public Pair<Long,Long> query3(LocalDate begin, LocalDate end) {
-        return new Pair<>(3667L,4102L);
+        return new Pair<Long,Long>(q,a);
     }
 
     // Query 4
