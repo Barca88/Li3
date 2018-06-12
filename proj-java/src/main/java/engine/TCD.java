@@ -7,15 +7,9 @@
 package engine;
 
 import common.Pair;
-
-import java.util.Arrays;
+import java.util.*;
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.TreeMap;
-import java.lang.StringBuilder;
-
+import java.util.stream.Collectors;
 
 public class TCD {
     //var de instancia
@@ -156,7 +150,12 @@ public class TCD {
 
     // Query 2
     public List<Long> query2(int N) {
-        return Arrays.asList(15811L,449L,158442L,167850L,367165L,295286L,59676L,93977L,35795L,3940L);
+        
+        //Map<Long,User> map = this.getUsers();
+        List<Long> l =  this.getUsers().values().stream().sorted(new ComparatorNposts()).limit(N)
+                                    .map(u->u.getId())
+                                    .collect(Collectors.toCollection(ArrayList :: new));
+        return l;
     }
 
     // Query 3
