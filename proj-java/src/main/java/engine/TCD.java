@@ -144,7 +144,14 @@ public class TCD {
 
     // Query 1
     public Pair<String,String> query1(long id) {
-        return new Pair<>("WebNinjalol", this.hashUsers.get(this.hashPosts.get(id).getUser()).getName());
+        Post p = this.hashPosts.get(id);
+        if(p instanceof Answer){
+            Answer a = (Answer)p;
+            p = this.hashPosts.get(a.getParentId());
+        }
+        User u = this.hashUsers.get(p.getUser());
+        Quest q = (Quest)p;
+        return new Pair<>(q.getTitle(),u.getName());
     }
 
     // Query 2
