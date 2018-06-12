@@ -1,3 +1,9 @@
+/** @file ComparatorNPosts.java
+ *  @brief Funções que trabalham com os User e Post.
+ *
+ *  @author Grupo 19
+ */
+
 package engine;
 import engine.User;
 
