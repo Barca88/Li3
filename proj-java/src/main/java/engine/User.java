@@ -6,7 +6,7 @@
 
 package engine;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.lang.StringBuilder;
 
 public class User {
@@ -16,7 +16,7 @@ public class User {
     private String aboutMe;        /* Short bio de um user. */
     private long reputation;       /* Reputação de um user. */
     private int Nposts;            /* Nº de posts de um user. */
-    private ArrayList<Post> posts; /* Lista dos posts que um user fez. */
+    private HashMap<Long,Post> posts; /* Lista dos posts que um user fez. */
     //Contrutores
     public User(long id){
         this.id = id;
@@ -24,16 +24,16 @@ public class User {
         this.aboutMe = "";
         this.reputation = 0;
         this.Nposts = 0;
-        this.posts = new ArrayList<Post>();
+        this.posts = new HashMap<Long,Post>();
     }
-    public User(long id, String name, String aboutMe, long reputation, int Nposts, ArrayList<Post> posts) {
+    public User(long id, String name, String aboutMe, long reputation, int Nposts, HashMap<Long,Post> posts) {
         this.id = id;
         this.name = name;
         this.aboutMe = aboutMe;
         this.reputation = reputation;
         this.Nposts = Nposts;
-        ArrayList<Post> l = new ArrayList<Post>();
-        posts.forEach(c->l.add(c.clone()));
+        HashMap<Long,Post> l = new HashMap<Long,Post>();
+        posts.values().forEach(c->l.put(c.getId(),c.clone()));
         posts.clear();
         this.posts = l;
     }
@@ -43,6 +43,7 @@ public class User {
         this.aboutMe = u.getAboutMe();
         this.reputation = u.getReputation();
         this.Nposts = u.getNposts();
+        this.posts = u.getPosts();
     }
     //Setters
     public void setId(long id) {
@@ -60,10 +61,10 @@ public class User {
     public void setNposts(int Nposts) {
         this.Nposts = Nposts;
     }
-    public void setPosts(ArrayList<Post> posts) {
-        ArrayList<Post> l = new ArrayList<Post>();
-        posts.forEach(c->l.add(c.clone()));
-        posts.clear();
+    public void setPosts(HashMap<Long,Post> p) {
+        HashMap<Long,Post> l = new HashMap<Long,Post>();
+        p.values().forEach(c->l.put(c.getId(),c.clone()));
+        p.clear();
         this.posts.clear();
         this.posts = l;
     }
@@ -83,15 +84,15 @@ public class User {
     public int getNposts() {
         return Nposts;
     }
-    public ArrayList<Post> getPosts() {
-        ArrayList<Post> l = new ArrayList<Post>();
-        this.posts.forEach(c->l.add(c.clone()));
+    public HashMap<Long,Post> getPosts() {
+        HashMap<Long,Post> l = new HashMap<Long,Post>();
+        this.posts.forEach((k,c)->l.put(c.getId(),c.clone()));
         return l;
     }
     //Metodos
     public void addPost(Post p){
         this.Nposts += 1;
-        this.posts.add(p.clone());
+        this.posts.put(p.getId(),p.clone());
     }
 
     public User clone(){
@@ -99,7 +100,17 @@ public class User {
         return r;
     }
 
-    //Equals
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("User{");
+        sb.append("id = ").append(getId());
+        sb.append(", name = ").append(getName());
+        sb.append(", aboutMe = ").append(getAboutMe());
+        sb.append(", reputation = ").append(getReputation());
+        sb.append(", Nposts = ").append(getNposts());
+        sb.append(", posts = ").append(getPosts());
+        return sb.append("}").toString();
+    }
+
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -113,17 +124,6 @@ public class User {
         if (Nposts != object.Nposts) return false;
         return !(posts != null ? !posts.equals(object.posts) : object.posts != null);
     }
-
-    //toString
-    public String toString() {
-        final StringBuilder sb = new StringBuilder("User{");
-        sb.append("id = ").append(getId());
-        sb.append(", name = ").append(getName());
-        sb.append(", aboutMe = ").append(getAboutMe());
-        sb.append(", reputation = ").append(getReputation());
-        sb.append(", Nposts = ").append(getNposts());
-        sb.append(", posts = ").append(getPosts());
-        return sb.append("}").toString();
-    }
 }
+
 

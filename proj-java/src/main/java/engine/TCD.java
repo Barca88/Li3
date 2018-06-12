@@ -7,14 +7,16 @@
 package engine;
 
 import common.Pair;
-import java.util.*;
+//import java.util.*;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.TreeMap;
+import java.util.stream.*;
 import java.lang.StringBuilder;
-import java.util.stream.Collectors;
 
 public class TCD {
     //var de instancia
@@ -163,7 +165,7 @@ public class TCD {
 
     // Query 3
     public Pair<Long,Long> query3(LocalDate begin, LocalDate end) {
-        return new Pair<Long,Long>(q,a);
+        return new Pair<Long,Long>(123L,123L);
     }
 
     // Query 4
@@ -179,10 +181,11 @@ public class TCD {
     public Pair<String, List<Long>> query5(long id) {
         User u = this.hashUsers.get(id);
         String shortBio = u.getAboutMe();
-        List<Long> ids = u.getPosts().stream()
-            .sorted(new ComparatorDate()).limit(10)
-            .map(p->p.getId())
-            .collect(Collectors.toList());
+        List<Long> ids = u.getPosts().values().stream()
+                                     .sorted(new ComparatorDate())
+                                     .limit(10)
+                                     .map(p->p.getId())
+                                     .collect(Collectors.toList());
         return new Pair<>(shortBio,ids);
     }
 

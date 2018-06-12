@@ -10,7 +10,7 @@ import javax.xml.stream.XMLStreamException;
 import java.io.FileNotFoundException;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.File;
@@ -70,7 +70,7 @@ public class Parser{
 						name = xmlr.getAttributeValue(null, "DisplayName");  
 						aboutMe = xmlr.getAttributeValue(null, "AboutMe");  
                         if(id!=-1 && id!=-2){
-                            User u = new User(id,name,aboutMe,reputation,0,new ArrayList<Post>());
+                            User u = new User(id,name,aboutMe,reputation,0,new HashMap<Long,Post>());
                             data.addUser(u);
                         }
                     }
