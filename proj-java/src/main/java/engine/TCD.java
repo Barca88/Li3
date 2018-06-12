@@ -132,9 +132,9 @@ public class TCD {
     }
     public void load(String dumpPath) {
         String t = new String(dumpPath),u = new String(dumpPath),p = new String(dumpPath);
-        t = t.concat("Tags.xml");
-        u = u.concat("Users.xml");
-        p = p.concat("Posts.xml");
+        t = t.concat("/Tags.xml");
+        u = u.concat("/Users.xml");
+        p = p.concat("/Posts.xml");
 
         Parser pa = new Parser();
         pa.parseTags(this,t);
