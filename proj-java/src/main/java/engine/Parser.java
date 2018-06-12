@@ -116,6 +116,7 @@ public class Parser{
                                 pId = Long.parseLong(xmlr.getAttributeValue(null,"ParentId"));
                                 Answer a = new Answer(id, date, score, userId,nComment,pId);
                                 data.addPost(a);
+                                data.addToQuest(a);
                             }
                     }
 				}

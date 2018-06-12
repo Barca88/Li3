@@ -14,21 +14,21 @@ public class Quest extends Post{
     private String title; /* Título da pergunta. */
     private String tags; /* Tag da pergunta. */
     private int answer_c; /* Nº de answer. */
-    private ArrayList<Long> answerList; /* Lista das answer de uma quest. */
+    private ArrayList<Answer> answerList; /* Lista das answer de uma quest. */
     //Construtores
     public Quest(long id){
         super(id,LocalDate.now(),0,-2,0);
         this.title = "";
         this.tags = "";
         this.answer_c = 0;
-        this.answerList = new ArrayList<Long>();
+        this.answerList = new ArrayList<Answer>();
     }
     public Quest(long id, LocalDate date, int score, long ownerUserId, int comment_c, String title, String tags, int answer_c){
         super(id,date,score,ownerUserId,comment_c);
         this.title = title;
         this.tags = tags;
         this.answer_c = answer_c;
-        this.answerList = new ArrayList<Long>(); 
+        this.answerList = new ArrayList<Answer>(); 
     }
     public Quest(Quest q){
         super(q);
@@ -47,8 +47,8 @@ public class Quest extends Post{
     public void setAnswer_c(int answer_c) {
         this.answer_c = answer_c;
     }
-    public void setAnswerList(ArrayList<Long> answerList) {
-        ArrayList<Long> l = new ArrayList<Long>();
+    public void setAnswerList(ArrayList<Answer> answerList) {
+        ArrayList<Answer> l = new ArrayList<Answer>();
         answerList.forEach(c->l.add(c));
         answerList.clear();
         this.answerList = l;
@@ -64,12 +64,16 @@ public class Quest extends Post{
     public int getAnswer_c() {
         return answer_c;
     }
-    public ArrayList<Long> getAnswerList() {
-        ArrayList<Long> l = new ArrayList<Long>();
+    public ArrayList<Answer> getAnswerList() {
+        ArrayList<Answer> l = new ArrayList<Answer>();
         this.answerList.forEach(c->l.add(c));
         return l;
     }
     //Metodos
+    public void addAnswer(Answer a){
+        this.answerList.add(a.clone());
+    }
+
     public Quest clone(){
         Quest q = new Quest(this);
         return q;
