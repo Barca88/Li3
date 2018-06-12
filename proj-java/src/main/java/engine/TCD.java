@@ -9,6 +9,11 @@ package engine;
 import common.Pair;
 import java.util.*;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.TreeMap;
+import java.lang.StringBuilder;
 import java.util.stream.Collectors;
 
 public class TCD {
@@ -172,12 +177,12 @@ public class TCD {
 
     // Query 5
     public Pair<String, List<Long>> query5(long id) {
-        String shortBio = "<p>Coder. JS, Perl, Python, Basic<br>Books/movies: SF+F.<br>Dead:" +
-                "dell 9300<br>Dead: dell 1720 as of may 10th 2011.</p>\n" +
-                "<p>Current system: Acer Aspire 7750G.<br>\n" +
-                "Works OOTB as of Ubuntu 12.04.<br></p>";
-        List<Long> ids = Arrays.asList(982507L,982455L,980877L,980197L,980189L,976713L,974412L,
-                974359L,973895L,973838L);
+        User u = this.hashUsers.get(id);
+        String shortBio = u.getAboutMe();
+        List<Long> ids = u.getPosts().stream()
+            .sorted(new ComparatorDate()).limit(10)
+            .map(p->p.getId())
+            .collect(Collectors.toList());
         return new Pair<>(shortBio,ids);
     }
 
