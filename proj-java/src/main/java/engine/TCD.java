@@ -191,7 +191,14 @@ public class TCD {
 
     // Query 3
     public Pair<Long,Long> query3(LocalDate begin, LocalDate end) {
-        return new Pair<Long,Long>(123L,123L);
+        long qu = 0, an = 0;
+        for(Day d : this.getDays().values()){
+             if(d.getDate().isBefore(end) && d.getDate().isAfter(begin)){
+                qu += d.getNQuest(); 
+                an += d.getNAnswer();
+             }
+        }
+        return new Pair<Long,Long>(qu,an);
     }
 
     // Query 4
@@ -246,7 +253,7 @@ public class TCD {
         ArrayList<Long> a = hashPosts.values().stream()
             .filter(p->{if(p instanceof Quest){
                             Quest q = (Quest)p ;
-                            return q.getTags().contains(word);
+                            return q.getTitle().contains(word);
                             }
                             else return false;
             })
