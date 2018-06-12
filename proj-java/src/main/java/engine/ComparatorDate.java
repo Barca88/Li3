@@ -1,3 +1,9 @@
+/** @file ComparatorDate.java
+ *  @brief Funções que trabalham com os Day e Post.
+ *
+ *  @author Grupo 19
+ */
+
 package engine;
 
 import java.util.Comparator;
