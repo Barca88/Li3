@@ -7,7 +7,8 @@
 package engine;
 
 import common.Pair;
-//import java.util.*;
+import java.util.*;
+import java.lang.String;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
@@ -118,9 +119,18 @@ public class TCD {
         this.addDay(p);
         long user = p.getUser();
         if(this.hashUsers.containsKey(user))
-            this.hashUsers.get(user).addPost(p);
+            this.hashUsers.get(user).addPost(p);  
        // p.clear();
     }
+
+    public void addToQuest(Answer a){
+        long q = a.getParentId();
+        if(this.hashPosts.containsKey(q)){
+            Quest quest = (Quest)this.hashPosts.get(q);
+            quest.addAnswer(a);
+        }
+    } 
+
     private void addDay(Post p){
         Day d;
         if(this.treeDays.containsKey(p.getDate())){
@@ -131,6 +141,20 @@ public class TCD {
         }
         d.addPost(p);
     }
+
+    private void calcAverage(Post p){
+        if(p instanceof Quest){
+            Quest q = (Quest)p;
+            for(Answer a : q.getAnswerList()){
+                double s = (double)a.getScore();
+                double c = (double)a.getComment();
+                double r = (double)hashUsers.get(a.getUser()).getReputation(); 
+                double x = s*0.45+r*0.25+s*0.2+c*0.1;
+                a.setAverage(x);
+            }
+        }
+    } 
+
     public void load(String dumpPath) {
         String t = new String(dumpPath),u = new String(dumpPath),p = new String(dumpPath);
         t = t.concat("/Tags.xml");
@@ -141,6 +165,8 @@ public class TCD {
         pa.parseTags(this,t);
         pa.parseUsers(this,u);
         pa.parsePosts(this,p);
+
+        hashPosts.values().forEach(a->calcAverage(a));
     }
 
     // Query 1
@@ -201,7 +227,18 @@ public class TCD {
 
     // Query 8
     public List<Long> query8(int N, String word) {
-        return Arrays.asList(980835L,979082L,974117L,974105L,973832L,971812L,971056L,968451L,964999L,962770L);
+        ArrayList<Long> a = hashPosts.values().stream()
+            .filter(p->{if(p instanceof Quest){
+                            Quest q = (Quest)p ;
+                            return q.getTags().contains(word);
+                            }
+                            else return false;
+            })
+            .sorted(new ComparatorDate())
+            .limit(N)
+            .map(p->p.getId())
+            .collect(Collectors.toCollection(ArrayList :: new));
+        return a;
     }
 
     // Query 9
@@ -211,7 +248,17 @@ public class TCD {
 
     // Query 10
     public long query10(long id) {
-        return 175891;
+        Quest q = (Quest)hashPosts.get(id);
+
+        Answer a = q.getAnswerList().get(0);
+        for(Answer a1 : q.getAnswerList()){
+            if(a1.getAverage() > a.getAverage()){
+                a = a1;
+            }
+        }
+
+        if(a!=null) return a.getId();
+        return 0;
     }
 
     // Query 11

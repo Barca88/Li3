@@ -12,7 +12,7 @@ import java.lang.StringBuilder;
 public class Answer extends Post{
     //var. de instancia
     private long parentId; /* Id da quest à qual esta answer responde. */
-    private float average; /* variavel que define a qualidade da resposta */
+    private double average; /* variavel que define a qualidade da resposta */
 
     public Answer(long id){
         super(id,LocalDate.now(),0,-2,0);
@@ -33,11 +33,11 @@ public class Answer extends Post{
     public void setParentId(long parentId) {
         this.parentId = parentId;
     }
-    public void setAverage(float average) {
+    public void setAverage(double average) {
         this.average = average;
     }
     //Getters
-    public float getAverage() {
+    public double getAverage() {
         return average;
     }
     public long getParentId() {
@@ -59,7 +59,7 @@ public class Answer extends Post{
 
         if (parentId != object.parentId) return false;
         if (!super.equals(object)) return false;
-        return !(Float.compare(average, object.average) != 0);
+        return !(Double.compare(average, object.average) != 0);
     }
 
     //toString
