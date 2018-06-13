@@ -7,6 +7,7 @@ engine/ComparatorNPosts.class
 engine/ComparatorScorePost.class
 engine/Tag.class
 engine/User.class
+engine/ComparatorDateQuest.class
 common/MyLog.class
 engine/Day.class
 engine/ComparatorDatePost.class

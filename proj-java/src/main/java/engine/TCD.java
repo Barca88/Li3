@@ -203,11 +203,22 @@ public class TCD {
 
     // Query 4
     public List<Long> query4(String tag, LocalDate begin, LocalDate end) {
-        return Arrays.asList(276174L,276029L,274462L,274324L,274316L,274141L,274100L,272937L,
-                272813L,272754L,272666L,272565L,272450L,272313L,271816L,271683L,271647L,270853L,270608L,270528L,270488L,
-                270188L,270014L,269876L,269781L,269095L,268501L,268155L,267746L,267656L,267625L,266742L,266335L,266016L,
-                265531L,265483L,265443L,265347L,265104L,265067L,265028L,264764L,264762L,264616L,264525L,264292L,263816L,
-                263740L,263460L,263405L,263378L,263253L,262733L,262574L);
+        ArrayList<Quest> a = new ArrayList<Quest>();
+        for(Post p : this.hashPosts.values()){
+             if(p.getDate().isBefore(end) && p.getDate().isAfter(begin)){
+                 if(p instanceof Quest){
+                    Quest qu = (Quest)p;
+                    if(qu.getTags().contains(tag))
+                        a.add(qu);
+                 }
+             }
+        }
+        ArrayList<Long> aid = a.stream()
+                               .sorted(new ComparatorDateQuest())
+                               .map(q->q.getId())
+                               .collect(Collectors.toCollection(ArrayList :: new));
+
+        return aid;
     }
 
     // Query 5
